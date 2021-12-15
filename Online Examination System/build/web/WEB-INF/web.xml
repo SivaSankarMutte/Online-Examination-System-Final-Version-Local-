@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    
+    <session-config>
+        <session-timeout>60</session-timeout>
+    </session-config>
+    
+    <servlet>
+        <servlet-name>superAdminValidation</servlet-name>
+        <servlet-class>superAdminValidation</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>superAdminValidation</servlet-name>
+        <url-pattern>/superAdminValidation</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>superAdminLogout</servlet-name>
+        <servlet-class>superAdminLogout</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>superAdminLogout</servlet-name>
+        <url-pattern>/superAdminLogout</url-pattern>
+    </servlet-mapping>
+    
+    
+    
+    
+    <servlet>
+        <servlet-name>adminValidation</servlet-name>
+        <servlet-class>adminValidation</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>adminValidation</servlet-name>
+        <url-pattern>/adminValidation</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>adminLogout</servlet-name>
+        <servlet-class>adminLogout</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>adminLogout</servlet-name>
+        <url-pattern>/adminLogout</url-pattern>
+    </servlet-mapping>
+    
+    
+    <servlet>
+        <servlet-name>facultyValidation</servlet-name>
+        <servlet-class>facultyValidation</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>facultyValidation</servlet-name>
+        <url-pattern>/facultyValidation</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>facultyLogout</servlet-name>
+        <servlet-class>facultyLogout</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>facultyLogout</servlet-name>
+        <url-pattern>/facultyLogout</url-pattern>
+    </servlet-mapping>
+    
+    
+    <servlet>
+        <servlet-name>giveExamId</servlet-name>
+        <servlet-class>giveExamId</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>giveExamId</servlet-name>
+        <url-pattern>/giveExamId</url-pattern>
+    </servlet-mapping>
+    
+    
+    <servlet>
+        <servlet-name>sendMailToStudent</servlet-name>
+        <servlet-class>sendMailToStudent</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>sendMailToStudent</servlet-name>
+        <url-pattern>/sendMailToStudent</url-pattern>
+    </servlet-mapping>
+    
+    
+    <servlet>
+        <servlet-name>examLinkValidation</servlet-name>
+        <servlet-class>examLinkValidation</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>examLinkValidation</servlet-name>
+        <url-pattern>/examLinkValidation</url-pattern>
+    </servlet-mapping>
+    
+    
+</web-app>
