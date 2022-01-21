@@ -29,12 +29,13 @@
                         <c:choose>
                             <c:when test='${param.formAns=="1" || param.formAns=="2"}'>
                                 <sql:update dataSource="${db}" var="add">
-                                    update questions set questionName=?,opt1=?,opt2=?,ans=?,questionMarks=? where questionId=?
+                                    update questions set questionName=?,opt1=?,opt2=?,opt3=?,opt4=?,ans=?,questionMarks=? where questionId=?
 
                                         <sql:param value="${param.formQuestionName}"/>
                                         <sql:param value="${param.formOpt1}"/>
                                         <sql:param value="${param.formOpt2}"/>
-
+                                        <sql:param value="${param.formOpt3}"/>
+                                        <sql:param value="${param.formOpt4}"/>
                                         <sql:param value="${param.formAns}"/>
                                         <sql:param value="${param.formQuestionMarks}"/>
                                         <sql:param value="${sessionScope.sessionQuestionId}"/>
@@ -62,12 +63,13 @@
                         <c:choose>
                             <c:when test='${param.formAns=="1" || param.formAns=="2" || param.formAns=="3"}'>
                                 <sql:update dataSource="${db}" var="add">
-                                    update questions set questionName=?,opt1=?,opt2=?,opt3=?,ans=?,questionMarks=? where questionId=?
+                                    update questions set questionName=?,opt1=?,opt2=?,opt3=?,opt4=?,ans=?,questionMarks=? where questionId=?
 
                                         <sql:param value="${param.formQuestionName}"/>
                                         <sql:param value="${param.formOpt1}"/>
                                         <sql:param value="${param.formOpt2}"/>
                                         <sql:param value="${param.formOpt3}"/>
+                                        <sql:param value="${param.formOpt4}"/>
                                         <sql:param value="${param.formAns}"/>
                                         <sql:param value="${param.formQuestionMarks}"/>
                                         <sql:param value="${sessionScope.sessionQuestionId}"/>

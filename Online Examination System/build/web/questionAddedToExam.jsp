@@ -22,11 +22,12 @@
         
         <c:choose>
             <c:when test='${param.formAns!="1" && param.formAns!="2" && param.formAns!="3" && param.formAns!="4"}'>
-                <c:redirect url="questionFailedToInsert.jsp"/>
+                <c:set var="message" value="fail" scope="session"/>
+                <c:redirect url="addQuestionForm.jsp"/>
             </c:when>
             <c:otherwise>
                 <c:choose>
-                    <c:when test='${param.formOpt3=="" || param.formOpt4==""}'>
+                    <c:when test='${param.formOpt3=="" && param.formOpt4==""}'>
                         <c:choose>
                             <c:when test='${param.formAns=="1" || param.formAns=="2"}'>
                                 <sql:update dataSource="${db}" var="add">

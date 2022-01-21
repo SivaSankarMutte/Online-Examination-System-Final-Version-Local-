@@ -21,10 +21,33 @@ public class giveExamId extends HttpServlet {
     {
         response.setContentType("text/html");
         PrintWriter pw = response.getWriter();
-        String eid=request.getParameter("eid");
-        HttpSession session=request.getSession();
-        session.setAttribute("eid",eid);
-        RequestDispatcher rd=request.getRequestDispatcher("addQuestionForm.jsp");
-        rd.forward(request,response);
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true","siva","0000");
+                        
+            String eid=request.getParameter("eid");
+            HttpSession session=request.getSession();
+            session.setAttribute("eid",eid);
+//            String query="create table if not exists ?("+"qid integer,"+"regdNo varchar(50),"+"marks integer)";
+//            PreparedStatement ps=con.prepareStatement(query);
+//            ps.setString(1, "examSpecialTable"+eid);
+//            ps.execute();
+            String sqlCreate = "CREATE TABLE IF NOT EXISTS " + "examSpecialTable"+eid
+            + "  (qid int,"
+            + "   regdNo varchar(20),"
+            + "   marksObtained int,"
+            + "   foreign key(qid) references questions(questionId) on delete cascade on update cascade)";
+
+            Statement stmt = con.createStatement();
+            stmt.execute(sqlCreate);
+            RequestDispatcher rd=request.getRequestDispatcher("addQuestionForm.jsp");
+            rd.forward(request,response);
+        }
+        catch(Exception e)
+        {
+            pw.println(e);
+        }
     }
 }

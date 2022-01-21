@@ -38,7 +38,7 @@
         String boundary = contentType.substring(lastIndex + 1,contentType.length());
         
         int pos;
-        pos = file.indexOf("filename=\"");
+        pos = file.indexOf("filename=\""); 
         pos = file.indexOf("\n", pos) + 1;
         pos = file.indexOf("\n", pos) + 1;
         pos = file.indexOf("\n", pos) + 1;
@@ -52,8 +52,6 @@
         String line = null;
         try
         {
-            String adminEmail=(String)session.getAttribute("adminEmail");
-            String adminEmailPassword=(String)session.getAttribute("adminEmailPassword");
             BufferedReader input = new BufferedReader(new FileReader(saveFile));
 
             Class.forName("com.mysql.jdbc.Driver");
@@ -98,7 +96,7 @@
                     String to=words[1];
                     String sub="Online Examination System - Password";
                     String msg="Welcome to Online Examination System -  Your Password is: "+p;
-                    sendMailToFaculty.send(adminEmail,adminEmailPassword,to,sub,msg);
+                    sendMailToFaculty.send(to,sub,msg);
                 }
                 catch(Exception e)
                 {
@@ -109,9 +107,6 @@
                     PreparedStatement pstatement2 = con.prepareStatement(queryString2);
                     pstatement2.setString(1,words[1]);
                     pstatement2.executeUpdate();
-                    %>
-                    <c:redirect url="adminEmailPasswordWrong.jsp"/>
-                    <%
                 }
             }
             %> <c:redirect url="viewFaculty.jsp"/>  <%

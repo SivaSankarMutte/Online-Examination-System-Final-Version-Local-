@@ -30,28 +30,21 @@
         %>
         <jsp:include page="base.jsp"/>
         <%
-            String facultyPassword=request.getParameter("facultyPassword");
-            if(facultyPassword.equals(""))
-            {
-                String allSymbols="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890~!@#$%^&*";
-                Random random=new Random();
-                char[] psw=new char[8];
+            String allSymbols="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890~!@#$%^&*";
+            Random random=new Random();
+            char[] psw=new char[8];            
 
-                for(int i=0;i<8;i++)
-                {
-                    psw[i]=allSymbols.charAt(random.nextInt(71));  //71 is allSymbols.length()
-                }
-                facultyPassword=new String(psw);;
+            for(int i=0;i<8;i++)
+            {
+               psw[i]=allSymbols.charAt(random.nextInt(71));  //71 is allSymbols.length()
             }
-            
+            String facultyPassword=new String(psw); 
             
             String adminIdf=(String)session.getAttribute("aid");
             String facultyName=request.getParameter("facultyName");
             String facultyEmail=request.getParameter("facultyEmail");
             
             
-            String adminEmail=request.getParameter("adminEmail");
-            String adminEmailPassword=request.getParameter("adminEmailPassword");
             try
             {
                 Class.forName("com.mysql.jdbc.Driver");
@@ -72,35 +65,34 @@
             {
                 response.sendRedirect("facultyEmailAlreadyInserted.jsp");
             }
-                try
-                {   
-                    //String to=facultyEmail;
-                    String sub="Online Examination System - Password";
-                    String msg="Welcome to Online Examination System -  Your Password is: "+facultyPassword;
-                    sendMailToFaculty.send(adminEmail,adminEmailPassword,facultyEmail,sub,msg);
-                }
-                catch(Exception e)
-                {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    String url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true";
-                    String username="siva";
-                    String password="0000";
-                    Connection con=DriverManager.getConnection(url,username,password); 
+                
+            try    
+            {       
+                //String to=facultyEmail;
+                String sub="Online Examination System - Password";
+                String msg="Welcome to Online Examination System -  Your Password is: "+facultyPassword;
+                sendMailToFaculty.send(facultyEmail,sub,msg);
+            }
+            catch(Exception e)
+            {
+                Class.forName("com.mysql.jdbc.Driver");
+                String url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true";
+                String username="siva";
+                String password="0000";
+                Connection con=DriverManager.getConnection(url,username,password); 
 
-                    String queryString="delete from faculty where email=?";
-                    PreparedStatement pstatement = con.prepareStatement(queryString);
-                    pstatement.setString(1,facultyEmail);
-                    pstatement.executeUpdate();
-                    %>
-                    <c:redirect url="adminEmailPasswordWrong.jsp"/>
-                    <%
-                }
-                %>
-                <div class="alert alert-dismissible bg-success fade show" id="dismiss">
-                    <div><strong>Success! </strong>Faculty added Successfully</div>
-                    <a href="#" class="close" data-dismiss="alert" id="x" aria-label="close">&times;</a>
-                </div>
-                <a href="viewFaculty.jsp">List all Faculty</a>
+                String queryString="delete from faculty where email=?";
+                PreparedStatement pstatement = con.prepareStatement(queryString);
+                pstatement.setString(1,facultyEmail);
+                pstatement.executeUpdate();
+                response.sendRedirect("emailToFacultyFailedToSent.jsp");
+            }
+        %>
+        <div class="alert alert-dismissible bg-success fade show" id="dismiss">
+            <div><strong>Success! </strong>Faculty added Successfully</div>
+            <a href="#" class="close" data-dismiss="alert" id="x" aria-label="close">&times;</a>
+        </div>
+       <a href="viewFaculty.jsp">List all Faculty</a>
     </body>
 </html>
 

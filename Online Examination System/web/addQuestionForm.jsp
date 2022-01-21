@@ -37,10 +37,76 @@
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <form method="post" action="sendMailToStudent">
-                            <input type="submit" value="Send Emails to Students" class="btn btn-outline-primary">
+                        <form method="post" action="deleteExam.jsp">
+                            <input type="submit" value="Delete Exam" class="btn btn-outline-danger">
                         </form>
-                    </li>
+                    </li> &nbsp;&nbsp;&nbsp;
+                    
+                    <li class="nav-item">
+                        <form method="post" action="uploadQuestionsFile.jsp">
+                            <input type="submit" value="Upload Questions CSV" class="btn btn-outline-primary">
+                        </form>
+                    </li> &nbsp;&nbsp;&nbsp;
+                    <li class="nav-item">
+                        <form method="post" action="sendMailToStudent">
+                            <input type="submit" value="Send Exam Link to Students" class="btn btn-outline-info">
+                        </form>
+                    </li> &nbsp;&nbsp;&nbsp;
+                    
+                    <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>    
+                            
+                    <sql:query dataSource="${db}" var="actresult">
+                        select activation from exam where examId=?
+                        <sql:param value="${sessionScope.eid}"/>
+                    </sql:query>
+                    <c:forEach var="row" items="${actresult.rows}">
+                        <c:choose>
+                            <c:when test="${row.activation!=1}">
+                                <li class="nav-item">
+                                    <form method="post" action="examResults.jsp">
+                                        <% 
+                                            HttpSession ses=request.getSession();
+                                            String resultsTableName = "results"+ses.getAttribute("eid").toString(); 
+                                            ses.setAttribute("resultsTableName", resultsTableName);
+                                        %>
+                                        <input type="submit" value="Results" class="btn btn-outline-warning">
+                                    </form>
+                                </li> &nbsp;&nbsp;&nbsp;
+                                <li class="nav-item">
+                                    <form method="post" action="activateTest.jsp">
+                                        <input type="submit" value="Activate Test" class="btn btn-outline-success">
+                                    </form>
+                                </li> &nbsp;&nbsp;&nbsp;
+                            </c:when> 
+                            
+                            <c:otherwise>
+                                <sql:query dataSource="${db}" var="aqatresult">
+                                    select allQuestionsAtATime from exam where examId=?
+                                    <sql:param value="${sessionScope.eid}"/>
+                                </sql:query>
+                                <c:forEach var="row2" items="${aqatresult.rows}">
+                                    <c:if test="${row2.allQuestionsAtATime==0}">
+                                        <li class="nav-item">
+                                            <form method="post" action="eachQuestionStatistics.jsp">
+                                                <% 
+                                                    HttpSession ses2=request.getSession();
+                                                    String examSpecialTableNameForStatistics = "examSpecialTable"+ses2.getAttribute("eid").toString(); 
+                                                    ses2.setAttribute("examSpecialTableName", examSpecialTableNameForStatistics);
+                                                %>
+                                                <input type="submit" value="Live Results" class="btn btn-outline-warning">
+                                            </form>
+                                        </li> &nbsp;&nbsp;&nbsp;
+                                    </c:if>
+                                </c:forEach>
+                                <li class="nav-item">
+                                    <form method="post" action="endTest.jsp">
+                                        <input type="submit" value="End Test" class="btn btn-outline-danger">
+                                    </form>
+                                </li> &nbsp;&nbsp;&nbsp;
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                   
                 </ul>
             </div>
         </nav>
@@ -94,7 +160,6 @@
                 </form>
             </div>
         </div>
-        
         <jsp:include page="questions.jsp"/>
     </body>
 </html>

@@ -50,7 +50,20 @@
                         <input type="datetime-local" class="form-control my-2" name="formEndTime" id="formEndTime" required>
                         <label for="formTotalMarks">Total Marks:(Not a required field):</label>
                         <input type="number" name="formTotalMarks" id="formTotalMarks" class="form-control my-2">
-
+                        
+                        <p>Randomize Questions</p>
+                        <input type="radio" name="formRandomizeQuestions" value="1" class="form-control-radio" required>Yes
+                        <input type="radio" name="formRandomizeQuestions" value="0" class="form-control-radio">No
+                        <br/><br/>
+                        <p>Allow Navigation between Questions</p>
+                        <input type="radio" name="formNavigateBetweenQuestions" value="1" class="form-control-radio" required>Yes
+                        <input type="radio" name="formNavigateBetweenQuestions" value="0" class="form-control-radio">No
+                        <br/><br/>
+                        <p>Allow Students to see All Questions at a time</p>
+                        <input type="radio" name="formAllQuestionsAtATime" value="1" class="form-control-radio" required>Yes
+                        <input type="radio" name="formAllQuestionsAtATime" value="0" class="form-control-radio">No
+                        
+                        
                         <div class="row">
                             <div class="col">
                                 <a href="facultyHome.jsp" class="btn btn-primary form-control my-2">Back</a>

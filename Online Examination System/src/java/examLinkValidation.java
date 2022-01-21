@@ -1,7 +1,8 @@
+import QuestionsPackage.DBConnection;
 import java.sql.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.util.Collections;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -42,29 +43,58 @@ public class examLinkValidation extends HttpServlet {
             PreparedStatement ps=con.prepareStatement("select facultyId,listName from exam where examId=?");
             ps.setString(1, examId);
             ResultSet rs=ps.executeQuery();
-            
-            if(rs.next())  
+         
+            while(rs.next())  
             {
                 HttpSession session=request.getSession();
                 session.setAttribute("examId", examId);
                 session.setAttribute("regdNo", regdNo);
-                String fid = rs.getString(1);
+                
+                int fid = rs.getInt(1);
                 String listName=rs.getString(2);
                 
-                PreparedStatement ps2=con.prepareStatement("select * from students where facultyId=? and listName=? and regdno=?");
-                ps2.setString(1, fid);
+                PreparedStatement ps2=con.prepareStatement("select studentId from students where facultyId=? and listName=? and regdno=?");
+                ps2.setInt(1, fid);
                 ps2.setString(2, listName);
                 ps2.setString(3, regdNo);
+                
                 ResultSet rs2=ps2.executeQuery();
                 
-                if(rs2.next())
+                while(rs2.next())
                 {
-                    RequestDispatcher rd=request.getRequestDispatcher("accessTest.jsp");
-                    rd.forward(request,response);
+                    session.setAttribute("questionsRecords", new DBConnection().getQuestionsSet(request, response));
+                    
+                    //if student allows to see questions at a time
+                    PreparedStatement ps4=con.prepareStatement("select allQuestionsAtATime from exam where examId=?");
+
+                    ps4.setString(1,examId);
+                    ResultSet rs4=ps4.executeQuery();
+                    if(rs4.next())
+                    {
+                        int alq=rs4.getInt(1);
+                        if(alq==1)
+                        {
+                            response.sendRedirect("accessAllQuestions.jsp");
+                        }
+                    }
+                    
+                    session.setAttribute("n", 0);
+                    PreparedStatement ps3=con.prepareStatement("select navigateBetweenQuestions from exam where examId=?");
+
+                    ps3.setString(1,examId);
+                    ResultSet rs3=ps3.executeQuery();
+                    if(rs3.next())
+                    {
+                        int nbq=rs3.getInt(1);
+                        if(nbq==1)
+                        {
+                            response.sendRedirect("accessTestNavigationBetweenQuestions.jsp");
+                        }
+                    }
+                    response.sendRedirect("accessTest.jsp");
                 }
             }
-            RequestDispatcher rd=request.getRequestDispatcher("invalidAccessId.jsp");
-            rd.forward(request,response);  
+            response.sendRedirect("invalidAccessId.jsp");
 
         }
         catch(Exception e)

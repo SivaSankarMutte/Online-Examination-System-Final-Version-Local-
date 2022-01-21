@@ -22,10 +22,7 @@
             }
         %>
         <jsp:include page="base.jsp"/>
-        <% 
-            session.setAttribute("adminEmail",request.getParameter("adminEmail")); 
-            session.setAttribute("adminEmailPassword",request.getParameter("adminEmailPassword")); 
-        %>
+        
         <form enctype="multipart/form-data" action="uploadFaculty.jsp" method="post">
             <br><br><br>
             <center>

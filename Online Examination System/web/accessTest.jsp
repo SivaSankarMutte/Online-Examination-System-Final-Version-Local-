@@ -4,10 +4,17 @@
     Author     : SIVASANKAR
 --%>
 
+
+
+<%@page import="QuestionsPackage.Questions"%>
+<%@page import="QuestionsPackage.LiveResults"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+
+<% ArrayList<Questions> questionsRecords = (ArrayList<Questions>)session.getAttribute("questionsRecords"); %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,37 +25,46 @@
     </head>
     <body>
         
-        <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
-        <sql:query dataSource="${db}" var="result">
-            select * from questions where examId=?
-            <sql:param value='${sessionScope.examId}'/>
-            
-        </sql:query>
-            
-            
-        <div class="container bg-info mt-5 rounded mb-5">
-            <br/>
-            <c:forEach var="row" items="${result.rows}">
+        <c:choose>
+            <c:when test='${Integer.parseInt(sessionScope.n)<questionsRecords.size()}'>
+                <form action="LiveResults" method="post" class="form-control">
+                    <% int n2=Integer.parseInt(session.getAttribute("n").toString()); %>
+                    <% Questions q=(Questions)questionsRecords.get(n2); %>
 
-                    <div class="jumbotron bg-success">
-                        <h1>${row.questionName}</h1>
-                        <p>
-                            1.${row.opt1}
-                        </p>
-                        <p>
-                            2.${row.opt2}
-                        </p>
-                        <c:if test="${row.opt3!=''}">
-                            <p>3.${row.opt3}</p>
-                        </c:if>
-                        <c:if test="${row.opt4!=''}">
-                            <p>4.${row.opt4}</p>
-                        </c:if>
-                    </div>
-                <br/>
-            </c:forEach>
-        </div>
-        
+                    <div class="form-group jumbotron ml-5 mr-5 mt-2">
+                         <h2>
+                             <% out.println(q.getQuestionName()); %>
+                         </h2>
+
+                         <% session.setAttribute("qobj", q); %>
+                         
+                         <input type="radio" name="radioName" value="1" class="form-control-radio">
+                          <% out.println(q.getOpt1()); %> <br/>
+
+                          <input type="radio" name="radioName" value="2" class="form-control-radio">
+                          <% out.println(q.getOpt2()); %> <br/>
+                          
+                          <% if(!q.getOpt3().equals("")){ %>
+                            <input type="radio" name="radioName" value="3" class="form-control-radio">
+                            <% out.println(q.getOpt3()); %> <br/>
+                          <% } %>
+                          
+                          <% if(!q.getOpt4().equals("")){ %>
+                            <input type="radio" name="radioName" value="4" class="form-control-radio">
+                            <% out.println(q.getOpt4()); %> <br/>
+                          <% } %>
+                          
+
+                          <br/><br/>
+                    </div>   
+                    <input type="submit" value="Submit" class="btn btn-success form-control">
+
+                </form>
+            </c:when>
+            <c:otherwise>
+                <c:redirect url="calculateMarksForAStudent"/>
+            </c:otherwise>
+        </c:choose>
         
     </body>
 </html>

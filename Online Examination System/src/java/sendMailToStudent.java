@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -36,12 +37,12 @@ public class sendMailToStudent extends HttpServlet
     public static void send(String to,String subject,String msg)
     {  
 
-        final String user="sivasankarmutte@gmail.com";//change accordingly  
-        final String pass="K@lmno@123";  
+        final String user="onlineexam.bec@gmail.com"; 
+        final String pass="project@123";  
 
         //1st step) Get the session object    
         Properties props = new Properties();  
-        props.put("mail.smtp.host", "smtp.gmail.com");//change accordingly  
+        props.put("mail.smtp.host", "smtp.gmail.com"); 
         props.put("mail.smtp.auth", "true");  
         props.put("mail.smtp.starttls.enable",true);
 
@@ -85,6 +86,11 @@ public class sendMailToStudent extends HttpServlet
             Class.forName("com.mysql.jdbc.Driver");
             
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true","siva","0000");
+            String sqlCreate = "CREATE TABLE IF NOT EXISTS " + "results"+eid
+            + "   (regdNo varchar(20),"
+            + "   totalMarks int default -1)";
+            Statement stmt = con.createStatement();
+            stmt.execute(sqlCreate);
             PreparedStatement ps=con.prepareStatement("select facultyId,listName,examName,startTime,endTime from exam where examId=?");
             ps.setString(1,eid);
             ResultSet rs=ps.executeQuery();
@@ -107,9 +113,22 @@ public class sendMailToStudent extends HttpServlet
                 String sEmail;
                 String pin;
                 String encrypted;
+                
                 while(rs2.next())
                 {
                     regdNo=rs2.getString(1);
+                    
+                    String sqlUpdate="Update results"+eid+ " set totalMarks=-1 where regdNo=?";
+                    PreparedStatement ps3 = con.prepareStatement(sqlUpdate);
+                    ps3.setString(1, regdNo);
+                    int status=ps3.executeUpdate();
+
+                    if(status==0)
+                    {
+                        Statement st2=con.createStatement();
+                        st2.executeUpdate("insert into results"+eid+" (regdNo) values('"+regdNo+"')");           
+                    }
+                    
                     sEmail=rs2.getString(2);
                     pin=regdNo+eid;
                     encrypted="";
@@ -120,7 +139,7 @@ public class sendMailToStudent extends HttpServlet
                         String x = Character.toString((char) a);
                         encrypted=encrypted+x;  
                     }
-                    send(sEmail, regdNo+" - "+examName+" - Exam from Online Examination System", "Strat Time: "+startTime+"  End Time: "+endTime+"   Exam Link :  http://127.0.0.1:8080/Online_Examination_System/examLinkValidation?p="+encrypted);
+                    send(sEmail, regdNo+" - "+examName+" - Exam from Online Examination System", "Start Time: "+startTime+"  End Time: "+endTime+"   Exam Link :  http://127.0.0.1:8080/Online_Examination_System/examLinkValidation?p="+encrypted);
                 }
                 RequestDispatcher rd=request.getRequestDispatcher("emailsSentSuccessfully.jsp");
                 rd.forward(request,response);

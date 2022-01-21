@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServlet;
   
 public class sendMailToFaculty extends HttpServlet 
 {  
-    public static void send(String from,String pass,String to,String subject,String msg)
+    public static void send(String to,String subject,String msg)
     {  
 
         //final String user="sivasankarmutte@gmail.com";//change accordingly  
@@ -39,14 +39,14 @@ public class sendMailToFaculty extends HttpServlet
             @Override
             protected PasswordAuthentication getPasswordAuthentication() 
             {  
-                return new PasswordAuthentication(from,pass);  
+                return new PasswordAuthentication("onlineexam.bec@gmail.com","project@123");  
             }  
         });  
     //2nd step)compose message  
         try 
         {  
             MimeMessage message = new MimeMessage(session);  
-            message.setFrom(new InternetAddress(from));  
+            message.setFrom(new InternetAddress("onlineexam.bec@gmail.com"));  
             message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));  
             message.setSubject(subject);  
             message.setText(msg);  

@@ -31,7 +31,7 @@
                 <a href="addFaculty.jsp" class="btn btn-outline-warning">Add a new Faculty</a>
             </div>
             <div class="jumbotron">
-                <a href="adminEmailDetails.jsp" class="btn btn-outline-primary">Upload Faculty CSV File</a>
+                <a href="uploadFacultyFile.jsp" class="btn btn-outline-primary">Upload Faculty CSV File</a>
             </div>
             <div class="jumbotron">
                 <a href="updateAdminProfile.jsp" class="btn btn-outline-danger">Profile Settings</a>

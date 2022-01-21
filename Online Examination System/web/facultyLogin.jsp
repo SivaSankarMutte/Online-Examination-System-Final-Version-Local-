@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Admin Login</title>
+        <title>Faculty Login</title>
         <link rel="icon" type="text/css" href="images/test.png">
         
     </head>

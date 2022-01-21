@@ -16,6 +16,12 @@
         <link rel="icon" type="text/css" href="images/test.png">
     </head>
     <body>
+        <% 
+            if(session.getAttribute("fid")==null)
+            {
+                response.sendRedirect("facultyLogin.jsp");
+            }
+        %>
         <form method="post" action="insertintodb">
             <input type="text" name="fid" value="${param.fid}">
             <input type="text" name="examName" placeholder="Enter Exam name" class="form-control">

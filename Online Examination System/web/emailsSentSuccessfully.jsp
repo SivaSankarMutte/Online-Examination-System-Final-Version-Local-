@@ -14,6 +14,12 @@
         <link rel="icon" type="text/css" href="images/test.png">
     </head>
     <body>
+        <% 
+            if(session.getAttribute("fid")==null)
+            {
+                response.sendRedirect("facultyLogin.jsp");
+            }
+        %>
         <h1>Exam Links sent to Students successfully</h1>
         <form method="post" action="giveExamId">
             <input type="hidden" name="eid" value="${sessionScope.eid}"/>

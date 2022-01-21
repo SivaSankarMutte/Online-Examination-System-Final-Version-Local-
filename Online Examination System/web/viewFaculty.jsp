@@ -21,7 +21,8 @@
         <jsp:include page="base.jsp"/>
         <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
         <sql:query dataSource="${db}" var="result">
-            select * from faculty;
+            select * from faculty where adminId=?;
+            <sql:param value="${sessionScope.aid}"/>
         </sql:query>
             <table border="1" width="100%" class="table table-borderless table-hover bg-dark text-light">
                 <tr class="bg-success">

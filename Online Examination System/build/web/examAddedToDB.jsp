@@ -28,19 +28,23 @@
         <c:choose>
             <c:when test='${param.formNoOfQuestions=="" && param.formTotalMarks==""}'>
                 <sql:update dataSource="${db}" var="add">
-                    insert into exam(examName,facultyId,listName,startTime,endTime) values(?,?,?,?,?)
+                    insert into exam(examName,facultyId,listName,startTime,endTime,randomizeQuestions,navigateBetweenQuestions,allQuestionsAtATime) values(?,?,?,?,?,?,?,?)
 
                     <sql:param value="${param.formExamName}"/>
                     <sql:param value='${sessionScope.fid}'/>
                     <sql:param value="${param.formListName}"/>
                     <sql:param value="${param.formStartTime}"/>
                     <sql:param value='${param.formEndTime}'/>
+                    <sql:param value="${param.formRandomizeQuestions}"/>
+                    <sql:param value='${param.formNavigateBetweenQuestions}'/>
+                    <sql:param value='${param.formAllQuestionsAtATime}'/>
+                    
                 </sql:update>  
             </c:when>
 
             <c:when test='${param.formNoOfQuestions==""}'>
                 <sql:update dataSource="${db}" var="add">
-                    insert into exam(examName,facultyId,listName,startTime,endTime,totalMarks) values(?,?,?,?,?,?)
+                    insert into exam(examName,facultyId,listName,startTime,endTime,totalMarks,randomizeQuestions,navigateBetweenQuestions,allQuestionsAtATime) values(?,?,?,?,?,?,?,?,?)
 
                     <sql:param value="${param.formExamName}"/>
                     <sql:param value='${sessionScope.fid}'/>
@@ -48,12 +52,15 @@
                     <sql:param value="${param.formStartTime}"/>
                     <sql:param value='${param.formEndTime}'/>
                     <sql:param value="${param.formTotalMarks}"/>
+                    <sql:param value="${param.formRandomizeQuestions}"/>
+                    <sql:param value='${param.formNavigateBetweenQuestions}'/>
+                    <sql:param value='${param.formAllQuestionsAtATime}'/>
                 </sql:update>  
             </c:when>
 
             <c:when test='${param.formTotalMarks==""}'>
                 <sql:update dataSource="${db}" var="add">
-                    insert into exam(examName,facultyId,listName,noOfQuestions,startTime,endTime) values(?,?,?,?,?,?)
+                    insert into exam(examName,facultyId,listName,noOfQuestions,startTime,endTime,randomizeQuestions,navigateBetweenQuestions,allQuestionsAtATime) values(?,?,?,?,?,?,?,?,?)
 
                     <sql:param value="${param.formExamName}"/>
                     <sql:param value='${sessionScope.fid}'/>
@@ -61,12 +68,15 @@
                     <sql:param value='${param.formNoOfQuestions}'/>
                     <sql:param value="${param.formStartTime}"/>
                     <sql:param value='${param.formEndTime}'/>
+                    <sql:param value="${param.formRandomizeQuestions}"/>
+                    <sql:param value='${param.formNavigateBetweenQuestions}'/>
+                    <sql:param value='${param.formAllQuestionsAtATime}'/>
                 </sql:update>  
             </c:when>
 
             <c:otherwise>
                 <sql:update dataSource="${db}" var="add">
-                    insert into exam(examName,facultyId,listName,noOfQuestions,startTime,endTime,totalMarks) values(?,?,?,?,?,?,?)
+                    insert into exam(examName,facultyId,listName,noOfQuestions,startTime,endTime,totalMarks,randomizeQuestions,navigateBetweenQuestions,allQuestionsAtATime) values(?,?,?,?,?,?,?,?,?,?)
 
                     <sql:param value="${param.formExamName}"/>
                     <sql:param value='${sessionScope.fid}'/>
@@ -75,6 +85,9 @@
                     <sql:param value="${param.formStartTime}"/>
                     <sql:param value='${param.formEndTime}'/>
                     <sql:param value="${param.formTotalMarks}"/>
+                    <sql:param value="${param.formRandomizeQuestions}"/>
+                    <sql:param value='${param.formNavigateBetweenQuestions}'/>
+                    <sql:param value='${param.formAllQuestionsAtATime}'/>
                 </sql:update>  
             </c:otherwise>
         </c:choose>
