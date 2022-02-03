@@ -34,6 +34,8 @@
                     <c:forEach var="row" items="${result.rows}">
                         <form method="post" action="giveExamId">
                             <input type="hidden" name="eid" value="${row.examId}"/>
+                            <input type="hidden" name="listName" value="${row.listName}"/>
+                            <input type="hidden" name="totalMarks" value="${row.totalMarks}"/>
                                 <div class="col-lg">
                                     <div class="card shadow-lg rounded mx-2 my-3">
                                         <button type="submit" class="card shadow-lg text-center bg-success my-2 mx-2" style="padding: 20px;">

@@ -26,10 +26,15 @@ public class giveExamId extends HttpServlet {
             Class.forName("com.mysql.jdbc.Driver");
             
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true","siva","0000");
-                        
+              
             String eid=request.getParameter("eid");
             HttpSession session=request.getSession();
+            String fid=(String) session.getAttribute("fid");
             session.setAttribute("eid",eid);
+            String listName=request.getParameter("listName");
+            session.setAttribute("listName", listName);
+            int totalMarks=Integer.parseInt(request.getParameter("totalMarks"));
+            session.setAttribute("totalMarks", totalMarks);
 //            String query="create table if not exists ?("+"qid integer,"+"regdNo varchar(50),"+"marks integer)";
 //            PreparedStatement ps=con.prepareStatement(query);
 //            ps.setString(1, "examSpecialTable"+eid);
@@ -37,8 +42,9 @@ public class giveExamId extends HttpServlet {
             String sqlCreate = "CREATE TABLE IF NOT EXISTS " + "examSpecialTable"+eid
             + "  (qid int,"
             + "   regdNo varchar(20),"
-            + "   marksObtained int,"
-            + "   foreign key(qid) references questions(questionId) on delete cascade on update cascade)";
+            + "   marksObtained float,"
+            + "   selectedOptions varchar(20),"
+            + "   foreign key(qid) references questions"+fid+" (questionId) on delete cascade on update cascade)";
 
             Statement stmt = con.createStatement();
             stmt.execute(sqlCreate);

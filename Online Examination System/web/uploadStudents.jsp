@@ -103,12 +103,11 @@
                 String t=line.toString();
                 String words[]=t.split(",");
                 
-                String queryString="insert into students(facultyId,listName,regdNo,studentEmail) values(?,?,?,?)";
+                String queryString="insert into students"+fid+"(listName,regdNo,studentEmail) values(?,?,?)";
                 pstatement = con.prepareStatement(queryString);
-                pstatement.setString(1, fid);
-                pstatement.setString(2, section);
-                pstatement.setString(3, words[0]);
-                pstatement.setString(4, words[1]);
+                pstatement.setString(1, section);
+                pstatement.setString(2, words[0]);
+                pstatement.setString(3, words[1]);
                 
                 pstatement.executeUpdate();
                 

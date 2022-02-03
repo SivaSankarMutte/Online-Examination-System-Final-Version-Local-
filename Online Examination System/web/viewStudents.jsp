@@ -10,18 +10,21 @@
         <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
         <link rel="icon" type="text/css" href="images/test.png">
     </head>
-    <body style="overflow-x:hidden">
+    <body>
         <% 
             if(session.getAttribute("fid")==null)
             {
                 response.sendRedirect("facultyLogin.jsp");
             }
         %>
+        <%
+            HttpSession ses1=request.getSession();
+            ses1.setAttribute("studentsTableName", "students"+session.getAttribute("fid").toString());
+        %>
         <jsp:include page="base.jsp"/>
         <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
         <sql:query dataSource="${db}" var="result">
-            select * from students where facultyId=? order by listName,regdNo;
-            <sql:param value="${sessionScope.fid}"/>
+            select * from ${sessionScope.studentsTableName} order by listName,regdNo;
         </sql:query>
             <table border="1" width="100%" class="table table-borderless table-hover bg-dark text-light">
                 <tr style="background-color:darkgreen;">

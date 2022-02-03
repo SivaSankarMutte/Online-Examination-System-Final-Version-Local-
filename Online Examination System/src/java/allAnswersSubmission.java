@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+import java.util.Arrays;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -39,22 +39,58 @@ public class allAnswersSubmission extends HttpServlet{
             Class.forName("com.mysql.jdbc.Driver");
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true","siva","0000");
             Statement st=con.createStatement();
+            
+            String sqlDelete="delete from examSpecialTable"+eid+ " where regdNo=?";
+            PreparedStatement ps2 = con.prepareStatement(sqlDelete);
+            ps2.setString(1,regdNo);
+            ps2.executeUpdate();
+            
             for(int i=0;i<questionsRecords.size();i++)
             {
-                if(request.getParameter(Integer.toString(questionsRecords.get(i).getQuestionId()))!=null)
+                if(questionsRecords.get(i).getHaveMultipleAns()==0)
                 {
-                    if(Integer.parseInt(request.getParameter(Integer.toString(questionsRecords.get(i).getQuestionId())))==questionsRecords.get(i).getRealAns())
+                    if(request.getParameter(Integer.toString(questionsRecords.get(i).getQuestionId()))!=null)
                     {
-                        st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo,marksObtained)values('"+questionsRecords.get(i).getQuestionId()+"','"+regdNo+"','"+questionsRecords.get(i).getQuestionMarks()+"')");      
+                        if(request.getParameter(Integer.toString(questionsRecords.get(i).getQuestionId())).equals(questionsRecords.get(i).getRealAns()))
+                        {
+                            st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo,marksObtained,selectedOptions)values('"+questionsRecords.get(i).getQuestionId()+"','"+regdNo+"','"+questionsRecords.get(i).getQuestionMarks()+"','"+request.getParameter(Integer.toString(questionsRecords.get(i).getQuestionId()))+"')");      
+                        }
+                        else
+                        {
+                          st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo,marksObtained,selectedOptions)values('"+questionsRecords.get(i).getQuestionId()+"','"+regdNo+"','"+questionsRecords.get(i).getNegativeMarks()*(-1)+"','"+request.getParameter(Integer.toString(questionsRecords.get(i).getQuestionId()))+"')");      
+                        }
                     }
                     else
                     {
-                      st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo,marksObtained)values('"+questionsRecords.get(i).getQuestionId()+"','"+regdNo+"','"+0+"')");      
+                        st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo)values('"+questionsRecords.get(i).getQuestionId()+"','"+regdNo+"')");      
                     }
-                } 
+                }
                 else
                 {
-                    st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo)values('"+questionsRecords.get(i).getQuestionId()+"','"+regdNo+"')");      
+                    if(request.getParameterValues(Integer.toString(questionsRecords.get(i).getQuestionId()))!=null)
+                    {
+                        String[] studentAnswer=request.getParameterValues(Integer.toString(questionsRecords.get(i).getQuestionId()));
+                        String[] realAnswer=questionsRecords.get(i).getRealAns().split("&");
+                        Arrays.sort(studentAnswer);
+                        Arrays.sort(realAnswer);
+                        String ans="";
+                        for(int j = 0; j < studentAnswer.length; j++) {
+                           ans=ans+studentAnswer[j]+"&";
+                        }
+                        if(Arrays.equals(studentAnswer,realAnswer))
+                        {
+                            st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo,marksObtained,selectedOptions)values('"+questionsRecords.get(i).getQuestionId()+"','"+regdNo+"','"+questionsRecords.get(i).getQuestionMarks()+"','"+questionsRecords.get(i).getRealAns()+"')");      
+                        }
+                        else
+                        {
+                            st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo,marksObtained,selectedOptions)values('"+questionsRecords.get(i).getQuestionId()+"','"+regdNo+"','"+questionsRecords.get(i).getNegativeMarks()*(-1)+"','"+ans.substring(0,ans.length()-1)+"')");      
+                        }
+                    }
+                    else
+                    {
+                        st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo)values('"+questionsRecords.get(i).getQuestionId()+"','"+regdNo+"')");      
+                    }
+                    
                 }
             }
             

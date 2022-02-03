@@ -11,7 +11,7 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 
-<%@ page import="java.sql.*"%> 
+<%@page import="java.sql.*"%> 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
@@ -28,7 +28,7 @@ and open the template in the editor.
         <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
         
         <sql:query dataSource="${db}" var="rs">  
-            SELECT * from questions where questionId=?
+            SELECT * from ${sessionScope.questionsTableName} where questionId=?
             <sql:param value="${param.questionIdurl}"/>
         </sql:query>  
             
@@ -41,7 +41,20 @@ and open the template in the editor.
                 <c:forEach items="${rs.rows}" var="row">
                     <legend class="bg-dark text-light"> <h2>Updating <c:out value='${row.questionName}'/> Question</h2></legend>
                     
-
+                    <p>Is this question have multiple answers?</p>
+                    <c:choose>
+                        <c:when test="${row.haveMultipleAns==0}">
+                            <label><input type="radio" name="formHaveMultipleAns" value="1" class="form-control-radio" required>Yes</label>
+                            <label><input type="radio" name="formHaveMultipleAns" value="0" class="form-control-radio" checked>No</label>
+                            <br/><br/>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="radio" name="formHaveMultipleAns" value="1" class="form-control-radio" required checked>Yes
+                            <input type="radio" name="formHaveMultipleAns" value="0" class="form-control-radio">No
+                            <br/><br/>
+                        </c:otherwise>
+                    </c:choose>
+                        
 
                     <input type="text" name="formQuestionName" placeholder="Enter Question" class="form-control my-2" value="${row.questionName}" required>
                     <input type="text" name="formOpt1" placeholder="Enter Option1" class="form-control my-2" value="${row.opt1}" required>
@@ -49,7 +62,9 @@ and open the template in the editor.
                     <input type="text" name="formOpt3" placeholder="Enter Option3" class="form-control my-2" value="${row.opt3}">
                     <input type="text" name="formOpt4" placeholder="Enter Option4" class="form-control my-2" value="${row.opt4}">
                     <input type="text" name="formAns" placeholder="Enter option number of answer" class="form-control my-2" value="${row.ans}" required>
-                    <input type="text" name="formQuestionMarks" placeholder="Enter marks" class="form-control my-2"  value="${row.questionMarks}" required>
+                        
+                    <input type="any" name="formQuestionMarks" placeholder="Enter marks" class="form-control my-2"  value="${row.questionMarks}" required>
+                    <input type="any" name="formNegativeMarks" placeholder="Enter Negative marks" class="form-control my-2"  value="${row.negativeMarks}" required>
 
                 </c:forEach>
                 <div class="row">

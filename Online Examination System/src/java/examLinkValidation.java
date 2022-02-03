@@ -23,15 +23,15 @@ public class examLinkValidation extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter pw = response.getWriter();
         String encrypted=request.getParameter("p");
-        
-        String decrypted="";
-        for(int i=0;i<encrypted.length();i++)
-        {
-            int a=(int)encrypted.charAt(i);
-            a=a-1;
-            String x = Character.toString((char) a);
-            decrypted=decrypted+x;  
-        }
+        String decrypted=encrypted;
+//        String decrypted="";
+//        for(int i=0;i<encrypted.length();i++)
+//        {
+//            int a=(int)encrypted.charAt(i);
+//            a=a-1;
+//            String x = Character.toString((char) a);
+//            decrypted=decrypted+x;  
+//        }
         String regdNo=decrypted.substring(0,9);
         String examId=decrypted.substring(9,decrypted.length());
         
@@ -50,13 +50,12 @@ public class examLinkValidation extends HttpServlet {
                 session.setAttribute("examId", examId);
                 session.setAttribute("regdNo", regdNo);
                 
-                int fid = rs.getInt(1);
+                String fid = rs.getString(1);
                 String listName=rs.getString(2);
                 
-                PreparedStatement ps2=con.prepareStatement("select studentId from students where facultyId=? and listName=? and regdno=?");
-                ps2.setInt(1, fid);
-                ps2.setString(2, listName);
-                ps2.setString(3, regdNo);
+                PreparedStatement ps2=con.prepareStatement("select studentId from students"+fid+" where listName=? and regdno=?");
+                ps2.setString(1, listName);
+                ps2.setString(2, regdNo);
                 
                 ResultSet rs2=ps2.executeQuery();
                 

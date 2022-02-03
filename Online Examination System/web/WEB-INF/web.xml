@@ -4,7 +4,7 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     <session-config>
-        <session-timeout>60</session-timeout>
+        <session-timeout>300</session-timeout>
     </session-config>
     <servlet>
         <servlet-name>superAdminValidation</servlet-name>
@@ -70,6 +70,16 @@
         <servlet-name>sendMailToStudent</servlet-name>
         <url-pattern>/sendMailToStudent</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>sendExamLinkToNewStudent</servlet-name>
+        <servlet-class>sendExamLinkToNewStudent</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>sendExamLinkToNewStudent</servlet-name>
+        <url-pattern>/sendExamLinkToNewStudent</url-pattern>
+    </servlet-mapping>
+    
     <servlet>
         <servlet-name>examLinkValidation</servlet-name>
         <servlet-class>examLinkValidation</servlet-class>

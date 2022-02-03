@@ -20,7 +20,7 @@ public class superAdminLogout extends HttpServlet{
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         HttpSession session=request.getSession();
-        session.removeAttribute("superAdminName");
+        session.removeAttribute("sid");
         session.invalidate();
         response.sendRedirect("superAdminLogin.jsp");
     }

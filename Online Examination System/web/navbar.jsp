@@ -25,7 +25,7 @@
       </li>
       
       <% 
-            if(session.getAttribute("superAdminName")==null)
+            if(session.getAttribute("sid")==null)
             {
                 %>
                 <li class="nav-item">

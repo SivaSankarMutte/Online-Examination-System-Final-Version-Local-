@@ -26,11 +26,15 @@ and open the template in the editor.
                 response.sendRedirect("facultyLogin.jsp");
             }
         %>
+        <%
+            HttpSession ses1=request.getSession();
+            ses1.setAttribute("studentsTableName", "students"+session.getAttribute("fid").toString());
+        %>
         <jsp:include page="base.jsp"/>
         <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
         
         <sql:query dataSource="${db}" var="rs">  
-            SELECT * from students where studentId=?
+            SELECT * from ${sessionScope.studentsTableName} where studentId=?
             <sql:param value="${param.studentId}"/>
         </sql:query>  
         

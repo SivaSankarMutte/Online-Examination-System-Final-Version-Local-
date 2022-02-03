@@ -23,12 +23,16 @@
                 response.sendRedirect("facultyLogin.jsp");
             }
         %>
+        <%
+            HttpSession ses1=request.getSession();
+            ses1.setAttribute("studentsTableName", "students"+session.getAttribute("fid").toString());
+        %>
         <jsp:include page="base.jsp"/>
         
         <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
         
         <sql:update dataSource="${db}" var="count">  
-            DELETE from students where listName=?
+            DELETE from ${sessionScope.studentsTableName} where listName=?
             <sql:param value="${param.formListName}"/>
         </sql:update>
         <c:if test="${count>=1}">

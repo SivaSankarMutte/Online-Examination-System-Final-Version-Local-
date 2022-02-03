@@ -14,7 +14,7 @@
     </head>
     <body>
         <% 
-            if(session.getAttribute("superAdminName")==null)
+            if(session.getAttribute("sid")==null)
             {
                 response.sendRedirect("superAdminLogin.jsp");
             }

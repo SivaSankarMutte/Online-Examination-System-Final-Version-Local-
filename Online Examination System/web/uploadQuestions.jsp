@@ -1,6 +1,6 @@
 <%-- 
     Document   : uploadQuestions
-    Created on : 15 Jan, 2022, 1:40:43 AM
+    Created on : 15 Jan, 2022, 1:40:43 PM
     Author     : SIVASANKAR
 --%>
 
@@ -64,14 +64,14 @@
             String password="0000";
             Connection con=DriverManager.getConnection(url,username,password); 
             PreparedStatement pstatement=null;
-           
+            String fid=session.getAttribute("fid").toString();
             
             while(( line = input.readLine()) != null)
             {
                 String t=line.toString();
                 String words[]=t.split(",");
                 String eid=(String)session.getAttribute("eid");
-                String queryString="insert into questions(examId,questionName,opt1,opt2,opt3,opt4,ans,QuestionMarks) values(?,?,?,?,?,?,?,?)";
+                String queryString="insert into questions"+fid+" (examId,questionName,opt1,opt2,opt3,opt4,ans,questionMarks,negativeMarks,haveMultipleAns) values(?,?,?,?,?,?,?,?,?,?)";
                 pstatement = con.prepareStatement(queryString);
                 pstatement.setString(1, eid);
                 pstatement.setString(2, words[0]);
@@ -81,7 +81,8 @@
                 pstatement.setString(6, words[4]);
                 pstatement.setString(7, words[5]);
                 pstatement.setString(8, words[6]);
-                
+                pstatement.setString(9, words[7]);
+                pstatement.setString(10, words[8]);
                 pstatement.executeUpdate();
                 
             }

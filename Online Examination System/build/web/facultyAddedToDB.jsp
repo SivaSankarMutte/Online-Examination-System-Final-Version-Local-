@@ -59,7 +59,50 @@
                 pstatement.setString(2, facultyName);
                 pstatement.setString(3, facultyEmail);
                 pstatement.setString(4, facultyPassword);
-                pstatement.executeUpdate(); 
+                pstatement.executeUpdate();
+                
+                String queryString2="select facultyId from faculty where adminId=? and email=?";
+                PreparedStatement pstatement2 = con.prepareStatement(queryString2);
+                pstatement2.setString(1,adminIdf);
+                pstatement2.setString(2, facultyEmail);
+                ResultSet rs1=pstatement2.executeQuery();
+                while(rs1.next())
+                {
+                    String fid=rs1.getString(1);
+                    String sqlCreate = "CREATE TABLE IF NOT EXISTS " + "questions"+fid
+                    + "  (questionId int auto_increment,"
+                    + "   examId int not null,"
+                    + "   questionName varchar(120) not null,"
+                    + "   opt1 varchar(120) not null,"
+                    + "   opt2 varchar(120) not null,"
+                    + "   opt3 varchar(120),"
+                    + "   opt4 varchar(120),"
+                    + "   ans varchar(120) not null,"
+                    + "   questionMarks float default 1,"
+                    + "   negativeMarks float default 0,"
+                    + "   haveMultipleAns int default 0,"
+                    + "   primary key(questionId),"
+                    + "   foreign key(examId) references exam(examId) on delete cascade on update cascade)";
+
+                    Statement stmt = con.createStatement();
+                    stmt.execute(sqlCreate);
+                    
+                    String sqlCreate2 = "CREATE TABLE IF NOT EXISTS " + "students"+fid
+                    + "  (studentId int auto_increment,"
+                    + "   listName varchar(100) not null,"
+                    + "   studentName varchar(100),"
+                    + "   regdNo varchar(100) not null,"
+                    + "   studentEmail varchar(100) not null,"
+                    + "   CONSTRAINT studentsRegdnoList UNIQUE(listName,regdNo),"
+                    + "   CONSTRAINT studentsEmailList UNIQUE(listName,studentEmail),"
+                    + "   primary key(studentId))";
+                    
+                    Statement stmt2 = con.createStatement();
+                    stmt2.execute(sqlCreate2);
+                    
+                }
+                
+                
             }
             catch(Exception e)
             {

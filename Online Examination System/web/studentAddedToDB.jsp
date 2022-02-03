@@ -32,7 +32,7 @@
         <%
             String studentRegdno=request.getParameter("formStudentRegdno");
             String studentEmail=request.getParameter("formStudentEmail");
-                 
+            String studentName=request.getParameter("formStudentName");
             String facultyId=(String)session.getAttribute("fid");
             String listName=request.getParameter("formListName");
             try
@@ -43,10 +43,10 @@
                 String password="0000";
                 Connection con=DriverManager.getConnection(url,username,password); 
                
-                String queryString="insert into students(facultyId,listName,regdNo,studentEmail) values(?,?,?,?)";
+                String queryString="insert into students"+facultyId+"(listName,studentName,regdNo,studentEmail) values(?,?,?,?)";
                 PreparedStatement pstatement = con.prepareStatement(queryString);
-                pstatement.setString(1,facultyId);
-                pstatement.setString(2, listName);
+                pstatement.setString(1, listName);
+                pstatement.setString(2, studentName);
                 pstatement.setString(3, studentRegdno);
                 pstatement.setString(4, studentEmail);
                 pstatement.executeUpdate();

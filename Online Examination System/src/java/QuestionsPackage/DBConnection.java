@@ -51,35 +51,46 @@ public class DBConnection extends HttpServlet {
             Class.forName("com.mysql.jdbc.Driver");
             
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true","siva","0000");
-            PreparedStatement ps1=con.prepareStatement("select questionId,questionName,opt1,opt2,opt3,opt4,ans,questionMarks from questions where examId=?");
-
-            ps1.setString(1, (String) session.getAttribute("examId"));
-            ResultSet rs1=ps1.executeQuery();
             
-            while(rs1.next())
-            {
-                pw.print(rs1.getInt(1));
-                Questions q=new Questions();
-                q.setQuestionId(rs1.getInt(1));
-                q.setQuestionName(rs1.getString(2));
-                q.setOpt1(rs1.getString(3));
-                q.setOpt2(rs1.getString(4));
-                q.setOpt3(rs1.getString(5));
-                q.setOpt4(rs1.getString(6));
-                q.setRealAns(rs1.getInt(7));
-                q.setQuestionMarks(rs1.getInt(8));
-                questionsList.add(q);
-            }
-            PreparedStatement ps2=con.prepareStatement("select randomizeQuestions from exam where examId=?");
+            PreparedStatement ps=con.prepareStatement("select facultyId from exam where examId=?");
 
-            ps2.setString(1, (String) session.getAttribute("examId"));
-            ResultSet rs2=ps2.executeQuery();
-            if(rs2.next())
+            ps.setString(1, (String) session.getAttribute("examId"));
+            ResultSet rs=ps.executeQuery();
+            
+            while(rs.next())
             {
-                int rq=rs2.getInt(1);
-                if(rq==1)
+                String fid=rs.getString("facultyId");
+                PreparedStatement ps1=con.prepareStatement("select questionId,questionName,opt1,opt2,opt3,opt4,ans,questionMarks,negativeMarks,haveMultipleAns from questions"+fid+" where examId=?");
+                ps1.setString(1, (String) session.getAttribute("examId"));
+                ResultSet rs1=ps1.executeQuery();
+
+                while(rs1.next())
                 {
-                    Collections.shuffle(questionsList);
+                    pw.print(rs1.getInt(1));
+                    Questions q=new Questions();
+                    q.setQuestionId(rs1.getInt(1));
+                    q.setQuestionName(rs1.getString(2));
+                    q.setOpt1(rs1.getString(3));
+                    q.setOpt2(rs1.getString(4));
+                    q.setOpt3(rs1.getString(5));
+                    q.setOpt4(rs1.getString(6));
+                    q.setRealAns(rs1.getString(7));
+                    q.setQuestionMarks(rs1.getFloat(8));
+                    q.setNegativeMarks(rs1.getFloat(9));
+                    q.setHaveMultipleAns(rs1.getInt(10));
+                    questionsList.add(q);
+                }
+                PreparedStatement ps2=con.prepareStatement("select randomizeQuestions from exam where examId=?");
+
+                ps2.setString(1, (String) session.getAttribute("examId"));
+                ResultSet rs2=ps2.executeQuery();
+                if(rs2.next())
+                {
+                    int rq=rs2.getInt(1);
+                    if(rq==1)
+                    {
+                        Collections.shuffle(questionsList);
+                    }
                 }
             }
         }

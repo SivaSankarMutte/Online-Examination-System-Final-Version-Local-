@@ -28,17 +28,53 @@
                 response.sendRedirect("facultyLogin.jsp");
             }
         %>
+        <% 
+            if(session.getAttribute("eid")==null || session.getAttribute("listName")==null || session.getAttribute("totalMarks")==null)
+            {
+                response.sendRedirect("facultyHome.jsp");
+            }
+        %>
         <jsp:include page="base.jsp"/>
         <nav class="navbar navbar-expand bg-dark navbar-dark" id="navbar">
+            <% 
+                HttpSession ses3=request.getSession();
+                String questionsTableName = "questions"+ses3.getAttribute("fid").toString(); 
+                ses3.setAttribute("questionsTableName", questionsTableName);
+            %>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
             
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav ml-auto">
+                    
+                    <li class="nav-item">
+                        <form method="post" action="updateExamDetails.jsp">
+                            <input type="submit" value="Update Exam" class="btn btn-outline-warning">
+                        </form>
+                    </li> &nbsp;&nbsp;&nbsp;
+                    
+                    <li class="nav-item">
+                        <form method="post" action="viewFeedbacks.jsp">
+                            <input type="submit" value="View Feedbacks" class="btn btn-outline-info">
+                        </form>
+                    </li> &nbsp;&nbsp;&nbsp;
+                    
+                    <li class="nav-item">
+                        <form method="post" action="viewStudentsOfGivenList.jsp">
+                            <input type="submit" value="Students List" class="btn btn-outline-light">
+                        </form>
+                    </li> &nbsp;&nbsp;&nbsp;
+                    
                     <li class="nav-item">
                         <form method="post" action="deleteExam.jsp">
                             <input type="submit" value="Delete Exam" class="btn btn-outline-danger">
+                        </form>
+                    </li> &nbsp;&nbsp;&nbsp;
+                    
+                    <li class="nav-item">
+                        <form method="post" action="addStudentAndSendExamLink.jsp">
+                            <input type="submit" value="Send ExamLink to new Student" class="btn btn-outline-success">
                         </form>
                     </li> &nbsp;&nbsp;&nbsp;
                     
@@ -135,18 +171,48 @@
                  
             </c:choose>
             
+            <div class="container rounded bg-success">
+                <sql:query dataSource="${db}" var="totalMarksResult">
+                    select count(questionName) qcount,sum(questionMarks) marksAssignedTillNow from ${sessionScope.questionsTableName} where examId=?
+                        <sql:param value="${sessionScope.eid}"/>
+                    </sql:query>
+                    <c:forEach var="row" items="${totalMarksResult.rows}">
+                        <c:out value="No. of Questions added till now: "/>
+                        <span style="font-size: 25px;"><c:out value="${row.qcount}"/></span><br/>
+                        <c:choose>
+                            <c:when test="${Integer.parseInt(sessionScope.totalMarks)-row.marksAssignedTillNow>0}">
+                                <c:out value="Still need to assign "/>
+                                <span style="font-size: 25px;"><c:out value="${Integer.parseInt(sessionScope.totalMarks)-row.marksAssignedTillNow}"/></span>
+                                <c:out value=" more marks"/>
+                            </c:when>
+                            <c:when test="${Integer.parseInt(sessionScope.totalMarks)-row.marksAssignedTillNow<0}">
+                                <c:out value="You have given some "/>
+                                <span style="font-size: 25px;"><c:out value="${row.marksAssignedTillNow-Integer.parseInt(sessionScope.totalMarks)}"/></span>
+                                <c:out value=" more marks than you think"/><br/>
+                            </c:when>
+                            <c:otherwise>
+                                <c:out value="Marks are perfectly equal to total marks"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>              
+            </div>
             
             <div class="jumbotron bg-info">
                 <form method="post" action="questionAddedToExam.jsp">
                     <fieldset>
                         <legend class="bg-dark text-light"> <h2>Add a Question</h2></legend>
+                        <p>Is this question have multiple answers?</p>
+                        <label><input type="radio" name="formHaveMultipleAns" value="1" class="form-control-radio" required>Yes</label>
+                        <label><input type="radio" name="formHaveMultipleAns" value="0" class="form-control-radio" checked="checked">No</label>
+                        <br/><br/>
                         <input type="text" name="formQuestionName" placeholder="Enter Question" class="form-control my-2" required>
                         <input type="text" name="formOpt1" placeholder="Enter Option1" class="form-control my-2" required>
                         <input type="text" name="formOpt2" placeholder="Enter Option2" class="form-control my-2" required>
                         <input type="text" name="formOpt3" placeholder="Enter Option3" class="form-control my-2">
                         <input type="text" name="formOpt4" placeholder="Enter Option4" class="form-control my-2">
-                        <input type="number" name="formAns" placeholder="Enter option number of answer" class="form-control my-2" required>
-                        <input type="number" name="formQuestionMarks" placeholder="Enter marks" value="1" class="form-control my-2" required>
+                        <input type="text" name="formAns" placeholder="Enter option number of answer" class="form-control my-2" required>
+                        <input type="any" name="formQuestionMarks" placeholder="Enter marks" value="1" class="form-control my-2" required>
+                        <input type="any" name="formNegativeMarks" placeholder="Enter negative marks (defaults to 0)" value="0" class="form-control my-2" required>
                         
                         <div class="row">
                             <div class="col">

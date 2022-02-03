@@ -22,7 +22,7 @@
         <div class="container mt-5">
             <div class="jumbotron bg-info">
 		<form action="superAdminValidation" method="post" class="form-control">
-                    <input type="text" placeholder="Enter Super Admin Name" name="superAdminName" class="form-control my-2">
+                    <input type="text" placeholder="Enter Super Admin Email" name="superAdminEmail" class="form-control my-2">
                     <input type="password" placeholder="Enter Password" name="superAdminPassword" class="form-control my-2">
                     <input type="submit" class="btn btn-success form-control my-2">
 		</form>

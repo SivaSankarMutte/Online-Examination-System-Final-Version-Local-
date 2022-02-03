@@ -18,10 +18,39 @@ public class Questions {
     String opt2;
     String opt3;
     String opt4;
-    int realAns;
-    int questionMarks;
-    int providedAns=-1;
+    String realAns;
+    float questionMarks;
+    float negativeMarks;
+
+    
+    String providedAns;
     int questionIndex=0;
+    int haveMultipleAns;
+    String checkboxOptionsGiven[]=new String[4];
+
+    public void setCheckboxOptionsGiven(String[] checkboxOptionsGiven) {
+        this.checkboxOptionsGiven = checkboxOptionsGiven;
+    }
+
+    public String[] getCheckboxOptionsGiven() {
+        return checkboxOptionsGiven;
+    }
+
+    public void setQuestionIndex(int questionIndex) {
+        this.questionIndex = questionIndex;
+    }
+
+    public void setHaveMultipleAns(int haveMultipleAns) {
+        this.haveMultipleAns = haveMultipleAns;
+    }
+
+    public int getQuestionIndex() {
+        return questionIndex;
+    }
+
+    public int getHaveMultipleAns() {
+        return haveMultipleAns;
+    }
     
             
     public int getQuestionId() {
@@ -73,28 +102,38 @@ public class Questions {
         this.opt4 = opt4;
     }
 
-    public int getRealAns() {
+    public String getRealAns() {
         return realAns;
     }
 
-    public void setRealAns(int realAns) {
+    public void setRealAns(String realAns) {
         this.realAns = realAns;
     }
 
-    public int getQuestionMarks() {
+    public float getQuestionMarks() {
         return questionMarks;
     }
 
-    public void setQuestionMarks(int questionMarks) {
+    public void setQuestionMarks(float questionMarks) {
         this.questionMarks = questionMarks;
     }
     
-    public int getProvidedAns() {
+    public float getNegativeMarks() {
+        return negativeMarks;
+    }
+
+    public void setNegativeMarks(float negativeMarks) {
+        this.negativeMarks = negativeMarks;
+    }
+    
+    public String getProvidedAns() {
         return providedAns;
     }
     
-    public void setProvidedAns(int providedAns)
+    public void setProvidedAns(String providedAns)
     {
         this.providedAns=providedAns;
     }
+
+    
 }

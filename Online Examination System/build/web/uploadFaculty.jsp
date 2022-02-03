@@ -91,6 +91,47 @@
                 pstatement.setString(4,p);
                 pstatement.executeUpdate();
                 
+                String queryStringToGetFID="select facultyId from faculty where adminId=? and email=?";
+                PreparedStatement pstatement2 = con.prepareStatement(queryStringToGetFID);
+                pstatement2.setString(1,adminIdf);
+                pstatement2.setString(2, words[1]);
+                ResultSet rs1=pstatement2.executeQuery();
+                while(rs1.next())
+                {
+                    String fid=rs1.getString(1);
+                    String sqlCreate = "CREATE TABLE IF NOT EXISTS " + "questions"+fid
+                    + "  (questionId int auto_increment,"
+                    + "   examId int not null,"
+                    + "   questionName varchar(120) not null,"
+                    + "   opt1 varchar(120) not null,"
+                    + "   opt2 varchar(120) not null,"
+                    + "   opt3 varchar(120),"
+                    + "   opt4 varchar(120),"
+                    + "   ans varchar(120) not null,"
+                    + "   questionMarks float default 1,"
+                    + "   negativeMarks float default 0,"
+                    + "   haveMultipleAns int default 0,"
+                    + "   primary key(questionId),"
+                    + "   foreign key(examId) references exam(examId) on delete cascade on update cascade)";
+
+                    Statement stmt = con.createStatement();
+                    stmt.execute(sqlCreate);
+                    
+                    String sqlCreate2 = "CREATE TABLE IF NOT EXISTS " + "students"+fid
+                    + "  (studentId int auto_increment,"
+                    + "   listName varchar(100) not null,"
+                    + "   studentName varchar(100),"
+                    + "   regdNo varchar(100) not null,"
+                    + "   studentEmail varchar(100) not null,"
+                    + "   CONSTRAINT studentsRegdnoList UNIQUE(listName,regdNo),"
+                    + "   CONSTRAINT studentsEmailList UNIQUE(listName,studentEmail),"
+                    + "   primary key(studentId))";
+                    
+                    Statement stmt2 = con.createStatement();
+                    stmt2.execute(sqlCreate2);
+                    
+                }
+                
                 try
                 {
                     String to=words[1];
@@ -103,10 +144,10 @@
                     out.println("Error while sending passwords to Faculty Emails");
                     out.println(e);  
                     
-                    String queryString2="delete from faculty where email=?";
-                    PreparedStatement pstatement2 = con.prepareStatement(queryString2);
-                    pstatement2.setString(1,words[1]);
-                    pstatement2.executeUpdate();
+                    String queryString3="delete from faculty where email=?";
+                    PreparedStatement pstatement3 = con.prepareStatement(queryString3);
+                    pstatement3.setString(1,words[1]);
+                    pstatement3.executeUpdate();
                 }
             }
             %> <c:redirect url="viewFaculty.jsp"/>  <%

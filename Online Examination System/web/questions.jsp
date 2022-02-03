@@ -28,7 +28,7 @@
         
         <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
         <sql:query dataSource="${db}" var="result">
-            select * from questions where examId=?
+            select * from ${questionsTableName} where examId=?
             <sql:param value="${sessionScope.eid}"/>
             
         </sql:query>
@@ -37,54 +37,79 @@
         <div class="container mt-5">
             <div class="jumbotron bg-info">
                 <c:forEach var="row" items="${result.rows}">
-                    <div class="jumbotron bg-dark text-light">
-                    <h4>
-                        ${row.questionName} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="updateQuestion.jsp?questionIdurl=${row.questionId}" class="btn btn-outline-warning my-2">Update</a>
-                        <a href="removeQuestionYesNo.jsp?questionIdurl=${row.questionId}" class="btn btn-outline-danger my-2">Remove</a>
-                    </h4>                            
-                    
                     <c:choose>
-                        <c:when test="${row.ans==1}">
-                            Option1 :  ${row.opt1} <span class="badge badge-success">Correct</span> <br>
-                            Option2 :  ${row.opt2} <br/>
-                            Option3 :  ${row.opt3} <br/>
-                            Option4 :  ${row.opt4} <br/>
-                            
+                        <c:when test="${row.haveMultipleAns==0}">
+                            <div class="jumbotron bg-dark text-light">
+                                <h2 class="badge badge-primary">Single Answer Question</h2>
+                                <h4>
+                                    ${row.questionName} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="updateQuestion.jsp?questionIdurl=${row.questionId}" class="btn btn-outline-warning my-2">Update</a>
+                                    <a href="removeQuestionYesNo.jsp?questionIdurl=${row.questionId}" class="btn btn-outline-danger my-2">Remove</a>
+                                </h4>                            
+
+                                <c:choose>
+                                    <c:when test="${row.ans==1}">
+                                        Option1 :  ${row.opt1} <span class="badge badge-success">Correct</span> <br>
+                                        Option2 :  ${row.opt2} <br/>
+                                        Option3 :  ${row.opt3} <br/>
+                                        Option4 :  ${row.opt4} <br/>
+
+                                    </c:when>
+                                    <c:when test="${row.ans==2}">
+                                        Option1 :  ${row.opt1} <br>
+                                        Option2 :  ${row.opt2} <span class="badge badge-success">Correct</span> <br/>
+                                        Option3 :  ${row.opt3} <br/>
+                                        Option4 :  ${row.opt4} <br/>
+
+                                    </c:when>
+                                    <c:when test="${row.ans==3}">
+                                        Option1 :  ${row.opt1} <br>
+                                        Option2 :  ${row.opt2} <br/>
+                                        Option3 :  ${row.opt3} <span class="badge badge-success">Correct</span> <br/>
+                                        Option4 :  ${row.opt4} <br/>
+
+                                    </c:when>
+
+                                    <c:when test="${row.ans==4}">
+                                        Option1 :  ${row.opt1} <br>
+                                        Option2 :  ${row.opt2} <br/>
+                                        Option3 :  ${row.opt3} <br/>
+                                        Option4 :  ${row.opt4} <span class="badge badge-success">Correct</span> <br/>
+
+                                    </c:when>
+
+                                    <c:otherwise>
+                                        Option1 :  ${row.opt1} <br>
+                                        Option2 :  ${row.opt2} <br/>
+                                        Option3 :  ${row.opt3} <br/>
+                                        Option4 :  ${row.opt4} <br/>
+                                    </c:otherwise>
+
+                                </c:choose>
+                                Mark(s) &nbsp;:  ${row.questionMarks} <br/>
+                                Negative Mark :  ${row.negativeMarks}
+                            </div>
                         </c:when>
-                        <c:when test="${row.ans==2}">
-                            Option1 :  ${row.opt1} <br>
-                            Option2 :  ${row.opt2} <span class="badge badge-success">Correct</span> <br/>
-                            Option3 :  ${row.opt3} <br/>
-                            Option4 :  ${row.opt4} <br/>
-                            
-                        </c:when>
-                        <c:when test="${row.ans==3}">
-                            Option1 :  ${row.opt1} <br>
-                            Option2 :  ${row.opt2} <br/>
-                            Option3 :  ${row.opt3} <span class="badge badge-success">Correct</span> <br/>
-                            Option4 :  ${row.opt4} <br/>
-                            
-                        </c:when>
-                            
-                        <c:when test="${row.ans==4}">
-                            Option1 :  ${row.opt1} <br>
-                            Option2 :  ${row.opt2} <br/>
-                            Option3 :  ${row.opt3} <br/>
-                            Option4 :  ${row.opt4} <span class="badge badge-success">Correct</span> <br/>
-                            
-                        </c:when>
-                            
-                        <c:otherwise>
-                            Option1 :  ${row.opt1} <br>
-                            Option2 :  ${row.opt2} <br/>
-                            Option3 :  ${row.opt3} <br/>
-                            Option4 :  ${row.opt4} <br/>
-                        </c:otherwise>
                         
-                    </c:choose>
-                    Mark(s) &nbsp;:  ${row.questionMarks} 
-                    </div>
+                        <c:otherwise>
+                            <div class="jumbotron bg-dark text-light">
+                                <h2 class="badge badge-warning">Multi Answer Question</h2>
+                                <h4>
+                                    ${row.questionName} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="updateQuestion.jsp?questionIdurl=${row.questionId}" class="btn btn-outline-warning my-2">Update</a>
+                                    <a href="removeQuestionYesNo.jsp?questionIdurl=${row.questionId}" class="btn btn-outline-danger my-2">Remove</a>
+                                </h4>                            
+
+                                Option1 :  ${row.opt1} <br>
+                                Option2 :  ${row.opt2} <br/>
+                                Option3 :  ${row.opt3} <br/>
+                                Option4 :  ${row.opt4} <br/>
+                                Answers :  <span class="badge badge-success">${row.ans}</span><br/>
+                                Mark(s) &nbsp;:  ${row.questionMarks} <br/>
+                                Negative Mark :  ${row.negativeMarks}
+                            </div>
+                        </c:otherwise>
+                    </c:choose> 
                 </c:forEach>
             </div>
         </div>

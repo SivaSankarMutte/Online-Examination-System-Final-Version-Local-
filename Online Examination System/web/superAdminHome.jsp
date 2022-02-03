@@ -15,7 +15,7 @@
     </head>
     <body>
         <% 
-            if(session.getAttribute("superAdminName")==null)
+            if(session.getAttribute("sid")==null)
             {
                 response.sendRedirect("superAdminLogin.jsp");
             }
@@ -31,6 +31,9 @@
             </div>
             <div class="jumbotron">
                 <a href="uploadAdminsFile.jsp" class="btn btn-outline-dark">Upload Admins CSV File</a>
+            </div>
+            <div class="jumbotron">
+                <a href="updateSuperAdminDetails.jsp" class="btn btn-outline-danger">Change Email or Password</a>
             </div>
             <br/>
         </div>

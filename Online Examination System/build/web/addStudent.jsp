@@ -21,11 +21,14 @@
                 response.sendRedirect("facultyLogin.jsp");
             }
         %>
+        <%
+            HttpSession ses1=request.getSession();
+            ses1.setAttribute("studentsTableName", "students"+session.getAttribute("fid").toString());
+        %>
         <jsp:include page="base.jsp"/>
         <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
         <sql:query dataSource="${db}" var="result">
-            select distinct listName from students where facultyId=?
-            <sql:param value="${sessionScope.fid}"/>
+            select distinct listName from ${sessionScope.studentsTableName}
         </sql:query>
         
             
@@ -34,7 +37,8 @@
                 <form method="post" action="studentAddedToDB.jsp">
                     <fieldset>
                         <legend class="bg-dark text-light"> <h2>Select a List</h2></legend>
-                        <input type="text" name="formStudentRegdno" placeholder="Enter Student Name" class="form-control my-2" required>
+                        <input type="text" name="formStudentName" placeholder="Enter Student Name (Optional)" class="form-control my-2">
+                        <input type="text" name="formStudentRegdno" placeholder="Enter Student Rollno" class="form-control my-2" required>
                         <input type="text" name="formStudentEmail" placeholder="Enter Student Email" class="form-control my-2" required>
                         <select name="formListName" required class="form-control my-2">
                             <c:forEach var="row" items="${result.rows}">

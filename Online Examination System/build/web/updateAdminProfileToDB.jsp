@@ -41,8 +41,7 @@ and open the template in the editor.
         
         <c:choose>
             <c:when test="${add>=1}">
-                <c:out value="Profile Updated Successfully"/>
-                <jsp:include page="adminHome.jsp"/>
+                <c:redirect url="adminHome.jsp"/>
             </c:when>
             <c:otherwise>
                 <c:redirect url="adminProfileFailedtoUpdate.jsp"/>

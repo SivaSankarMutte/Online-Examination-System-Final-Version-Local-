@@ -65,7 +65,7 @@
                 out.println("Marks not added");
                 out.println("Database connection Error");
             }
-            response.sendRedirect("examResults.jsp");
+            response.sendRedirect("eachQuestionStatistics.jsp");
         %>
         
         

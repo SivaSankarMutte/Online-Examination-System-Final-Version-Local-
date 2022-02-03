@@ -23,11 +23,14 @@
                 response.sendRedirect("facultyLogin.jsp");
             }
         %>
+        <%
+            HttpSession ses1=request.getSession();
+            ses1.setAttribute("studentsTableName", "students"+session.getAttribute("fid").toString());
+        %>
         <jsp:include page="base.jsp"/>
         <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
         <sql:query dataSource="${db}" var="result">
-            select distinct listName from students where facultyId=?
-            <sql:param value="${sessionScope.fid}"/>
+            select distinct listName from ${sessionScope.studentsTableName}
         </sql:query>
         
             
@@ -48,8 +51,8 @@
                         <input type="datetime-local" class="form-control my-2" name="formStartTime" id="formStartTime" required>
                         <label for="formEndTime">Enter End Time:</label>
                         <input type="datetime-local" class="form-control my-2" name="formEndTime" id="formEndTime" required>
-                        <label for="formTotalMarks">Total Marks:(Not a required field):</label>
-                        <input type="number" name="formTotalMarks" id="formTotalMarks" class="form-control my-2">
+                        <label for="formTotalMarks">Total Marks:</label>
+                        <input type="number" name="formTotalMarks" id="formTotalMarks" class="form-control my-2" required>
                         
                         <p>Randomize Questions</p>
                         <input type="radio" name="formRandomizeQuestions" value="1" class="form-control-radio" required>Yes
@@ -62,6 +65,10 @@
                         <p>Allow Students to see All Questions at a time</p>
                         <input type="radio" name="formAllQuestionsAtATime" value="1" class="form-control-radio" required>Yes
                         <input type="radio" name="formAllQuestionsAtATime" value="0" class="form-control-radio">No
+                        
+                        <p>Enable Feedback form for this Exam?</p>
+                        <input type="radio" name="formEnableFeedback" value="1" class="form-control-radio" required>Yes
+                        <input type="radio" name="formEnableFeedback" value="0" class="form-control-radio" checked>No
                         
                         
                         <div class="row">
