@@ -30,7 +30,7 @@
                 <h1>Exam Submitted Successfully!</h1>
                 <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
                 <sql:query dataSource="${db}" var="result">
-                    select facultyId,enableFeedbackForm from exam where examId=?
+                    select facultyId,enableFeedbackForm,enableResultsToStudents from exam where examId=?
                     <sql:param value="${sessionScope.fexamId}"/>
                 </sql:query>
                 <c:forEach var="row" items="${result.rows}">
@@ -38,13 +38,22 @@
                         <c:when test="${row.enableFeedbackForm==1}">                  
                             <form action="feedbackSubmission.jsp">
                                 <c:set scope="session" var="facultyId" value="${row.facultyId}"/>
-                                <textarea name="formFeedback" placeholder="Provide your Feedback here...">
+                                <textarea name="formFeedback" placeholder="Provide your Feedback here..." class="form-control">
                                 </textarea>
-                                <input type="submit" value="Submit">
+                                <center><input type="submit" value="Submit Feedback" class="btn btn-warning"></center>
                             </form>
                         </c:when>
+                        
                     </c:choose>
+                    <br/>
+                    <c:if test="${row.enableResultsToStudents==1}">                  
+                            <form action="studentAnswersVisibleToAStudent.jsp">
+                                <c:set scope="session" var="fid" value="${row.facultyId}"/>
+                                <input type="submit" value="View Answers" class="btn btn-outline-dark">
+                            </form>
+                        </c:if>
                 </c:forEach>
+                
             </div>
         </div>
         

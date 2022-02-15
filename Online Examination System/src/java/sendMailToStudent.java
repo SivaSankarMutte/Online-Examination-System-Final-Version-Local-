@@ -139,7 +139,7 @@ public class sendMailToStudent extends HttpServlet
 //                        String x = Character.toString((char) a);
 //                        encrypted=encrypted+x;  
 //                    }
-                    send(sEmail, regdNo+" - "+examName+" - Exam from Online Examination System", "Start Time: "+startTime+"  End Time: "+endTime+"   Exam Link :  http://127.0.0.1:8080/Online_Examination_System/examLinkValidation?p="+encrypted);
+                    send(sEmail, regdNo+" - "+examName+" - Exam from Online Examination System", "Start Time: "+startTime+"  End Time: "+endTime+"   Exam Link :  http://127.0.0.1:8080/Online%20Examination%20System/examLinkValidation?p="+encrypted);
                 }
                 RequestDispatcher rd=request.getRequestDispatcher("emailsSentSuccessfully.jsp");
                 rd.forward(request,response);

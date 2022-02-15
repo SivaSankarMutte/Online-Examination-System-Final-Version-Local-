@@ -16,15 +16,16 @@
         <link rel="icon" type="text/css" href="images/test.png">
     </head>
     <body>
-        
-        <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>    
-        <sql:update dataSource="${db}" var="add">
-            insert into feedback(facultyId,examId,feedbackMessage,studentRegdNo) values(?,?,?,?)
-                <sql:param value="${sessionScope.facultyId}"/>
-                <sql:param value='${sessionScope.fexamId}'/>
-                <sql:param value="${param.formFeedback}"/>
-                <sql:param value="${sessionScope.fregdNo}"/>
-        </sql:update>  
+        <c:if test="${param.formFeedback!=''}">
+            <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>    
+            <sql:update dataSource="${db}" var="add">
+                insert into feedback(facultyId,examId,feedbackMessage,studentRegdNo) values(?,?,?,?)
+                    <sql:param value="${sessionScope.facultyId}"/>
+                    <sql:param value='${sessionScope.fexamId}'/>
+                    <sql:param value="${param.formFeedback}"/>
+                    <sql:param value="${sessionScope.fregdNo}"/>
+            </sql:update>  
+        </c:if>
         <c:redirect url="closeExam.jsp"/>
     </body>
 </html>

@@ -45,8 +45,61 @@ public class goToPrevQuestion extends HttpServlet{
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true","siva","0000");
             Questions qobj=(Questions)session.getAttribute("qobj");
             int qid=(int)qobj.getQuestionId();
+            if(qobj.getIsBlankType()==1)
+            {
+                if(!request.getParameter("blankTypeName").equals(""))
+                {
+                    String submittedAns=request.getParameter("blankTypeName");
+                    float marksObtained;
+                    qobj.setProvidedAns(submittedAns);
+
+                    String realAns=qobj.getRealAns();
+
+                    float qmarks=(float)qobj.getQuestionMarks();
+
+                    if(realAns.equalsIgnoreCase(submittedAns))
+                    {
+                        marksObtained=qmarks;
+                    }
+                    else
+                    {
+                        marksObtained=-(qobj.getNegativeMarks());
+                    }
+
+
+                    String sqlUpdate="Update examSpecialTable"+eid+ " set marksObtained=?,selectedOptions=? where qid=? and regdNo=?";
+                    PreparedStatement ps = con.prepareStatement(sqlUpdate);
+                    ps.setFloat(1,marksObtained);
+                    ps.setString(2, submittedAns);
+                    ps.setInt(3,qid);
+                    ps.setString(4, rno);
+                    int status=ps.executeUpdate();
+
+                    if(status==0)
+                    {
+                        Statement st=con.createStatement();
+                        st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo,marksObtained,selectedOptions)values('"+qid+"','"+rno+"','"+marksObtained+"','"+submittedAns+"')");                
+                    }
+                }
+                else
+                {
+                    String sqlUpdate="Update examSpecialTable"+eid+ " set marksObtained=0,selectedOptions=null where qid=? and regdNo=?";
+                    PreparedStatement ps = con.prepareStatement(sqlUpdate);
+                    ps.setInt(1,qid);
+                    ps.setString(2, rno);
+                    int status=ps.executeUpdate();
+
+                    if(status==0)
+                    {
+                        Statement st=con.createStatement();
+                        st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo,marksObtained) values('"+qid+"','"+rno+"','"+0+"')");   
+                    }
+
+                }
+            }
+                
             
-            if(qobj.getHaveMultipleAns()==0)
+            else if(qobj.getHaveMultipleAns()==0)
             {
                 if(request.getParameter("radioName")!=null)
                 {
@@ -84,7 +137,7 @@ public class goToPrevQuestion extends HttpServlet{
                 }
                 else
                 {
-                    String sqlUpdate="Update examSpecialTable"+eid+ " set marksObtained=null,selectedOptions=null where qid=? and regdNo=?";
+                    String sqlUpdate="Update examSpecialTable"+eid+ " set marksObtained=0,selectedOptions=null where qid=? and regdNo=?";
                     PreparedStatement ps = con.prepareStatement(sqlUpdate);
                     ps.setInt(1,qid);
                     ps.setString(2, rno);
@@ -93,7 +146,7 @@ public class goToPrevQuestion extends HttpServlet{
                     if(status==0)
                     {
                         Statement st=con.createStatement();
-                        st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo)values('"+qid+"','"+rno+"')");   
+                        st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo,marksObtained)values('"+qid+"','"+rno+"','"+0+"')");   
                     }
 
                 }
@@ -153,7 +206,7 @@ public class goToPrevQuestion extends HttpServlet{
                 }
                 else
                 {
-                    String sqlUpdate="Update examSpecialTable"+eid+ " set marksObtained=null,selectedOptions=null where qid=? and regdNo=?";
+                    String sqlUpdate="Update examSpecialTable"+eid+ " set marksObtained=0,selectedOptions=null where qid=? and regdNo=?";
                     PreparedStatement ps = con.prepareStatement(sqlUpdate);
                     ps.setInt(1,qid);
                     ps.setString(2, rno);
@@ -162,7 +215,7 @@ public class goToPrevQuestion extends HttpServlet{
                     if(status==0)
                     {
                         Statement st=con.createStatement();
-                        st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo) values('"+qid+"','"+rno+"')");   
+                        st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo,marksObtained) values('"+qid+"','"+rno+"','"+0+"')");   
                     }
 
                 }
@@ -171,7 +224,7 @@ public class goToPrevQuestion extends HttpServlet{
             int num=(int) session.getAttribute("n");
             num-=1;
             session.setAttribute("n", num);   
-            RequestDispatcher rd=request.getRequestDispatcher("accessTestNavigationBetweenQuestions.jsp");
+            RequestDispatcher rd=request.getRequestDispatcher("accessTestNavigationBetweenQuestionsDisplay.jsp");
             rd.forward(request,response);    
         }
         catch(IOException | ClassNotFoundException | NumberFormatException | SQLException | ServletException e)

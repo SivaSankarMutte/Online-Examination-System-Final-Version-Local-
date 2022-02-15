@@ -47,7 +47,25 @@ public class allAnswersSubmission extends HttpServlet{
             
             for(int i=0;i<questionsRecords.size();i++)
             {
-                if(questionsRecords.get(i).getHaveMultipleAns()==0)
+                if(questionsRecords.get(i).getIsBlankType()==1)
+                {
+                    if(!request.getParameter(Integer.toString(questionsRecords.get(i).getQuestionId())).equals(""))
+                    {
+                        if(request.getParameter(Integer.toString(questionsRecords.get(i).getQuestionId())).equalsIgnoreCase(questionsRecords.get(i).getRealAns()))
+                        {
+                            st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo,marksObtained,selectedOptions)values('"+questionsRecords.get(i).getQuestionId()+"','"+regdNo+"','"+questionsRecords.get(i).getQuestionMarks()+"','"+request.getParameter(Integer.toString(questionsRecords.get(i).getQuestionId()))+"')");      
+                        }
+                        else
+                        {
+                          st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo,marksObtained,selectedOptions)values('"+questionsRecords.get(i).getQuestionId()+"','"+regdNo+"','"+questionsRecords.get(i).getNegativeMarks()*(-1)+"','"+request.getParameter(Integer.toString(questionsRecords.get(i).getQuestionId()))+"')");      
+                        }
+                    }
+                    else
+                    {
+                        st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo,marksObtained)values('"+questionsRecords.get(i).getQuestionId()+"','"+regdNo+"','"+0+"')");      
+                    }
+                }
+                else if(questionsRecords.get(i).getHaveMultipleAns()==0)
                 {
                     if(request.getParameter(Integer.toString(questionsRecords.get(i).getQuestionId()))!=null)
                     {
@@ -62,7 +80,7 @@ public class allAnswersSubmission extends HttpServlet{
                     }
                     else
                     {
-                        st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo)values('"+questionsRecords.get(i).getQuestionId()+"','"+regdNo+"')");      
+                        st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo,marksObtained)values('"+questionsRecords.get(i).getQuestionId()+"','"+regdNo+"','"+0+"')");      
                     }
                 }
                 else
@@ -88,7 +106,7 @@ public class allAnswersSubmission extends HttpServlet{
                     }
                     else
                     {
-                        st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo)values('"+questionsRecords.get(i).getQuestionId()+"','"+regdNo+"')");      
+                        st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo,marksObtained)values('"+questionsRecords.get(i).getQuestionId()+"','"+regdNo+"','"+0+"')");      
                     }
                     
                 }

@@ -111,6 +111,7 @@
                     + "   questionMarks float default 1,"
                     + "   negativeMarks float default 0,"
                     + "   haveMultipleAns int default 0,"
+                    + "   isBlankType int default 0,"
                     + "   primary key(questionId),"
                     + "   foreign key(examId) references exam(examId) on delete cascade on update cascade)";
 
@@ -138,6 +139,7 @@
                     String sub="Online Examination System - Password";
                     String msg="Welcome to Online Examination System -  Your Password is: "+p;
                     sendMailToFaculty.send(to,sub,msg);
+                    
                 }
                 catch(Exception e)
                 {

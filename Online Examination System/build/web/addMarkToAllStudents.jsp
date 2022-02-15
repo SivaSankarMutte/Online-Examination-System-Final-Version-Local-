@@ -37,7 +37,7 @@
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true","siva","0000");   
 
-                String sqlUpdate="Update examSpecialTable"+eid+ " set marksObtained=(select questionMarks from questions where questionId=?) where qid=?";
+                String sqlUpdate="Update examSpecialTable"+eid+ " set marksObtained=(select questionMarks from questions"+session.getAttribute("fid").toString()+" where questionId=?) where qid=?";
                 PreparedStatement ps = con.prepareStatement(sqlUpdate);
                 ps.setInt(1,qid);
                 ps.setInt(2,qid);

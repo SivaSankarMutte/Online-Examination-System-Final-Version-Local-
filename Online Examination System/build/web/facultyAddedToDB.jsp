@@ -81,6 +81,7 @@
                     + "   questionMarks float default 1,"
                     + "   negativeMarks float default 0,"
                     + "   haveMultipleAns int default 0,"
+                    + "   isBlankType int default 0,"
                     + "   primary key(questionId),"
                     + "   foreign key(examId) references exam(examId) on delete cascade on update cascade)";
 
@@ -106,7 +107,9 @@
             }
             catch(Exception e)
             {
-                response.sendRedirect("facultyEmailAlreadyInserted.jsp");
+                %>
+                    <c:redirect url="facultyEmailAlreadyInserted.jsp"/>
+                <%
             }
                 
             try    
@@ -115,6 +118,7 @@
                 String sub="Online Examination System - Password";
                 String msg="Welcome to Online Examination System -  Your Password is: "+facultyPassword;
                 sendMailToFaculty.send(facultyEmail,sub,msg);
+                //response.sendRedirect("emailToFacultySentSuccessfully.jsp");
             }
             catch(Exception e)
             {
@@ -131,13 +135,8 @@
                 response.sendRedirect("emailToFacultyFailedToSent.jsp");
             }
         %>
-        <div class="alert alert-dismissible bg-success fade show" id="dismiss">
-            <div><strong>Success! </strong>Faculty added Successfully</div>
-            <a href="#" class="close" data-dismiss="alert" id="x" aria-label="close">&times;</a>
-        </div>
-       <a href="viewFaculty.jsp">List all Faculty</a>
+        <c:redirect url="emailToFacultySentSuccessfully.jsp"/>
     </body>
 </html>
-
 
 

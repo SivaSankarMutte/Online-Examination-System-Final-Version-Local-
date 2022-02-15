@@ -24,6 +24,29 @@
         
         
         <c:choose>
+            <c:when test='${param.formIsBlankType=="1"}'>
+                <sql:update dataSource="${db}" var="add">
+                    insert into ${sessionScope.questionsTableName}(examId,questionName,opt1,opt2,ans,questionMarks,negativeMarks,isBlankType) values(?,?,?,?,?,?,?,?)
+                    <sql:param value="${sessionScope.eid}"/>
+                    <sql:param value="${param.formQuestionName}"/>
+                    <sql:param value="Don't Consider"/>
+                    <sql:param value="Don't Consider"/>
+                    <sql:param value="${param.formAns}"/>
+                    <sql:param value="${param.formQuestionMarks}"/>
+                    <sql:param value="${param.formNegativeMarks}"/>
+                    <sql:param value="1"/>
+                </sql:update>
+                <c:choose>
+                    <c:when test='${add>=1}'>
+                        <c:set var="message" value="success" scope="session"/>
+                        <c:redirect url="addQuestionForm.jsp"/>
+                    </c:when>
+                    <c:otherwise>
+                        <c:set var="message" value="fail" scope="session"/>
+                        <c:redirect url="addQuestionForm.jsp"/>
+                    </c:otherwise>
+                </c:choose>
+            </c:when>
             <c:when test='${param.formHaveMultipleAns=="0"}'>
                 <c:choose>
                     <c:when test='${param.formAns!="1" && param.formAns!="2" && param.formAns!="3" && param.formAns!="4"}'>

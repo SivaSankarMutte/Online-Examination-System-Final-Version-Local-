@@ -4,8 +4,7 @@
     Author     : SIVASANKAR
 --%>
 
-
-
+<%@page import="java.util.Arrays"%>
 <%@page import="QuestionsPackage.Questions"%>
 <%@page import="QuestionsPackage.LiveResults"%>
 <%@page import="java.util.ArrayList"%>
@@ -38,100 +37,41 @@
                                                 supported by Chrome, Edge, Opera and Firefox */
             }
         </style>
+        <script>
+            function fun1()
+            {
+                var x=document.getElementById("frame");
+                x.style.display="block";
+                var y=document.getElementById("go-button");
+                y.style.display="none";
+            }
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<style type="text/css">
+body {
+	margin: 0;
+}
+
+#go-button {
+	width: 200px;
+	display: block;
+	margin: 50px auto 0 auto;
+}
+
+/* webkit requires explicit width, height = 100% of sceeen */
+/* webkit also takes margin into account in full screen also - so margin should be removed (otherwise black areas will be seen) */
+
+
+</style>
     </head>
     
-    <body>
-        <%
-        if(session.getAttribute("examId")!=null && session.getAttribute("regdNo")!=null)
-        {  %>
-            <c:choose>
-                <c:when test='${Integer.parseInt(sessionScope.n)<questionsRecords.size()}'>
-                    <form action="LiveResults" method="post" class="form-control">
-                        <% int n2=Integer.parseInt(session.getAttribute("n").toString()); %>
-                        <% Questions q=(Questions)questionsRecords.get(n2); %>
-                        <% session.setAttribute("qobj", q); %>
-
-                        <% if(q.getHaveMultipleAns()==0){  %>
-
-                                <div class="form-group jumbotron ml-5 mr-5 mt-2">
-                                    <div id="overlay" class="noselect">
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}
-                                    </div>
-                                    <h2 class="noselect">
-                                         <% out.println(q.getQuestionName()); %>
-                                     </h2>
-
-
-
-                                     <label><input type="radio" name="radioName" value="1" class="form-control-radio">
-                                      <% out.println(q.getOpt1()); %> </label><br/>
-
-                                      <label><input type="radio" name="radioName" value="2" class="form-control-radio">
-                                      <% out.println(q.getOpt2()); %> </label><br/>
-
-                                      <% if(!q.getOpt3().equals("")){ %>
-                                        <label><input type="radio" name="radioName" value="3" class="form-control-radio">
-                                        <% out.println(q.getOpt3()); %> </label><br/>
-                                      <% } %>
-
-                                      <% if(!q.getOpt4().equals("")){ %>
-                                        <label><input type="radio" name="radioName" value="4" class="form-control-radio">
-                                        <% out.println(q.getOpt4()); %> </label>
-                                      <% } %>
-
-
-                                      <br/><br/>
-                                </div>  
-                            <% } else { %>
-                                <div class="form-group jumbotron ml-5 mr-5 mt-2">
-                                    <div id="overlay" class="noselect">
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}
-                                    </div>
-
-                                    <h2 class="noselect">
-                                         <% out.println(q.getQuestionName()); %>
-                                     </h2>
-
-                                            <input type="checkbox" name="checkboxname" value="1" id="1">
-                                            <label for="1"><% out.println(q.getOpt1()); %></label>
-                                        <br/>
-                                        <input type="checkbox" name="checkboxname" value="2" id="2">
-                                            <label for="2"><% out.println(q.getOpt2()); %></label>
-                                        <br/>
-
-                                        <% if(!q.getOpt3().equals("")){ %>
-                                            <input type="checkbox" name="checkboxname" value="3" id="3">
-                                            <label for="3"><% out.println(q.getOpt3()); %></label><br/>
-                                        <% } %>
-
-                                        <% if(!q.getOpt4().equals("")){ %>
-                                            <input type="checkbox" name="checkboxname" value="4" id="4">
-                                            <label for="4"><% out.println(q.getOpt4()); %></label>
-                                        <% } %>
-
-                                </div>
-                            <% } %>
-                        <input type="submit" value="Submit" class="btn btn-success form-control">
-
-                    </form>
-                </c:when>
-                <c:otherwise>
-                    <c:redirect url="calculateMarksForAStudent"/>
-                </c:otherwise>
-            </c:choose>
-        <%
-         }
-        %>
-        
+    <body id="element" style="margin:0;">
+        <div style="background-color:white; margin:0; width:100%;height:100%;">
+            <button id="go-button" onclick="fun1()">Start Exam</button>
+            <iframe id="frame" style="height: 800px; width: 1550px;display: none;" src="accessTestDisplay.jsp" title="Questions"></iframe>
+        </div>
     </body>
+    <script type="text/javascript" src="assets\js\myscript.js"></script>
 </html>
+	
+    

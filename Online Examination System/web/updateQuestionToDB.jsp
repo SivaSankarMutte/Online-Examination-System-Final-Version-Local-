@@ -21,6 +21,33 @@
         <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
         
         <c:choose>
+            <c:when test='${param.formIsBlankType=="1"}'>
+                <sql:update dataSource="${db}" var="add">
+                    update ${sessionScope.questionsTableName} set questionName=?,opt1=?,opt2=?,opt3=?,opt4=?,ans=?,questionMarks=?,negativeMarks=?,haveMultipleAns=?,isBlankType=? where questionId=?
+                    <sql:param value="${param.formQuestionName}"/>
+                    <sql:param value="${param.formOpt1}"/>
+                    <sql:param value="${param.formOpt2}"/>
+                    <sql:param value="${param.formOpt3}"/>
+                    <sql:param value="${param.formOpt4}"/>
+                    <sql:param value="${param.formAns}"/>
+                    <sql:param value="${param.formQuestionMarks}"/>
+                    <sql:param value="${param.formNegativeMarks}"/>
+                    <sql:param value="${param.formHaveMultipleAns}"/>
+                    <sql:param value="${param.formIsBlankType}"/>
+                    <sql:param value="${sessionScope.sessionQuestionId}"/>
+                </sql:update>  
+                <c:choose>
+                    <c:when test='${add>=1}'>
+                        <% session.removeAttribute("sessionQuestionId"); %>
+                        <c:redirect url="addQuestionForm.jsp"/>
+                    </c:when>
+
+                     <c:otherwise>
+                        <% session.removeAttribute("sessionQuestionId"); %>
+                        <c:redirect url="questionFailedToUpdate.jsp"/>
+                    </c:otherwise>
+                </c:choose>
+            </c:when>
             <c:when test='${param.formHaveMultipleAns=="0"}'>
                 <c:choose>
                     <c:when test='${param.formAns!="1" && param.formAns!="2" && param.formAns!="3" && param.formAns!="4"}'>
@@ -32,7 +59,7 @@
                                 <c:choose>
                                     <c:when test='${param.formAns=="1" || param.formAns=="2"}'>
                                         <sql:update dataSource="${db}" var="add">
-                                            update ${sessionScope.questionsTableName} set questionName=?,opt1=?,opt2=?,opt3=?,opt4=?,ans=?,questionMarks=?,negativeMarks=?,haveMultipleAns=? where questionId=?
+                                            update ${sessionScope.questionsTableName} set questionName=?,opt1=?,opt2=?,opt3=?,opt4=?,ans=?,questionMarks=?,negativeMarks=?,haveMultipleAns=?,isBlankType=? where questionId=?
 
                                                 <sql:param value="${param.formQuestionName}"/>
                                                 <sql:param value="${param.formOpt1}"/>
@@ -43,6 +70,7 @@
                                                 <sql:param value="${param.formQuestionMarks}"/>
                                                 <sql:param value="${param.formNegativeMarks}"/>
                                                 <sql:param value="${param.formHaveMultipleAns}"/>
+                                                <sql:param value="${param.formIsBlankType}"/>
                                                 <sql:param value="${sessionScope.sessionQuestionId}"/>
                                         </sql:update>  
                                         <c:choose>
@@ -70,7 +98,7 @@
                                 <c:choose>
                                     <c:when test='${param.formAns=="1" || param.formAns=="2" || param.formAns=="3"}'>
                                         <sql:update dataSource="${db}" var="add">
-                                            update ${sessionScope.questionsTableName} set questionName=?,opt1=?,opt2=?,opt3=?,opt4=?,ans=?,questionMarks=?,negativeMarks=?,haveMultipleAns=? where questionId=?
+                                            update ${sessionScope.questionsTableName} set questionName=?,opt1=?,opt2=?,opt3=?,opt4=?,ans=?,questionMarks=?,negativeMarks=?,haveMultipleAns=?,isBlankType=? where questionId=?
 
                                                 <sql:param value="${param.formQuestionName}"/>
                                                 <sql:param value="${param.formOpt1}"/>
@@ -81,6 +109,7 @@
                                                 <sql:param value="${param.formQuestionMarks}"/>
                                                 <sql:param value="${param.formNegativeMarks}"/>
                                                 <sql:param value="${param.formHaveMultipleAns}"/>
+                                                <sql:param value="${param.formIsBlankType}"/>
                                                 <sql:param value="${sessionScope.sessionQuestionId}"/>
                                         </sql:update>  
                                         <c:choose>
@@ -110,7 +139,7 @@
 
                             <c:otherwise>
                                 <sql:update dataSource="${db}" var="add">
-                                    update ${sessionScope.questionsTableName} set questionName=?,opt1=?,opt2=?,opt3=?,opt4=?,ans=?,questionMarks=?,negativeMarks=?,haveMultipleAns=? where questionId=?
+                                    update ${sessionScope.questionsTableName} set questionName=?,opt1=?,opt2=?,opt3=?,opt4=?,ans=?,questionMarks=?,negativeMarks=?,haveMultipleAns=?,isBlankType=? where questionId=?
                                     <sql:param value="${param.formQuestionName}"/>
                                     <sql:param value="${param.formOpt1}"/>
                                     <sql:param value="${param.formOpt2}"/>
@@ -120,6 +149,7 @@
                                     <sql:param value="${param.formQuestionMarks}"/>
                                     <sql:param value="${param.formNegativeMarks}"/>
                                     <sql:param value="${param.formHaveMultipleAns}"/>
+                                    <sql:param value="${param.formIsBlankType}"/>
                                     <sql:param value="${sessionScope.sessionQuestionId}"/>
                                 </sql:update> 
                                 <c:choose>
@@ -160,7 +190,7 @@
                         if(isValidOpts==1){
                         %>
                             <sql:update dataSource="${db}" var="add">
-                                    update ${sessionScope.questionsTableName} set questionName=?,opt1=?,opt2=?,opt3=?,opt4=?,ans=?,questionMarks=?,negativeMarks=?,haveMultipleAns=? where questionId=?
+                                    update ${sessionScope.questionsTableName} set questionName=?,opt1=?,opt2=?,opt3=?,opt4=?,ans=?,questionMarks=?,negativeMarks=?,haveMultipleAns=?,isBlankType=? where questionId=?
                                     <sql:param value="${param.formQuestionName}"/>
                                     <sql:param value="${param.formOpt1}"/>
                                     <sql:param value="${param.formOpt2}"/>
@@ -170,6 +200,7 @@
                                     <sql:param value="${param.formQuestionMarks}"/>
                                     <sql:param value="${param.formNegativeMarks}"/>
                                     <sql:param value="${param.formHaveMultipleAns}"/>
+                                    <sql:param value="${param.formIsBlankType}"/>
                                     <sql:param value="${sessionScope.sessionQuestionId}"/>
                                 </sql:update> 
                                 <c:choose>

@@ -30,12 +30,12 @@ and open the template in the editor.
                 response.sendRedirect("adminLogin.jsp");
             }
         %>
-        <jsp:include page="base.jsp"/>
         <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
         <sql:update dataSource="${db}" var="add">  
-            update admin set adminName=?,email=? where adminId=?
+            update admin set adminName=?,email=?,password=? where adminId=?
             <sql:param value="${param.formAdminName}"/>
             <sql:param value="${param.formAdminEmail}"/>
+            <sql:param value="${param.formAdminPassword}"/>
             <sql:param value="${sessionScope.aid}"/>
         </sql:update>  
         

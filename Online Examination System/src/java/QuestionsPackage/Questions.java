@@ -26,6 +26,15 @@ public class Questions {
     String providedAns;
     int questionIndex=0;
     int haveMultipleAns;
+    int isBlankType;
+
+    public int getIsBlankType() {
+        return isBlankType;
+    }
+
+    public void setIsBlankType(int isBlankType) {
+        this.isBlankType = isBlankType;
+    }
     String checkboxOptionsGiven[]=new String[4];
 
     public void setCheckboxOptionsGiven(String[] checkboxOptionsGiven) {

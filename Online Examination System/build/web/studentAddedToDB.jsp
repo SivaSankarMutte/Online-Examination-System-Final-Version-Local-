@@ -52,14 +52,16 @@
                 pstatement.executeUpdate();
             }
             catch(Exception e)
-            {
-                response.sendRedirect("studentEmailAlreadyInserted.jsp");
+            { %>
+            <c:redirect url="studentEmailAlreadyInserted.jsp"/>
+                <%
             }
         %>
         <div class="alert alert-dismissible bg-success fade show" id="dismiss">
             <div><strong>Success! </strong>Student added Successfully</div>
             <a href="#" class="close" data-dismiss="alert" id="x" aria-label="close">&times;</a>
         </div>
+        <c:redirect url="viewStudents.jsp"/>
         <a href="viewStudents.jsp">List all Students</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="facultyHome.jsp" class="btn btn-info form-control my-2">Back to Home</a>
     </body>

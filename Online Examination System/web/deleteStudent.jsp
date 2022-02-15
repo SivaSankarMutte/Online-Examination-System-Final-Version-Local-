@@ -28,7 +28,7 @@
         <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
         
         <sql:update dataSource="${db}" var="count">  
-            DELETE from students where studentId=?
+            DELETE from ${sessionScope.studentsTableName} where studentId=?
             <sql:param value="${param.studentId}"/>
         </sql:update>
         <c:if test="${count>=1}">

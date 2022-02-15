@@ -60,7 +60,7 @@ public class DBConnection extends HttpServlet {
             while(rs.next())
             {
                 String fid=rs.getString("facultyId");
-                PreparedStatement ps1=con.prepareStatement("select questionId,questionName,opt1,opt2,opt3,opt4,ans,questionMarks,negativeMarks,haveMultipleAns from questions"+fid+" where examId=?");
+                PreparedStatement ps1=con.prepareStatement("select questionId,questionName,opt1,opt2,opt3,opt4,ans,questionMarks,negativeMarks,haveMultipleAns,isBlankType from questions"+fid+" where examId=?");
                 ps1.setString(1, (String) session.getAttribute("examId"));
                 ResultSet rs1=ps1.executeQuery();
 
@@ -78,6 +78,7 @@ public class DBConnection extends HttpServlet {
                     q.setQuestionMarks(rs1.getFloat(8));
                     q.setNegativeMarks(rs1.getFloat(9));
                     q.setHaveMultipleAns(rs1.getInt(10));
+                    q.setIsBlankType(rs1.getInt(11));
                     questionsList.add(q);
                 }
                 PreparedStatement ps2=con.prepareStatement("select randomizeQuestions from exam where examId=?");

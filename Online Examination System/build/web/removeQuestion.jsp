@@ -33,7 +33,7 @@
             <sql:param value="${param.questionIdurl}"/>
         </sql:update>
         <c:if test="${count>=1}">
-            <c:redirect url="addQuestionForm.jsp"/>
+            <c:redirect url="questions.jsp"/>
         </c:if>
            
     </body>

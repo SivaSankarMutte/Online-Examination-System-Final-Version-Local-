@@ -120,6 +120,7 @@
         <servlet-name>calculateMarksForAStudent</servlet-name>
         <url-pattern>/calculateMarksForAStudent</url-pattern>
     </servlet-mapping>
+    
     <servlet>
         <servlet-name>goToPrevQuestion</servlet-name>
         <servlet-class>QuestionsPackage.goToPrevQuestion</servlet-class>
@@ -127,6 +128,15 @@
     <servlet-mapping>
         <servlet-name>goToPrevQuestion</servlet-name>
         <url-pattern>/goToPrevQuestion</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>GoToAskingQuestion</servlet-name>
+        <servlet-class>QuestionsPackage.GoToAskingQuestion</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GoToAskingQuestion</servlet-name>
+        <url-pattern>/GoToAskingQuestion</url-pattern>
     </servlet-mapping>
     
     <servlet>
@@ -138,4 +148,21 @@
         <url-pattern>/allAnswersSubmission</url-pattern>
     </servlet-mapping>
     
+    <servlet>
+        <servlet-name>examNavigationSubmitButtonPressed</servlet-name>
+        <servlet-class>QuestionsPackage.examNavigationSubmitButtonPressed</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>examNavigationSubmitButtonPressed</servlet-name>
+        <url-pattern>/examNavigationSubmitButtonPressed</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>sendOTPToFacultyServlet</servlet-name>
+        <servlet-class>sendOTPToFacultyServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>sendOTPToFacultyServlet</servlet-name>
+        <url-pattern>/sendOTPToFacultyServlet</url-pattern>
+    </servlet-mapping>
 </web-app>

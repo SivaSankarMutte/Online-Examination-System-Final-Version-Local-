@@ -5,6 +5,8 @@
 --%>
 
 
+<%@page import="MailDemo.sendMailToFaculty"%>
+<%@page import="java.util.Random"%>
 <%@ page import="java.io.*,java.sql.*" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -31,9 +33,17 @@
             String adminName=request.getParameter("adminName");
             String adminEmail=request.getParameter("adminEmail");
             String adminDept=request.getParameter("adminDept");
-            String adminPassword=request.getParameter("adminPassword");
-            
-           
+            //String adminPassword=request.getParameter("adminPassword");
+            String allSymbols="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890~!@#$%^&*";
+            Random random=new Random();
+            char[] psw=new char[8];            
+
+            for(int i=0;i<8;i++)
+            {
+               psw[i]=allSymbols.charAt(random.nextInt(71));  //71 is allSymbols.length()
+            }
+            String adminPassword=new String(psw); 
+            int flag=0;
             
             try
             {
@@ -51,27 +61,41 @@
                 pstatement.setString(4, adminDept);
                 
                 pstatement.executeUpdate();
-                %>
-                <div class="alert alert-dismissible bg-success fade show" id="dismiss">
-                    <div><strong>Success! </strong>Admin added Successfully</div>
-                    <a href="#" class="close" data-dismiss="alert" id="x" aria-label="close">&times;</a>
-                </div>  
-                <a href="viewAdmins.jsp">List all Admins</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="superAdminHome.jsp">Home</a>
-            <%
+                
             }
             catch(Exception e)
             {
-                %>
-                <div class="alert alert-dismissible bg-danger fade show" id="dismiss">
-                    <div><strong>Failed! </strong>Admin failed to add</div>
-                    <a href="#" class="close" data-dismiss="alert" id="x" aria-label="close">&times;</a>
-                </div>  
-                <a href="addAdmin.jsp">Retry to add Admin</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="superAdminHome.jsp">Home</a>
-            <%
+                response.sendRedirect("adminEmailAlreadyInserted.jsp");
+                flag=1;
+            }
+             
+            if(flag==0)
+            {
+                try    
+                {       
+                    //String to=facultyEmail;
+                    String sub="Online Examination System - Password";
+                    String msg="Welcome to Online Examination System ("+adminName+") as Admin for "+adminDept+" -  Your Password is: "+adminPassword;
+                    sendMailToFaculty.send(adminEmail,sub,msg);
+                    response.sendRedirect("emailToAdminSentSuccessfully.jsp");
+                }
+                catch(Exception e)
+                {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    String url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true";
+                    String username="siva";
+                    String password="0000";
+                    Connection con=DriverManager.getConnection(url,username,password); 
+
+                    String queryString="delete from admin where email=?";
+                    PreparedStatement pstatement = con.prepareStatement(queryString);
+                    pstatement.setString(1,adminEmail);
+                    pstatement.executeUpdate();
+                    response.sendRedirect("emailToAdminFailedToSent.jsp");
+                }
             }
         %>
+        <c:redirect url="emailToAdminSentSuccessfully.jsp"/>
     </body>
 </html>
 

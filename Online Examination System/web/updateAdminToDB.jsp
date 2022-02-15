@@ -33,15 +33,13 @@ and open the template in the editor.
         <c:set var="id" value="${param.formAdminId}"/>
         <c:set var="nm" value="${param.formAdminName}"/>
         <c:set var="em" value="${param.formAdminEmail}"/>
-        <c:set var="pswd" value="${param.formAdminPassword}"/>
         <c:set var="dpt" value="${param.formAdminDept}"/>
        
         <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
         <sql:update dataSource="${db}" var="add">  
-            update admin set adminName=?,email=?,password=?,department=? where adminId=?
+            update admin set adminName=?,email=?,department=? where adminId=?
             <sql:param value="${nm}"/>
             <sql:param value='${em}'/>
-            <sql:param value="${pswd}"/>
             <sql:param value='${dpt}'/>
             <sql:param value='${id}'/>
         </sql:update>  

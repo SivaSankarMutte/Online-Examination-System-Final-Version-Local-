@@ -4,13 +4,16 @@
     Author     : SIVASANKAR
 --%>
 
+<%@page import="java.util.Arrays"%>
 <%@page import="QuestionsPackage.Questions"%>
 <%@page import="QuestionsPackage.LiveResults"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 
+<% ArrayList<Questions> questionsRecords = (ArrayList<Questions>)session.getAttribute("questionsRecords"); %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -34,115 +37,41 @@
                                                 supported by Chrome, Edge, Opera and Firefox */
             }
         </style>
-        <script type="text/javascript">
-            window.onload = maxWindow;
-
-            function maxWindow() {
-                window.moveTo(0, 0);
-
-                if (document.all) {
-                    top.window.resizeTo(screen.availWidth, screen.availHeight);
-                }
-
-                else if (document.layers || document.getElementById) {
-                    if (top.window.outerHeight < screen.availHeight || top.window.outerWidth < screen.availWidth) {
-                        top.window.outerHeight = screen.availHeight;
-                        top.window.outerWidth = screen.availWidth;
-                    }
-                }
+        <script>
+            function fun1()
+            {
+                var x=document.getElementById("frame");
+                x.style.display="block";
+                var y=document.getElementById("go-button");
+                y.style.display="none";
             }
-        </script> 
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<style type="text/css">
+body {
+	margin: 0;
+}
+
+#go-button {
+	width: 200px;
+	display: block;
+	margin: 50px auto 0 auto;
+}
+
+/* webkit requires explicit width, height = 100% of sceeen */
+/* webkit also takes margin into account in full screen also - so margin should be removed (otherwise black areas will be seen) */
+
+
+</style>
     </head>
-    <body>
-        <% 
-            if(session.getAttribute("examId")!=null && session.getAttribute("regdNo")!=null)
-            {  %>
-                <form action="allAnswersSubmission" method="post" class="form-control">
-                    <c:forEach var="q" items="${sessionScope.questionsRecords}">
-
-                        <c:choose>
-                            <c:when test='${q.haveMultipleAns==0}'>
-                                <div class="form-group jumbotron ml-5 mr-5 mt-2">
-                                    <div id="overlay" class="noselect">
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}
-                                    </div>
-
-                                    <h2 class="noselect">
-                                        <c:out value="${q.questionName}"/>
-                                    </h2>
-                                        <label>
-                                            <input type="radio" name="${q.questionId}" value="1" class="form-control-radio"><c:out value="${q.opt1}"/>
-                                        </label>
-                                        <br/>
-                                        <label>
-                                            <input type="radio" name="${q.questionId}" value="2" class="form-control-radio"><c:out value="${q.opt2}"/>
-                                        </label>
-                                        <br/>
-
-                                        <c:if test='${q.opt3!=""}'>
-                                            <label>
-                                                <input type="radio" name="${q.questionId}" value="3" class="form-control-radio"><c:out value="${q.opt3}"/>
-                                            </label><br/>
-                                        </c:if>
-
-                                        <c:if test='${q.opt4!=""}'>
-                                            <label>
-                                                <input type="radio" name="${q.questionId}" value="4" class="form-control-radio"><c:out value="${q.opt4}"/>
-                                            </label>
-                                        </c:if>
-                                </div>
-                            </c:when>
-
-                            <c:otherwise>
-                                <div class="form-group jumbotron ml-5 mr-5 mt-2">
-                                    <div id="overlay" class="noselect">
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}<br/>
-                                        ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}
-                                    </div>
-
-                                    <h2 class="noselect">
-                                        <c:out value="${q.questionName}"/>
-                                    </h2>
-
-                                            <input type="checkbox" name="${q.questionId}" value="1" id="1">
-                                            <label for="1">${q.opt1}</label>
-                                        <br/>
-                                        <input type="checkbox" name="${q.questionId}" value="2" id="2">
-                                            <label for="2">${q.opt2}</label>
-                                        <br/>
-
-                                        <c:if test='${q.opt3!=""}'>
-                                            <input type="checkbox" name="${q.questionId}" value="3" id="3">
-                                            <label for="3">${q.opt3}</label><br/>
-                                        </c:if>
-
-                                        <c:if test='${q.opt4!=""}'>
-                                            <input type="checkbox" name="${q.questionId}" value="4" id="4">
-                                            <label for="4">${q.opt4}</label>
-                                        </c:if>
-
-                                </div>       
-                            </c:otherwise>
-                        </c:choose>
-
-                    </c:forEach>
-                    <input type="submit" value="Submit" class="btn btn-success form-control">
-
-                </form>    
-               <%
-            }
-        %>
-        
-        
-      
+    
+    <body id="element" style="margin:0;">
+        <div style="background-color:white; margin:0; width:100%;height:100%;">
+            <button id="go-button" onclick="fun1()">Start Exam</button>
+            <iframe id="frame" style="height: 800px; width: 1550px;display: none;" src="accessAllQuestionsDisplay.jsp" title="Questions"></iframe>
+        </div>
     </body>
+    <script type="text/javascript" src="assets\js\myscript.js"></script>
 </html>
+	
+    

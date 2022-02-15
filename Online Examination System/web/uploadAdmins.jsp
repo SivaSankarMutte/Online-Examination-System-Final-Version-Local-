@@ -4,6 +4,8 @@
     Author     : SIVASANKAR
 --%>
 
+<%@page import="java.util.Random"%>
+<%@page import="MailDemo.sendMailToFaculty"%>
 <%@page import="java.io.*,java.sql.*" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -93,6 +95,8 @@
             Connection con=DriverManager.getConnection(url,username,password); 
             PreparedStatement pstatement=null;
             
+            String allSymbols="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890~!@#$%^&*";
+            Random random=new Random();
 
             while(( line = input.readLine()) != null)
             {
@@ -109,12 +113,40 @@
                 pstatement = con.prepareStatement(queryString);
                 pstatement.setString(1, words[0]);
                 pstatement.setString(2, words[1]);
-                pstatement.setString(3, words[2]);
-                pstatement.setString(4, words[3]);
+                
+                char[] psw=new char[8];
+                
+                for(int i=0;i<8;i++)
+                {
+                    psw[i]=allSymbols.charAt(random.nextInt(71));  //71 is allSymbols.length()
+                }
+                String p=new String(psw);
+                
+                pstatement.setString(3, p);
+                pstatement.setString(4, words[2]);
                 
                 pstatement.executeUpdate();
                 
+                try
+                {
+                    String to=words[1];
+                    String sub="Online Examination System - Password";
+                    String msg="Welcome to Online Examination System ("+words[0]+") as Admin for "+words[2]+" -  Your Password is: "+p;
+                    sendMailToFaculty.send(to,sub,msg);
+                }
+                catch(Exception e)
+                {
+                    out.println("Error while sending passwords to Admin Emails");
+                    out.println(e);  
+                    
+                    String queryString3="delete from admin where email=?";
+                    PreparedStatement pstatement3 = con.prepareStatement(queryString3);
+                    pstatement3.setString(1,words[1]);
+                    pstatement3.executeUpdate();
+                }
+                
             }
+            
             %><c:redirect url="viewAdmins.jsp"/><%
         }
         catch(Exception e)

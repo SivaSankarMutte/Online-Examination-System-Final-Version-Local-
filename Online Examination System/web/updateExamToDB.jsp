@@ -34,7 +34,7 @@
         
         <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
         <sql:update dataSource="${db}" var="add">  
-            update exam set examName=?,facultyId=?,listName=?,noOfQuestions=?,startTime=?,endTime=?,totalMarks=?,randomizeQuestions=?,navigateBetweenQuestions=?,allQuestionsAtATime=?,enableFeedbackForm=? where examId=?
+            update exam set examName=?,facultyId=?,listName=?,noOfQuestions=?,startTime=?,endTime=?,totalMarks=?,randomizeQuestions=?,navigateBetweenQuestions=?,allQuestionsAtATime=?,enableFeedbackForm=?,enableResultsToStudents=? where examId=?
             <sql:param value="${param.formExamName}"/>
             <sql:param value="${sessionScope.fid}"/>
             <sql:param value='${param.formListName}'/>
@@ -46,6 +46,7 @@
             <sql:param value='${param.formNavigateBetweenQuestions}'/>
             <sql:param value='${param.formAllQuestionsAtATime}'/>
             <sql:param value='${param.formEnableFeedbackForm}'/>
+            <sql:param value='${param.formEnableResults}'/>
             <sql:param value='${sessionScope.eid}'/>
         </sql:update>  
         <c:choose>

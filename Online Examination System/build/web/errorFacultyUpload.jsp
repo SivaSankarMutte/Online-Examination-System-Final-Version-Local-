@@ -19,7 +19,6 @@
                 response.sendRedirect("adminLogin.jsp");
             }
         %>
-        <jsp:include page="base.jsp"/>
         <h1>File Uploading Failed</h1>
         <div>Given File may contains null values or emails are not unique</div>
         
