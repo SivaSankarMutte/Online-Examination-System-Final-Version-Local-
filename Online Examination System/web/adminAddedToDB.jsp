@@ -57,7 +57,7 @@
                 PreparedStatement pstatement = con.prepareStatement(queryString);
                 pstatement.setString(1, adminName);
                 pstatement.setString(2, adminEmail);
-                pstatement.setString(3, adminPassword);
+                pstatement.setString(3, cipher.AES.encrypt(adminPassword));
                 pstatement.setString(4, adminDept);
                 
                 pstatement.executeUpdate();
@@ -75,7 +75,7 @@
                 {       
                     //String to=facultyEmail;
                     String sub="Online Examination System - Password";
-                    String msg="Welcome to Online Examination System ("+adminName+") as Admin for "+adminDept+" -  Your Password is: "+adminPassword;
+                    String msg="Welcome to Online Examination System ("+adminName+") as Admin for "+adminDept+" -  Your Password is: <h1>"+adminPassword+"</h1>";
                     sendMailToFaculty.send(adminEmail,sub,msg);
                     response.sendRedirect("emailToAdminSentSuccessfully.jsp");
                 }
@@ -96,6 +96,7 @@
             }
         %>
         <c:redirect url="emailToAdminSentSuccessfully.jsp"/>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>
 

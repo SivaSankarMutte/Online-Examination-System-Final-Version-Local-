@@ -32,5 +32,6 @@
                 </div>
         <a href="addFaculty.jsp" class="btn btn-info form-control my-2">Retry to add a Faculty</a>
         <a href="adminEmailDetails.jsp" class="btn btn-info form-control my-2">Retry to upload Faculty CSV File</a>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>

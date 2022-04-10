@@ -24,5 +24,6 @@
         <h1>Exam Failed to Update!</h1>
        
         <a href="addQuestionsForm.jsp" class="btn btn-outline-warning my-2">Back</a>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>

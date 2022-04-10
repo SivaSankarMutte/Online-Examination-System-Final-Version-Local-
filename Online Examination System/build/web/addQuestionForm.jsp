@@ -28,6 +28,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="icon" type="text/css" href="images/test.png">
+    
+    <script>
+    var loadFile = function(event) {
+            var image = document.getElementById('questionImageDisplay');
+            image.src = URL.createObjectURL(event.target.files[0]);
+    };
+    
+    var loadFile1 = function(event) {
+            var image = document.getElementById('option1ImageDisplay');
+            image.src = URL.createObjectURL(event.target.files[0]);
+    };
+    var loadFile2 = function(event) {
+            var image = document.getElementById('option2ImageDisplay');
+            image.src = URL.createObjectURL(event.target.files[0]);
+    };
+    var loadFile3 = function(event) {
+            var image = document.getElementById('option3ImageDisplay');
+            image.src = URL.createObjectURL(event.target.files[0]);
+    };
+    var loadFile4 = function(event) {
+            var image = document.getElementById('option4ImageDisplay');
+            image.src = URL.createObjectURL(event.target.files[0]);
+    };
+</script>
+    
 </head>
 
 <body id="page-top">
@@ -76,7 +101,7 @@
                     <li class="nav-item"><a class="nav-link" href="uploadQuestionsFile.jsp"><i class="icon ion-pie-graph"></i>Upload Questions CSV</a></li>
                     
                         <li class="nav-item">
-                            <form method="post" action="sendMailToStudent" class="nav-link">
+                            <form method="post" action="sendMailToStudentsYesOrNo.jsp" class="nav-link">
                                 <button type="submit" class="nav-link" style="all:unset;"><i class="far fa-user-circle"></i><span>Send Exam Link to Students</span></button>
                             </form>
                         </li>
@@ -103,12 +128,12 @@
                             </c:when> 
                             
                             <c:otherwise>
-                                <sql:query dataSource="${db}" var="aqatresult">
-                                    select allQuestionsAtATime from exam where examId=?
+                                <sql:query dataSource="${db}" var="mode">
+                                    select mode from exam where examId=?
                                     <sql:param value="${sessionScope.eid}"/>
                                 </sql:query>
-                                <c:forEach var="row2" items="${aqatresult.rows}">
-                                    <c:if test="${row2.allQuestionsAtATime==0}">
+                                <c:forEach var="row2" items="${mode.rows}">
+                                    <c:if test="${row2.mode!=1}">
                                         <li class="nav-item">
                                             <form method="post" action="eachQuestionStatistics.jsp" class="nav-link">
                                                 <% 
@@ -277,25 +302,81 @@
                     </c:forEach>              
             </div>
                 <div class="card">
-                    <form method="post" action="questionAddedToExam.jsp" class="form-control">
+                    <form method="post" action="UploadServlet" enctype="multipart/form-data" class="form-control">
                     <fieldset>
-                        <legend class="bg-dark text-light"> <h2>Add a Question</h2></legend>
-                        <p>Is this question have multiple answers?</p>
-                        <label><input type="radio" name="formHaveMultipleAns" value="1" class="form-control-radio" required>Yes</label>
-                        <label><input type="radio" name="formHaveMultipleAns" value="0" class="form-control-radio" checked="checked">No</label>
-                        <br/><br/>
-                        <p>Is Blank Type Question?</p>
-                        <label><input type="radio" name="formIsBlankType" value="1" class="form-control-radio" required>Yes</label>
-                        <label><input type="radio" name="formIsBlankType" value="0" class="form-control-radio" checked="checked">No</label>
-                        <br/><br/>
-                        <input type="text" name="formQuestionName" placeholder="Enter Question" class="form-control my-2" required>
+                        <legend class="bg-dark text-light rounded"> <h2>Add a Question</h2></legend>
+                        
+                        <p>Choose Exam Mode</p>
+                            <select name="formQuestionType" class="form-control" required>
+                                <option value="0">MCQ</option>
+                                <option value="1">Blank</option>
+                                <option value="2">MSQ</option>
+                            </select>
+                        <br/>
+                        
+                        <input type="text" name="formQuestionName" placeholder="Enter Question" class="form-control my-2">
+                        <input type="file" name="formQuestionNameImg" onchange="loadFile(event)" class="form-control">
+                        
+                        <center>
+                            <img id="questionImageDisplay" width="50%" height="250px;"/>
+                        </center><br/><br/>
                         <input type="text" name="formOpt1" placeholder="Enter Option1" class="form-control my-2">
+                        <input type="file" name="formOpt1Img" onchange="loadFile1(event)" class="form-control">
+                        <center>
+                            <img id="option1ImageDisplay" width="50%" height="250px;">
+                        </center><br/><br/>
+                        <br/><br/>
                         <input type="text" name="formOpt2" placeholder="Enter Option2" class="form-control my-2">
+                        <input type="file" name="formOpt2Img" onchange="loadFile2(event)" class="form-control">
+                        <center>
+                            <img id="option2ImageDisplay" width="50%" height="250px;">
+                        </center>
+                        <br/><br/>
                         <input type="text" name="formOpt3" placeholder="Enter Option3" class="form-control my-2">
+                        <input type="file" name="formOpt3Img" onchange="loadFile3(event)" class="form-control">
+                        <center>
+                            <img id="option3ImageDisplay" width="50%" height="250px;">
+                        </center>
+                        <br/><br/>
                         <input type="text" name="formOpt4" placeholder="Enter Option4" class="form-control my-2">
-                        <input type="text" name="formAns" placeholder="Enter option number of answer" class="form-control my-2" required>
-                        <input type="any" name="formQuestionMarks" placeholder="Enter marks" value="1" class="form-control my-2" required>
-                        <input type="any" name="formNegativeMarks" placeholder="Enter negative marks (defaults to 0)" value="0" class="form-control my-2" required>
+                        <input type="file" name="formOpt4Img" onchange="loadFile4(event)" class="form-control">
+                        <center>
+                            <img id="option4ImageDisplay" width="50%" height="250px;">
+                        </center>
+                        <br/><br/>
+                        <input type="text" name="formAns" placeholder="Enter option number of answer" class="form-control my-2" required><br/>
+                        <label for="marks">Enter Marks</label>
+                        <input type="any" name="formQuestionMarks" placeholder="Enter marks" value="1" id="marks" class="form-control my-2" required><br/>
+                        <label for="negativeMarks">Enter Negative Marks</label>
+                        <input type="any" name="formNegativeMarks" placeholder="Enter negative marks (defaults to 0)" value="0" id="negativeMarks" class="form-control my-2" required>
+                        
+                        <sql:query dataSource="${db}" var="mode">
+                            select mode from exam where examId=?
+                        <sql:param value="${sessionScope.eid}"/>
+                        </sql:query>
+                        <c:forEach var="row" items="${mode.rows}">
+                            <c:if test="${row.mode==4}">
+                                <br/>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <label>Enter Time Limit for this Question (MM:SS) : </label>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="formQuestionTimeLimitMinutes" placeholder="Enter Minutes" value="1" class="form-control my-2" style="width: 75px;" required>
+                                        </td>
+                                        <td>
+                                            :
+                                        </td>
+                                        <td>
+                                            <input type="number" name="formQuestionTimeLimitSeconds" placeholder="Enter Seconds" value="00" class="form-control my-2" style="width: 75px;" required>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </c:if>
+                        </c:forEach>
+                        
+                        
                         
                         <div class="row">
                             <div class="col">
@@ -320,6 +401,7 @@
     <script src="assets\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>

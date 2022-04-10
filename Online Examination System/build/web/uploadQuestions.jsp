@@ -14,8 +14,6 @@
         response.sendRedirect("facultyLogin.jsp");
     }
 %>
-<jsp:include page="base.jsp"/>
-
 <html>
 <%
     String contentType = request.getContentType();
@@ -69,12 +67,14 @@
             while(( line = input.readLine()) != null)
             {
                 String t=line.toString();
+                System.out.print(t);
                 String words[]=t.split(",");
                 String eid=(String)session.getAttribute("eid");
-                String queryString="insert into questions"+fid+" (examId,questionName,opt1,opt2,opt3,opt4,ans,questionMarks,negativeMarks,haveMultipleAns,isBlankType) values(?,?,?,?,?,?,?,?,?,?,?)";
+                String queryString="insert into questions"+fid+" (examId,questionName,opt1,opt2,opt3,opt4,ans,questionMarks,negativeMarks,questionType,questionTimeMinutes,questionTimeSeconds) values(?,?,?,?,?,?,?,?,?,?,?,?)";
                 pstatement = con.prepareStatement(queryString);
                 pstatement.setString(1, eid);
                 pstatement.setString(2, words[0]);
+                System.out.print(words[0]);
                 if(words[9].equals("1"))
                 {
                     pstatement.setString(3,"don't consider");
@@ -82,43 +82,61 @@
                 }
                 else
                 {
-                    pstatement.setString(3, words[1]);
-                    pstatement.setString(4, words[2]);
+                    pstatement.setString(3, words[1]);   //opt1
+                    pstatement.setString(4, words[2]);   //opt2
                 }
                 
-                pstatement.setString(5, words[3]);
-                pstatement.setString(6, words[4]);
-                pstatement.setString(7, words[5]);
+                pstatement.setString(5, words[3]);   //opt3
+                pstatement.setString(6, words[4]);   //opt4
+                pstatement.setString(7, words[5]);   //ans
                 if(words[6].equals(""))
                     pstatement.setString(8, "1");
                 else
-                    pstatement.setString(8, words[6]);
+                    pstatement.setString(8, words[6]);  //questionMarks
                 if(words[7].equals(""))
                     pstatement.setString(9, "0");
                 else
-                    pstatement.setString(9, words[7]);
+                    pstatement.setString(9, words[7]);   //neagtiveMarks
+                
+                
                 if(words[8].equals(""))
+                    pstatement.setInt(11, 1);
+                else
+                    pstatement.setString(11, words[8]);  //question Time Limit (Minutes)
+                
+                if(words[9].equals(""))
+                    pstatement.setInt(12, 30);
+                else
+                    pstatement.setString(12, words[9]);  //question Time Limit (seconds)
+                
+                
+                
+                if(words[10].equals(""))
                 {
                     if(words[5].length()==1)
                         pstatement.setString(10, "0");
+                    else if(words[5].contains("&"))
+                    {
+                        pstatement.setString(10, "2");
+                    }
                     else
                         pstatement.setString(10, "1");
                 } 
                 else
-                    pstatement.setString(10, words[8]);
-                if(words[9].trim().equals(""))
-                {
-                    if(words[1].equals("") || words[2].equals(""))
-                    {
-                        pstatement.setString(11, "1");
-                    }
-                    else
-                    {
-                        pstatement.setString(11, "0");
-                    }
-                }
-                else
-                    pstatement.setString(11, words[9]);
+                    pstatement.setString(10, words[10]);
+//                if(words[11].trim().equals(""))
+//                {
+//                    if(words[1].equals("") || words[2].equals(""))
+//                    {
+//                        pstatement.setString(11, "1");
+//                    }
+//                    else
+//                    {
+//                        pstatement.setString(11, "0");
+//                    }
+//                }
+//                else
+//                    pstatement.setString(11, words[11]);
                 pstatement.executeUpdate();
                 
             }

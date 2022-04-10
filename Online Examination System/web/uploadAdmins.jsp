@@ -6,6 +6,7 @@
 
 <%@page import="java.util.Random"%>
 <%@page import="MailDemo.sendMailToFaculty"%>
+<%@page import="cipher.AES"%>
 <%@page import="java.io.*,java.sql.*" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -122,7 +123,7 @@
                 }
                 String p=new String(psw);
                 
-                pstatement.setString(3, p);
+                pstatement.setString(3, cipher.AES.encrypt(p));
                 pstatement.setString(4, words[2]);
                 
                 pstatement.executeUpdate();
@@ -131,7 +132,7 @@
                 {
                     String to=words[1];
                     String sub="Online Examination System - Password";
-                    String msg="Welcome to Online Examination System ("+words[0]+") as Admin for "+words[2]+" -  Your Password is: "+p;
+                    String msg="Welcome to Online Examination System ("+words[0]+") as Admin for "+words[2]+" -  Your Password is: <h1>"+p+"</h1>";
                     sendMailToFaculty.send(to,sub,msg);
                 }
                 catch(Exception e)

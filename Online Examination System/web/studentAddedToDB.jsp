@@ -64,6 +64,7 @@
         <c:redirect url="viewStudents.jsp"/>
         <a href="viewStudents.jsp">List all Students</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="facultyHome.jsp" class="btn btn-info form-control my-2">Back to Home</a>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>
 

@@ -25,5 +25,6 @@
         <a href="updateQuestion.jsp?questionIdurl=${sessionScope.sessionQuestionId}" class="btn btn-outline-warning my-2">Retry to Update Question</a>
         <% session.removeAttribute("sessionQuestionId"); %>
         <a href="addQuestionForm.jsp" class="btn btn-outline-info my-2">Back To Exam</a>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>

@@ -67,7 +67,7 @@ and open the template in the editor.
                 <a href="viewAdmins.jsp" class="btn btn-outline-warning my-2">Back To view Admin Rows</a>
             </c:otherwise>
         </c:choose>
-           
+           <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>
 

@@ -28,16 +28,17 @@
         <c:choose>
             <c:when test='${param.formNoOfQuestions=="" && param.formTotalMarks==""}'>
                 <sql:update dataSource="${db}" var="add">
-                    insert into exam(examName,facultyId,listName,startTime,endTime,randomizeQuestions,navigateBetweenQuestions,allQuestionsAtATime,enableFeedbackForm,enableResultsToStudents) values(?,?,?,?,?,?,?,?,?,?)
+                    insert into exam(examName,facultyId,listName,startTime,endTime,loginTime,randomizeQuestions,randomizeOptions,mode,enableFeedbackForm,enableResultsToStudents) values(?,?,?,?,?,?,?,?,?,?,?)
 
                     <sql:param value="${param.formExamName}"/>
                     <sql:param value='${sessionScope.fid}'/>
                     <sql:param value="${param.formListName}"/>
                     <sql:param value="${param.formStartTime}"/>
                     <sql:param value='${param.formEndTime}'/>
+                    <sql:param value='${param.formLoginTime}'/>
                     <sql:param value="${param.formRandomizeQuestions}"/>
-                    <sql:param value='${param.formNavigateBetweenQuestions}'/>
-                    <sql:param value='${param.formAllQuestionsAtATime}'/>
+                    <sql:param value="${param.formRandomizeOptions}"/>
+                    <sql:param value='${param.formExamMode}'/>
                     <sql:param value='${param.formEnableFeedback}'/>
                     <sql:param value='${param.formEnableResults}'/>
                 </sql:update>  
@@ -45,17 +46,18 @@
 
             <c:when test='${param.formNoOfQuestions==""}'>
                 <sql:update dataSource="${db}" var="add">
-                    insert into exam(examName,facultyId,listName,startTime,endTime,totalMarks,randomizeQuestions,navigateBetweenQuestions,allQuestionsAtATime,enableFeedbackForm,enableResultsToStudents) values(?,?,?,?,?,?,?,?,?,?,?)
+                    insert into exam(examName,facultyId,listName,startTime,endTime,loginTime,totalMarks,randomizeQuestions,randomizeOptions,mode,enableFeedbackForm,enableResultsToStudents) values(?,?,?,?,?,?,?,?,?,?,?,?)
 
                     <sql:param value="${param.formExamName}"/>
                     <sql:param value='${sessionScope.fid}'/>
                     <sql:param value="${param.formListName}"/>
                     <sql:param value="${param.formStartTime}"/>
                     <sql:param value='${param.formEndTime}'/>
+                    <sql:param value='${param.formLoginTime}'/>
                     <sql:param value="${param.formTotalMarks}"/>
                     <sql:param value="${param.formRandomizeQuestions}"/>
-                    <sql:param value='${param.formNavigateBetweenQuestions}'/>
-                    <sql:param value='${param.formAllQuestionsAtATime}'/>
+                    <sql:param value="${param.formRandomizeOptions}"/>
+                    <sql:param value='${param.formExamMode}'/>
                     <sql:param value='${param.formEnableFeedback}'/>
                     <sql:param value='${param.formEnableResults}'/>
                 </sql:update>  
@@ -63,7 +65,7 @@
 
             <c:when test='${param.formTotalMarks==""}'>
                 <sql:update dataSource="${db}" var="add">
-                    insert into exam(examName,facultyId,listName,noOfQuestions,startTime,endTime,randomizeQuestions,navigateBetweenQuestions,allQuestionsAtATime,enableFeedbackForm,enableResultsToStudents) values(?,?,?,?,?,?,?,?,?,?,?)
+                    insert into exam(examName,facultyId,listName,noOfQuestions,startTime,endTime,loginTime,randomizeQuestions,randomizeOptions,mode,enableFeedbackForm,enableResultsToStudents) values(?,?,?,?,?,?,?,?,?,?,?,?)
 
                     <sql:param value="${param.formExamName}"/>
                     <sql:param value='${sessionScope.fid}'/>
@@ -71,9 +73,10 @@
                     <sql:param value='${param.formNoOfQuestions}'/>
                     <sql:param value="${param.formStartTime}"/>
                     <sql:param value='${param.formEndTime}'/>
+                    <sql:param value='${param.formLoginTime}'/>
                     <sql:param value="${param.formRandomizeQuestions}"/>
-                    <sql:param value='${param.formNavigateBetweenQuestions}'/>
-                    <sql:param value='${param.formAllQuestionsAtATime}'/>
+                    <sql:param value="${param.formRandomizeOptions}"/>
+                    <sql:param value='${param.formExamMode}'/>
                     <sql:param value='${param.formEnableFeedback}'/>
                     <sql:param value='${param.formEnableResults}'/>
                     
@@ -82,7 +85,7 @@
 
             <c:otherwise>
                 <sql:update dataSource="${db}" var="add">
-                    insert into exam(examName,facultyId,listName,noOfQuestions,startTime,endTime,totalMarks,randomizeQuestions,navigateBetweenQuestions,allQuestionsAtATime,enableFeedbackForm,enableResultsToStudents) values(?,?,?,?,?,?,?,?,?,?,?,?)
+                    insert into exam(examName,facultyId,listName,noOfQuestions,startTime,endTime,loginTime,totalMarks,randomizeQuestions,randomizeOptions,mode,enableFeedbackForm,enableResultsToStudents) values(?,?,?,?,?,?,?,?,?,?,?,?,?)
 
                     <sql:param value="${param.formExamName}"/>
                     <sql:param value='${sessionScope.fid}'/>
@@ -90,10 +93,11 @@
                     <sql:param value='${param.formNoOfQuestions}'/>
                     <sql:param value="${param.formStartTime}"/>
                     <sql:param value='${param.formEndTime}'/>
+                    <sql:param value='${param.formLoginTime}'/>
                     <sql:param value="${param.formTotalMarks}"/>
                     <sql:param value="${param.formRandomizeQuestions}"/>
-                    <sql:param value='${param.formNavigateBetweenQuestions}'/>
-                    <sql:param value='${param.formAllQuestionsAtATime}'/>
+                    <sql:param value="${param.formRandomizeOptions}"/>
+                    <sql:param value='${param.formExamMode}'/>
                     <sql:param value='${param.formEnableFeedback}'/>
                     <sql:param value='${param.formEnableResults}'/>
                 </sql:update>  
@@ -109,5 +113,6 @@
                 <c:redirect url="examFailedToCreate.jsp"/>
             </c:otherwise>
         </c:choose>
+                    <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body> 
 </html>

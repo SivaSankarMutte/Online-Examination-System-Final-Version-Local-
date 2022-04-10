@@ -34,17 +34,18 @@
         
         <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
         <sql:update dataSource="${db}" var="add">  
-            update exam set examName=?,facultyId=?,listName=?,noOfQuestions=?,startTime=?,endTime=?,totalMarks=?,randomizeQuestions=?,navigateBetweenQuestions=?,allQuestionsAtATime=?,enableFeedbackForm=?,enableResultsToStudents=? where examId=?
+            update exam set examName=?,facultyId=?,listName=?,noOfQuestions=?,startTime=?,endTime=?,loginTime=?,totalMarks=?,randomizeQuestions=?,randomizeOptions=?,mode=?,enableFeedbackForm=?,enableResultsToStudents=? where examId=?
             <sql:param value="${param.formExamName}"/>
             <sql:param value="${sessionScope.fid}"/>
             <sql:param value='${param.formListName}'/>
             <sql:param value='${param.formNoOfQuestions}'/>
             <sql:param value='${param.formStartTime}'/>
             <sql:param value='${param.formEndTime}'/>
+            <sql:param value='${param.formLoginTime}'/>
             <sql:param value='${param.formTotalMarks}'/>
             <sql:param value='${param.formRandomizeQuestions}'/>
-            <sql:param value='${param.formNavigateBetweenQuestions}'/>
-            <sql:param value='${param.formAllQuestionsAtATime}'/>
+            <sql:param value='${param.formRandomizeOptions}'/>
+            <sql:param value='${param.formExamMode}'/>
             <sql:param value='${param.formEnableFeedbackForm}'/>
             <sql:param value='${param.formEnableResults}'/>
             <sql:param value='${sessionScope.eid}'/>
@@ -59,6 +60,7 @@
                 <c:redirect url="examFailedToUpdate.jsp"/>
             </c:otherwise>
         </c:choose>
+            <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>
 

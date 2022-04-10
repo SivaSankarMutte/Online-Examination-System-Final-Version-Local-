@@ -78,7 +78,7 @@
                     <li class="nav-item"><a class="nav-link" href="uploadQuestionsFile.jsp"><i class="icon ion-pie-graph"></i>Upload Questions CSV</a></li>
                     
                         <li class="nav-item">
-                            <form method="post" action="sendMailToStudent" class="nav-link">
+                            <form method="post" action="sendMailToStudentsYesOrNo.jsp" class="nav-link">
                                 <button type="submit" class="nav-link" style="all:unset;"><i class="far fa-user-circle"></i><span>Send Exam Link to Students</span></button>
                             </form>
                         </li>
@@ -106,11 +106,11 @@
                             
                             <c:otherwise>
                                 <sql:query dataSource="${db}" var="aqatresult">
-                                    select allQuestionsAtATime from exam where examId=?
+                                    select mode from exam where examId=?
                                     <sql:param value="${sessionScope.eid}"/>
                                 </sql:query>
                                 <c:forEach var="row2" items="${aqatresult.rows}">
-                                    <c:if test="${row2.allQuestionsAtATime==0}">
+                                    <c:if test="${row2.mode!=1}">
                                         <li class="nav-item">
                                             <form method="post" action="eachQuestionStatistics.jsp" class="nav-link">
                                                 <% 
@@ -266,13 +266,13 @@
                                                 <td>${row.regdNo}</td>
                                                 <td>${row.studentEmail}</td>
                                                 <td>
-                                                    <form method="post" action="updateStudent.jsp">
+                                                    <form method="post" action="updateStudentOfGivenList.jsp">
                                                         <input type="hidden" name="studentId" value="${row.studentId}"/>
                                                         <input type="submit" class="btn btn-outline-warning" value="UPDATE">
                                                     </form>
                                                 </td>
                                                 <td>
-                                                    <form method="post" action="deleteStudentYesNo.jsp">
+                                                    <form method="post" action="deleteStudentYesNoOfGivenList.jsp">
                                                         <input type="hidden" name="studentId" value="${row.studentId}"/>
                                                         <input type="submit" class="btn btn-outline-danger" value="DELETE">
                                                     </form>
@@ -326,6 +326,7 @@
     <script src="assets\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>

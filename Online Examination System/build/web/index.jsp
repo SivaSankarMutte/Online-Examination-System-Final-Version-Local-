@@ -377,6 +377,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js?h=b122fb9afd3c87b8dfdbf4f3ce094a83"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>

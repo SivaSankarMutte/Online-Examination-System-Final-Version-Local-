@@ -25,6 +25,7 @@
                 <h4>Results Not enabled for this exam</h4>
             </div>
         </div>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>
             

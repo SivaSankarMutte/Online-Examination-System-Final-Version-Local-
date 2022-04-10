@@ -25,5 +25,6 @@
         <a href="updateAdmin.jsp?adminIdurl=${sessionScope.sessionAdminId}" class="btn btn-outline-warning my-2">Retry to Update Admin</a>
         <% session.removeAttribute("sessionAdminId"); %>
         <a href="viewAdmins.jsp" class="btn btn-outline-warning my-2">Back To view Admin Rows</a>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>

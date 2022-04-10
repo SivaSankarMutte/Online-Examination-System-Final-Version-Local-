@@ -28,15 +28,16 @@ public class facultyValidation extends HttpServlet {
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true","siva","0000");
             PreparedStatement ps=con.prepareStatement("select * from faculty where email=? and password=?");
             ps.setString(1,email);
-            ps.setString(2,psw);
+            ps.setString(2,cipher.AES.encrypt(psw));
             ResultSet rs=ps.executeQuery();
             
             if(rs.next())  
             {
                 HttpSession session=request.getSession();
+                session.setMaxInactiveInterval(-1);
+                System.out.println("FID Session Created");
                 String fid = rs.getString(1);
-                session.setAttribute("fid",fid);
-                   
+                session.setAttribute("fid",fid);   
                 response.sendRedirect("facultyHome.jsp");
             }
             response.sendRedirect("facultyLoginInvalid.jsp");   

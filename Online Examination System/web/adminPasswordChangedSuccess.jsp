@@ -21,5 +21,6 @@
         %>
         <h1>Admin Password Changed Successfully</h1>
         <a href="adminHome.jsp">Admin Home</a>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>

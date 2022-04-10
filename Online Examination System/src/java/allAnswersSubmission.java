@@ -26,7 +26,7 @@ import java.util.Arrays;
  */
 public class allAnswersSubmission extends HttpServlet{
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
         HttpSession session=request.getSession();
         PrintWriter pw=response.getWriter();
@@ -47,9 +47,9 @@ public class allAnswersSubmission extends HttpServlet{
             
             for(int i=0;i<questionsRecords.size();i++)
             {
-                if(questionsRecords.get(i).getIsBlankType()==1)
+                if(questionsRecords.get(i).getQuestionType()==1)
                 {
-                    if(!request.getParameter(Integer.toString(questionsRecords.get(i).getQuestionId())).equals(""))
+                    if(request.getParameter(Integer.toString(questionsRecords.get(i).getQuestionId()))!=null && !request.getParameter(Integer.toString(questionsRecords.get(i).getQuestionId())).equals(""))
                     {
                         if(request.getParameter(Integer.toString(questionsRecords.get(i).getQuestionId())).equalsIgnoreCase(questionsRecords.get(i).getRealAns()))
                         {
@@ -65,7 +65,7 @@ public class allAnswersSubmission extends HttpServlet{
                         st.executeUpdate("insert into examSpecialTable"+eid+" (qid,regdNo,marksObtained)values('"+questionsRecords.get(i).getQuestionId()+"','"+regdNo+"','"+0+"')");      
                     }
                 }
-                else if(questionsRecords.get(i).getHaveMultipleAns()==0)
+                else if(questionsRecords.get(i).getQuestionType()==0)
                 {
                     if(request.getParameter(Integer.toString(questionsRecords.get(i).getQuestionId()))!=null)
                     {
@@ -122,6 +122,13 @@ public class allAnswersSubmission extends HttpServlet{
             {
                 response.sendRedirect("examSubmissionFailure.jsp");
             }
+            
+            String sqlUpdate2="update studentsAttempts"+eid+ " set status=2 where regdNo=?";
+            PreparedStatement ps3 = con.prepareStatement(sqlUpdate2);
+            ps3.setString(1,regdNo);
+            ps3.executeUpdate();
+            
+            
             response.sendRedirect("examSubmisssionSuccess.jsp");
             
         }

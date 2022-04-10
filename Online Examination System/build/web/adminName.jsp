@@ -29,5 +29,6 @@
         <c:forEach var="row" items="${profile.rows}" varStatus="loop">
             ${row.adminName}
         </c:forEach>
+            <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>

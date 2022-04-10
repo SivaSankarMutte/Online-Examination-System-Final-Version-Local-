@@ -54,6 +54,12 @@ public class calculateMarksForAStudent extends HttpServlet{
             {
                 response.sendRedirect("examSubmissionFailure.jsp");
             }
+            
+            String sqlUpdate2="update studentsAttempts"+eid+ " set status=2 where regdNo=?";
+            PreparedStatement ps3 = con.prepareStatement(sqlUpdate2);
+            ps3.setString(1,regdNo);
+            ps3.executeUpdate();
+            
             response.sendRedirect("examSubmisssionSuccess.jsp");
             
         }

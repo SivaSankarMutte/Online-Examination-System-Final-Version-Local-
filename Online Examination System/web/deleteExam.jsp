@@ -34,7 +34,7 @@
         <c:if test="${count>=1}">
             <c:redirect url="facultyHome.jsp"/>
         </c:if>
-           
+           <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>
 

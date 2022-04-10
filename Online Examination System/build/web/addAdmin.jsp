@@ -167,7 +167,7 @@
                         <input type="email" placeholder="Enter Email" class="form-control" name="adminEmail">
 
                         Select Department:<br/>
-                        <select name="adminDept">
+                        <select name="adminDept" class="form-control">
                             <option value="CSE">CSE</option>
                             <option value="ECE">ECE</option>
                             <option value="EEE">EEE</option>
@@ -192,12 +192,17 @@
                 
                 
                 </div>
+             <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © BEC 2021</span></div>
+                </div>
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
     <script src="assets\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>

@@ -13,5 +13,6 @@
     </head>
     <body>
         <h1>questionsAccessingError</h1>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>

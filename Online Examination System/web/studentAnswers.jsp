@@ -100,11 +100,11 @@
                             
                             <c:otherwise>
                                 <sql:query dataSource="${db}" var="aqatresult">
-                                    select allQuestionsAtATime from exam where examId=?
+                                    select mode from exam where examId=?
                                     <sql:param value="${sessionScope.eid}"/>
                                 </sql:query>
                                 <c:forEach var="row2" items="${aqatresult.rows}">
-                                    <c:if test="${row2.allQuestionsAtATime==0}">
+                                    <c:if test="${row2.mode!=1}">
                                         <li class="nav-item">
                                             <form method="post" action="eachQuestionStatistics.jsp" class="nav-link">
                                                 <% 
@@ -318,10 +318,10 @@
                                                 Option4 :  ${q.opt4} <br/>
                                             </c:if>
                                             Correct Answer : ${q.ans} <br/>
-                                            Student Answer : 
+
                                         </div>
                                     </c:when>
-                                    <c:when test="${q.ans==e.selectedOptions}">
+                                    <c:when test="${e.marksObtained>0}">
                                         <div class="jumbotron bg-success">
                                             <h4>${q.questionName}</h4>
                                             Option1 :  ${q.opt1} <br>
@@ -357,6 +357,28 @@
                             </c:forEach>
                                     <c:out value="-"/>
                         </c:forEach>
+                            
+                            
+                        <sql:query dataSource="${db}" var="unseen">
+                            select * from ${sessionScope.questionsTableName} where examId=? and questionId not in(select qid from ${sessionScope.examSpecialTableName} where regdNo=?);
+                            <sql:param value="${sessionScope.eid}"/>
+                            <sql:param value="${param.formRegdNo}"/>
+                        </sql:query>
+                        <c:forEach items="${unseen.rows}" var="u">  
+                            <div class="jumbotron bg-light">
+                                <h4>${u.questionName}</h4>
+                                    Option1 :  ${u.opt1} <br>
+                                    Option2 :  ${u.opt2} <br/>
+                                    <c:if test='${u.opt3!="" || u.opt3!=null}'>
+                                        Option3 :  ${u.opt3} <br/>
+                                    </c:if>
+                                    <c:if test='${u.opt4!="" || u.opt4!=null}'>
+                                        Option4 :  ${u.opt4} <br/>
+                                    </c:if>
+                                        Correct Answer : ${u.ans} <br/>
+                            </div>
+                        </c:forEach>
+                            
                 </div>
             </div>
             <footer class="bg-white sticky-footer">
@@ -370,6 +392,7 @@
     <script src="assets\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>

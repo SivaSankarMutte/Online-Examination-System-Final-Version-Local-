@@ -29,7 +29,7 @@ public class adminValidation extends HttpServlet {
             Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true","siva","0000");
             PreparedStatement ps=con.prepareStatement("select * from admin where email=? and password=?");
             ps.setString(1, email);
-            ps.setString(2,psw);
+            ps.setString(2,cipher.AES.encrypt(psw));
             ResultSet rs=ps.executeQuery();
             
             if(rs.next())  

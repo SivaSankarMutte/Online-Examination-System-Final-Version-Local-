@@ -44,9 +44,9 @@
                                     <form class="user" action="sendOTPToFacultyServlet" method="post">
                                         <div class="mb-3"><input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." name="email"></div><button class="btn btn-primary d-block btn-user w-100" type="submit">Reset Password</button>
                                     </form>
-                                    <div class="text-center">
+<!--                                    <div class="text-center">
                                         <hr><a class="small" href="register.html">Create an Account!</a>
-                                    </div>
+                                    </div>-->
                                     <div class="text-center"><a class="small" href="facultyLogin.jsp">Already have an account? Login!</a></div>
                                 </div>
                             </div>
@@ -59,6 +59,7 @@
     <script src="assets\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>

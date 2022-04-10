@@ -17,11 +17,14 @@
     </head>
     <body>
         <% if(session.getAttribute("otp").equals(request.getParameter("formOtp")))
-        { %>
+        {
+            String password=cipher.AES.encrypt(request.getParameter("formPassword"));
+            request.setAttribute("password", password);
+        %>
             <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
             <sql:update dataSource="${db}" var="add">  
                 update faculty set password=? where email like ?
-                <sql:param value="${param.formPassword}"/>
+                <sql:param value="${requestScope['password']}"/>
                 <sql:param value='${sessionScope.email}'/>
             </sql:update>  
         <c:choose>
@@ -41,5 +44,6 @@
         out.print(session.getAttribute("otp"));
         out.print(request.getParameter("formOtp"));
     }%>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>

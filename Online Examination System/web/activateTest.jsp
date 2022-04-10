@@ -44,6 +44,7 @@ and open the template in the editor.
         </sql:update>  
         
         <c:redirect url="addQuestionForm.jsp"/>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
         
     </body>
 </html>

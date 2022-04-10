@@ -21,5 +21,6 @@
         <a href="updateStudent.jsp?studentIdurl=${sessionScope.sessionStudentId}" class="btn btn-outline-warning my-2">Retry to Update Student</a>
         <% session.removeAttribute("sessionStudentId"); %>
         <a href="viewStudents.jsp" class="btn btn-outline-warning my-2">Back To view Student Rows</a>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>

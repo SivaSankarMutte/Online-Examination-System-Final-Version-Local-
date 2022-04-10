@@ -50,6 +50,7 @@
                 </form>
             </div>
         </div>
+            <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>
 

@@ -17,5 +17,6 @@
         <div>Please, retry once again..!</div>
         
         <jsp:include page="facultyForgotPassword.jsp"/>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>

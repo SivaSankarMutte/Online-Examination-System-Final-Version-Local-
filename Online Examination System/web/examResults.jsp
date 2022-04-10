@@ -54,6 +54,15 @@
             {
                 response.sendRedirect("facultyLogin.jsp");
             }
+            if(session.getAttribute("eid")==null)
+            {
+                response.sendRedirect("facultyHome.jsp");
+            }
+        %>
+        <% 
+            HttpSession ses=request.getSession();
+            String resultsTableName = "results"+ses.getAttribute("eid").toString(); 
+            ses.setAttribute("resultsTableName", resultsTableName);
         %>
      
         <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
@@ -81,7 +90,7 @@
                     <li class="nav-item"><a class="nav-link" href="uploadQuestionsFile.jsp"><i class="icon ion-pie-graph"></i>Upload Questions CSV</a></li>
                     
                         <li class="nav-item">
-                            <form method="post" action="sendMailToStudent" class="nav-link">
+                            <form method="post" action="sendMailToStudentsYesOrNo.jsp" class="nav-link">
                                 <button type="submit" class="nav-link" style="all:unset;"><i class="far fa-user-circle"></i><span>Send Exam Link to Students</span></button>
                             </form>
                         </li>
@@ -95,11 +104,7 @@
                             <c:when test="${row.activation!=1}">
                                 <li class="nav-item">
                                     <form method="post" action="examResults.jsp" class="nav-link">
-                                        <% 
-                                            HttpSession ses=request.getSession();
-                                            String resultsTableName = "results"+ses.getAttribute("eid").toString(); 
-                                            ses.setAttribute("resultsTableName", resultsTableName);
-                                        %>
+                                        
                                         <button type="submit" class="nav-link" style="all:unset;"><i class="far fa-user-circle"></i><span>Results</span></button>
                                     </form>
                                 </li>
@@ -109,11 +114,11 @@
                             
                             <c:otherwise>
                                 <sql:query dataSource="${db}" var="aqatresult">
-                                    select allQuestionsAtATime from exam where examId=?
+                                    select mode from exam where examId=?
                                     <sql:param value="${sessionScope.eid}"/>
                                 </sql:query>
                                 <c:forEach var="row2" items="${aqatresult.rows}">
-                                    <c:if test="${row2.allQuestionsAtATime==0}">
+                                    <c:if test="${row2.mode!=1}">
                                         <li class="nav-item">
                                             <form method="post" action="eachQuestionStatistics.jsp" class="nav-link">
                                                 <% 
@@ -233,7 +238,7 @@
                 
                 <div class="container-fluid">
                     <h3 class="text-dark mb-4">Exam Results</h3>
-                    <nav class="navbar navbar-expand bg-dark navbar-dark" id="navbar">
+                    <nav class="navbar navbar-expand bg-dark navbar-dark rounded" id="navbar">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -248,7 +253,7 @@
                         <c:forEach var="row" items="${present.rows}">
                             <span style="font-size: 25px;color: orchid"><c:out value="${row.presentCount}"/></span>
                         </c:forEach>
-                    </li> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </li> &nbsp;&nbsp;&nbsp;
                     
                     <li class="nav-item text-light">
                         <c:out value="Absentees"/>
@@ -258,32 +263,32 @@
                         <c:forEach var="row" items="${absent.rows}">
                             <span style="font-size: 25px;color: red"><c:out value="${row.absentCount}"/></span>
                         </c:forEach>
-                    </li> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </li> &nbsp;&nbsp;&nbsp;
                     
                     <li class="nav-item text-light">
                         <c:out value="Highest Marks"/>
                         <sql:query dataSource="${db}" var="hresult">
-                            select max(totalMarks) maxi from ${sessionScope.resultsTableName} where totalMarks!='A';
+                            select max(0+totalMarks) maxi from ${sessionScope.resultsTableName} where totalMarks!='A';
                         </sql:query>
                         <c:forEach var="row" items="${hresult.rows}">
                             <span style="font-size: 25px;color: goldenrod"><c:out value="${row.maxi}"/></span>
                         </c:forEach>
-                    </li> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </li> &nbsp;&nbsp;&nbsp;
                     
                     <li class="nav-item text-light">
                         <c:out value="Average Marks"/>
                         <sql:query dataSource="${db}" var="aresult">
-                            select avg(totalMarks) average from ${sessionScope.resultsTableName} where totalMarks!='A';
+                            select avg(0+totalMarks) average from ${sessionScope.resultsTableName} where totalMarks!='A';
                         </sql:query>
                         <c:forEach var="row" items="${aresult.rows}">
                             <span style="font-size: 25px;color: lightcoral"><fmt:formatNumber type="number" maxFractionDigits="2" minFractionDigits="2" value="${row.average}"/></span>
                         </c:forEach>
-                    </li> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </li> &nbsp;&nbsp;&nbsp;
                     
                     <li class="nav-item text-light">
                         <c:out value="Least Marks"/>
                         <sql:query dataSource="${db}" var="lresult">
-                            select min(totalMarks) mini from ${sessionScope.resultsTableName} where totalMarks!='A';
+                            select min(0+totalMarks) mini from ${sessionScope.resultsTableName} where totalMarks!='A';
                         </sql:query>
                         <c:forEach var="row" items="${lresult.rows}">
                             <span style="font-size: 25px;color: greenyellow"><c:out value="${row.mini}"/></span>
@@ -311,7 +316,19 @@
                     
                     <li class="nav-item">
                         <form method="post" action="downloadResults.jsp">
-                            <input type="submit" value="Download CSV" class="btn btn-outline-primary">
+                            <input type="submit" value="Totals" class="btn btn-outline-primary">
+                        </form>
+                    </li> &nbsp;&nbsp;&nbsp;
+                    
+                    <li class="nav-item">
+                        <form method="post" action="downloadStudentsResults.jsp">
+                            <input type="submit" value="Status" class="btn btn-outline-primary">
+                        </form>
+                    </li> &nbsp;&nbsp;&nbsp;
+                    
+                    <li class="nav-item">
+                        <form method="post" action="downloadResponses.jsp">
+                            <input type="submit" value="Results" class="btn btn-outline-primary">
                         </form>
                     </li> &nbsp;&nbsp;&nbsp;
                     
@@ -417,7 +434,7 @@
     <script src="assets\js\chart.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js"></script>
-    
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>

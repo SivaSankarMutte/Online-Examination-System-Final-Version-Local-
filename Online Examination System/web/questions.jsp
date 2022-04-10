@@ -75,7 +75,7 @@
                     <li class="nav-item"></li>
                     <li class="nav-item"><a class="nav-link" href="uploadQuestionsFile.jsp"><i class="icon ion-pie-graph"></i>Upload Questions CSV</a></li>
                        <li class="nav-item">
-                            <form method="post" action="sendMailToStudent" class="nav-link">
+                            <form method="post" action="sendMailToStudentsYesOrNo.jsp" class="nav-link">
                                 <button type="submit" class="nav-link" style="all:unset;"><i class="far fa-user-circle"></i><span>Send Exam Link to Students</span></button>
                             </form>
                         </li>
@@ -103,11 +103,11 @@
                             
                             <c:otherwise>
                                 <sql:query dataSource="${db}" var="aqatresult">
-                                    select allQuestionsAtATime from exam where examId=?
+                                    select mode from exam where examId=?
                                     <sql:param value="${sessionScope.eid}"/>
                                 </sql:query>
                                 <c:forEach var="row2" items="${aqatresult.rows}">
-                                    <c:if test="${row2.allQuestionsAtATime==0}">
+                                    <c:if test="${row2.mode!=1}">
                                         <li class="nav-item">
                                             <form method="post" action="eachQuestionStatistics.jsp" class="nav-link">
                                                 <% 
@@ -235,14 +235,14 @@
                 
                 <c:when test="${sessionScope.message=='success'}">
                     <div class="alert alert-dismissible bg-success fade show" id="dismiss">
-                        <div><strong>Success! </strong>Question added Successfully</div>
+                        <div><strong>Success! </strong>Question updated Successfully</div>
                         <a href="#" class="close" data-dismiss="alert" id="x" aria-label="close">&times;</a>
                     </div>
                     <c:remove var="message" scope="session"/>
                 </c:when>
                 <c:otherwise>
                     <div class="alert alert-dismissible bg-danger fade show" id="dismiss">
-                        <div><strong>Failed! </strong>Question failed to add</div>
+                        <div><strong>Failed! </strong>Question failed to update</div>
                         <a href="#" class="close" data-dismiss="alert" id="x" aria-label="close">&times;</a>
                     </div>
                     <c:remove var="message" scope="session"/>
@@ -329,7 +329,7 @@
                                                 <td>${row.negativeMarks}</td>
 
                                                 <td>
-                                                    <a href="updateQuestion.jsp?questionIdurl=${row.questionId}" class="btn btn-outline-warning my-2">Update</a>
+                                                    <a href="updateQuestionAlongWithImages.jsp?questionIdurl=${row.questionId}" class="btn btn-outline-warning my-2">Update</a>
                                                 </td>
                                                 <td>
                                                     <a href="removeQuestionYesNo.jsp?questionIdurl=${row.questionId}" class="btn btn-outline-danger my-2">Delete</a>
@@ -389,6 +389,7 @@
     <script src="assets\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>

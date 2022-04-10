@@ -20,5 +20,6 @@ and open the template in the editor.
         </style>   
     </head>
     <%@ include file="navbar.jsp" %>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </html>
 

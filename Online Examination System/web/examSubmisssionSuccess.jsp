@@ -17,13 +17,26 @@
         <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
         <link rel="icon" type="text/css" href="images/test.png">
     </head>
+    
+    <script type="text/javascript">
+        function preventBack()
+        {
+            window.history.forward();
+
+        }
+        setTimeout("preventBack()",0);
+        window.onunload=function(){null};
+    </script>
     <body>
         <% 
             session.setAttribute("fexamId", session.getAttribute("examId").toString());
             session.setAttribute("fregdNo", session.getAttribute("regdNo").toString());
             session.removeAttribute("examId");
             session.removeAttribute("regdNo");
-        
+            session.removeAttribute("accessTest");
+            session.removeAttribute("accessAllQuestions");
+            session.removeAttribute("accessTestNavigationBetweenQuestions");
+            session.removeAttribute("accessTestQuestionTimeLimit");
         %>
         <div class="container mt-5">
             <div class="jumbotron bg-success">
@@ -38,8 +51,7 @@
                         <c:when test="${row.enableFeedbackForm==1}">                  
                             <form action="feedbackSubmission.jsp">
                                 <c:set scope="session" var="facultyId" value="${row.facultyId}"/>
-                                <textarea name="formFeedback" placeholder="Provide your Feedback here..." class="form-control">
-                                </textarea>
+                                <textarea name="formFeedback" placeholder="Provide your Feedback here..." class="form-control"></textarea>
                                 <center><input type="submit" value="Submit Feedback" class="btn btn-warning"></center>
                             </form>
                         </c:when>
@@ -48,7 +60,7 @@
                     <br/>
                     <c:if test="${row.enableResultsToStudents==1}">                  
                             <form action="studentAnswersVisibleToAStudent.jsp">
-                                <c:set scope="session" var="fid" value="${row.facultyId}"/>
+                                <c:set scope="session" var="fidForResults" value="${row.facultyId}"/>
                                 <input type="submit" value="View Answers" class="btn btn-outline-dark">
                             </form>
                         </c:if>
@@ -56,7 +68,7 @@
                 
             </div>
         </div>
-        
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
         
     </body>
 </html>

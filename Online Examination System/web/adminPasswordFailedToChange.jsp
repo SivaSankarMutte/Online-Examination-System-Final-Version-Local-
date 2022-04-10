@@ -22,5 +22,6 @@
         <h1>Admin Password Failed to Change!</h1>
         <a href="updateAdminPasswordForm.jsp">Retry to change Password</a>
         <a href="adminHome.jsp">Admin Home</a>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>

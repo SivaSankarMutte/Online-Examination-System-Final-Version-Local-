@@ -24,5 +24,6 @@
         <h1>Exam Created Successfully</h1>
         <a href="facultyHome.jsp" class="btn btn-success">Add Questions the Exam</a>
         <a href="facultyHome.jsp" class="btn btn-dark">Back</a>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>

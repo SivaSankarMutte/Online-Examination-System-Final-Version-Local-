@@ -29,7 +29,7 @@ public class giveExamId extends HttpServlet {
               
             String eid=request.getParameter("eid");
             HttpSession session=request.getSession();
-            String fid=(String) session.getAttribute("fid");
+            String fid=session.getAttribute("fid").toString();
             session.setAttribute("eid",eid);
             String listName=request.getParameter("listName");
             session.setAttribute("listName", listName);

@@ -29,13 +29,15 @@ and open the template in the editor.
             {
                 response.sendRedirect("facultyLogin.jsp");
             }
+            String password=cipher.AES.encrypt(request.getParameter("formFacultyPassword"));
+            request.setAttribute("password", password);
         %>
         <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
         <sql:update dataSource="${db}" var="add">  
             update faculty set facultyName=?,email=?,password=? where facultyId=?
             <sql:param value="${param.formFacultyName}"/>
             <sql:param value="${param.formFacultyEmail}"/>
-            <sql:param value="${param.formFacultyPassword}"/>
+            <sql:param value="${requestScope['password']}"/>
             <sql:param value="${sessionScope.fid}"/>
         </sql:update>  
         
@@ -47,7 +49,7 @@ and open the template in the editor.
                 <c:redirect url="facultyProfileFailedtoUpdate.jsp"/>
             </c:otherwise>
         </c:choose>
-           
+           <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>
 

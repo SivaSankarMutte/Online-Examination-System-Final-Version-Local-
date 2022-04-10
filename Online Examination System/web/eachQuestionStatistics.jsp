@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="assets\css\styles.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<!--    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
     <link rel="icon" type="text/css" href="images/test.png">
 
     <style>
@@ -81,7 +81,7 @@
                     <li class="nav-item"><a class="nav-link" href="uploadQuestionsFile.jsp"><i class="icon ion-pie-graph"></i>Upload Questions CSV</a></li>
                     
                         <li class="nav-item">
-                            <form method="post" action="sendMailToStudent" class="nav-link">
+                            <form method="post" action="sendMailToStudentsYesOrNo.jsp" class="nav-link">
                                 <button type="submit" class="nav-link" style="all:unset;"><i class="far fa-user-circle"></i><span>Send Exam Link to Students</span></button>
                             </form>
                         </li>
@@ -109,11 +109,11 @@
                             
                             <c:otherwise>
                                 <sql:query dataSource="${db}" var="aqatresult">
-                                    select allQuestionsAtATime from exam where examId=?
+                                    select mode from exam where examId=?
                                     <sql:param value="${sessionScope.eid}"/>
                                 </sql:query>
                                 <c:forEach var="row2" items="${aqatresult.rows}">
-                                    <c:if test="${row2.allQuestionsAtATime==0}">
+                                    <c:if test="${row2.mode!=1}">
                                         <li class="nav-item">
                                             <form method="post" action="eachQuestionStatistics.jsp" class="nav-link">
                                                 <% 
@@ -243,7 +243,7 @@
                     </sql:query>
 
                     <sql:query dataSource="${db}" var="result2">
-                        select questionId,questionName,opt1,opt2,opt3,opt4,isBlankType,ans from ${sessionScope.questionsTableName} where examId=?
+                        select questionId,questionName,opt1,opt2,opt3,opt4,questionType,ans from ${sessionScope.questionsTableName} where examId=?
                         <sql:param value="${sessionScope.eid}"/>
                     </sql:query>
                     <c:forEach var="qdata" items="${result2.rows}">
@@ -361,38 +361,13 @@
                                                     </div>
                                                     
                                                 </div>
-                                                <c:if test="${qdata.isBlankType==0}">       
+                                                <c:if test="${qdata.questionType!=1}">       
                                                     <div class="row">
                                                          <div class="col-lg-10 col-xl-4">
                                                              <div class="card-body">
                                                                  <div class="chart-area"><canvas data-bss-chart="{&quot;type&quot;:&quot;bar&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Option1&quot;,&quot;Option2&quot;,&quot;Option3&quot;,&quot;Option4&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Answered&quot;,&quot;backgroundColor&quot;:&quot;#4e73df&quot;,&quot;borderColor&quot;:&quot;#4e73df&quot;,&quot;data&quot;:[&quot;${r6data.opt1Count}&quot;,&quot;${r7data.opt2Count}&quot;,&quot;${r8data.opt3Count}&quot;,&quot;${r9data.opt4Count}&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;],&quot;drawOnChartArea&quot;:false},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;fontStyle&quot;:&quot;normal&quot;,&quot;padding&quot;:20}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;fontStyle&quot;:&quot;normal&quot;,&quot;padding&quot;:20}}]}}}"></canvas></div>
                                                              </div>  
-                                                             <div class="card-body">
-                                                                 <div id="${qdata.questionId}" style="width:600px;max-width:1200px; height:400px;"></div>
-
-                                                                    <script>
-                                                                    google.charts.load('current', {'packages':['corechart']});
-                                                                    google.charts.setOnLoadCallback(drawChart);
-
-                                                                    function drawChart() {
-                                                                    var data = google.visualization.arrayToDataTable([
-                                                                      ['Answers', 'Answers'],
-                                                                      ['Option1',${r6data.opt1Count}],
-                                                                      ['Option2',${r7data.opt2Count}],
-                                                                      ['Option3',${r8data.opt3Count}],
-                                                                      ['Option4',${r9data.opt4Count}],
-                                                                    ]);
-
-                                                                    var options = {
-                                                                      title:'Options Opted By Students',
-                                                                      backgroundColor: 'transparent',
-                                                                    };
-
-                                                                    var chart = new google.visualization.BarChart(document.getElementById('${qdata.questionId}'));
-                                                                      chart.draw(data, options);
-                                                                    }
-                                                                    </script>
-                                                             </div>     
+                                                               
                                                          </div>   
                                                     </div>
                                                 </c:if>            
@@ -425,6 +400,7 @@
     <script src="assets\js\chart.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
     
 </body>
 

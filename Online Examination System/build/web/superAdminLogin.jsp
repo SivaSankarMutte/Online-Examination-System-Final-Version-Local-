@@ -34,7 +34,7 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h4 class="text-dark mb-4">Welcome Back!</h4>
+                                        <h4 class="text-dark mb-4">Welcome Back SuperAdmin!</h4>
                                     </div>
                                     <form class="user" action="superAdminValidation" method="post">
                                         <div class="mb-3"><input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." name="superAdminEmail"></div>
@@ -46,7 +46,7 @@
                                         </div><button class="btn btn-primary d-block btn-user w-100" type="submit">Login</button>
                                         <hr>
                                     </form>
-                                    <div class="text-center"><a class="small" href="forgot-password.html">Forgot Password?</a></div>
+                                    <div class="text-center"><a class="small" href="superAdminForgotPassword.jsp">Forgot Password?</a></div>
                                 </div>
                             </div>
                         </div>
@@ -57,6 +57,7 @@
     </div>
     <script src="assets\bootstrap\js\bootstrap.min.js"></script>
     <script src="assets\js\theme.js"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>

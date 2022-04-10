@@ -36,10 +36,10 @@ and open the template in the editor.
         
         <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
         <sql:update dataSource="${db}" var="add">  
-            update faculty set facultyName=?,email=?,password=? where facultyId=?
+            update faculty set facultyName=?,email=? where facultyId=?
             <sql:param value="${param.formFacultyName}"/>
             <sql:param value="${param.formFacultyEmail}"/>
-            <sql:param value="${param.formFacultyPassword}"/>
+            
             <sql:param value="${sessionScope.sessionFacultyId}"/>
         </sql:update>  
         <c:choose>
@@ -52,6 +52,6 @@ and open the template in the editor.
                 <c:redirect url="facultyFailedToUpdate.jsp"/>
             </c:otherwise>
         </c:choose>
-    
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </html>
 

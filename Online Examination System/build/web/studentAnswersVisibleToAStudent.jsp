@@ -14,13 +14,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Student Answers</title>
+        <title>Your Answers</title>
         <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
         <link rel="icon" type="text/css" href="images/test.png">
     </head>
     <body style="overflow-x:hidden">
         <% 
-            if(session.getAttribute("fid")==null)
+            if(session.getAttribute("fidForResults")==null)
             {
                 response.sendRedirect("resultsNotEnabled.jsp");
             }
@@ -28,13 +28,12 @@
         <%
             HttpSession ses1=request.getSession();
             ses1.setAttribute("examSpecialTableName", "examSpecialTable"+session.getAttribute("fexamId").toString());
-            ses1.setAttribute("questionsTableName", "questions"+session.getAttribute("fid").toString());
+            ses1.setAttribute("questionsTableName", "questions"+session.getAttribute("fidForResults").toString());
         %>
-        <jsp:include page="base.jsp"/>
         <nav class="navbar navbar-expand bg-dark navbar-dark" id="navbar">
             <% 
                 HttpSession ses3=request.getSession();
-                String questionsTableName = "questions"+ses3.getAttribute("fid").toString(); 
+                String questionsTableName = "questions"+ses3.getAttribute("fidForResults").toString(); 
                 ses3.setAttribute("questionsTableName", questionsTableName);
             %>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -130,10 +129,10 @@
                                             Option4 :  ${q.opt4} <br/>
                                         </c:if>
                                         Correct Answer : ${q.ans} <br/>
-                                        Student Answer : 
+
                                     </div>
                                 </c:when>
-                                <c:when test="${q.ans==e.selectedOptions}">
+                                <c:when test="${e.marksObtained>0}">
                                     <div class="jumbotron bg-success">
                                         <h4>${q.questionName}</h4>
                                         Option1 :  ${q.opt1} <br>
@@ -168,8 +167,30 @@
                             </c:choose>
                         </c:forEach>
                 </c:forEach>
+                
+                <sql:query dataSource="${db}" var="unseen">
+                    select * from ${sessionScope.questionsTableName} where examId=? and questionId not in(select qid from ${sessionScope.examSpecialTableName} where regdNo=?);
+                    <sql:param value="${sessionScope.fexamId}"/>
+                    <sql:param value="${sessionScope.fregdNo}"/>
+                </sql:query>
+                <c:forEach items="${unseen.rows}" var="u">  
+                    <div class="jumbotron bg-light">
+                        <h4>${u.questionName}</h4>
+                            Option1 :  ${u.opt1} <br>
+                            Option2 :  ${u.opt2} <br/>
+                            <c:if test='${u.opt3!="" || u.opt3!=null}'>
+                                Option3 :  ${u.opt3} <br/>
+                            </c:if>
+                            <c:if test='${u.opt4!="" || u.opt4!=null}'>
+                                Option4 :  ${u.opt4} <br/>
+                            </c:if>
+                                Correct Answer : ${u.ans} <br/>
+                    </div>
+                </c:forEach>
+                        
             </div>
         </div>
+            <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>
             

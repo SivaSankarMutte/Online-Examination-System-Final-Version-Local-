@@ -192,6 +192,11 @@
                                 </td>
                             </tr>
                             <tr>
+                                    <td colspan="2">
+                                        <p align="center"><B>Format : RegdNo,Email</B>
+                                    </td>
+                                </tr>
+                            <tr>
                                 <td>
                                     <b>Choose the file To Upload:</b>
                                 </td>
@@ -215,6 +220,7 @@
                                 </td>
                             </tr>
                         </table>
+                        <br/><br/><br/>
                     </center> 
                 </FORM>
             </c:if>
@@ -234,6 +240,7 @@
     <script src="assets\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>

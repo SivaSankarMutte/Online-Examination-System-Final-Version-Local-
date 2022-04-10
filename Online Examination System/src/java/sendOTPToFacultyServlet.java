@@ -37,14 +37,13 @@ public class sendOTPToFacultyServlet extends HttpServlet {
                 psw[i]=numbers.charAt(random.nextInt(10));  //10 is numbers.length()
             }
             String otp=new String(psw);
-            sendMailToFaculty.send(request.getParameter("email"),"OTP to Reset your Password","Don't share it to anyone. Your OTP to reset your Password is : "+otp);
+            sendMailToFaculty.send(request.getParameter("email"),"OTP to Reset your Password","Don't share it to anyone. Your OTP to reset your Password is : <h1>"+otp+"</h1>");
             session.setAttribute("otp", otp);
             session.setAttribute("email",request.getParameter("email"));
             response.sendRedirect("facultyResetPassword.jsp");
         }
         catch(Exception e)
         {
-            System.out.println(e);
             response.sendRedirect("OTPFailedToSend.jsp");
         }
     }

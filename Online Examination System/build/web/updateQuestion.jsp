@@ -108,11 +108,11 @@
                             
                             <c:otherwise>
                                 <sql:query dataSource="${db}" var="aqatresult">
-                                    select allQuestionsAtATime from exam where examId=?
+                                    select mode from exam where examId=?
                                     <sql:param value="${sessionScope.eid}"/>
                                 </sql:query>
                                 <c:forEach var="row2" items="${aqatresult.rows}">
-                                    <c:if test="${row2.allQuestionsAtATime==0}">
+                                    <c:if test="${row2.mode!=1}">
                                         <li class="nav-item">
                                             <form method="post" action="eachQuestionStatistics.jsp" class="nav-link">
                                                 <% 
@@ -243,45 +243,87 @@
                 <c:forEach items="${rs.rows}" var="row">
                     <legend class="bg-dark text-light"> <h2>Updating <c:out value='${row.questionName}'/> Question</h2></legend>
                     
-                    <p>Is this question have multiple answers?</p>
-                    <c:choose>
-                        <c:when test="${row.haveMultipleAns==0}">
-                            <label><input type="radio" name="formHaveMultipleAns" value="1" class="form-control-radio" required>Yes</label>
-                            <label><input type="radio" name="formHaveMultipleAns" value="0" class="form-control-radio" checked>No</label>
-                            <br/><br/>
-                        </c:when>
-                        <c:otherwise>
-                            <input type="radio" name="formHaveMultipleAns" value="1" class="form-control-radio" required checked>Yes
-                            <input type="radio" name="formHaveMultipleAns" value="0" class="form-control-radio">No
-                            <br/><br/>
-                        </c:otherwise>
-                    </c:choose>
+                    <br/>
+                        <p>Choose Question Type:</p>
+                        <c:choose>
+                            <c:when test="${row.questionType==0}">
+                                <select name="formQuestionType" class="form-control" required>
+                                    <option value="0" selected>MCQ</option>
+                                    <option value="1">Blank</option>
+                                    <option value="2">MSQ</option>
+                                    
+                                </select>                            
+                            </c:when>
+                            <c:when test="${row.questionType==1}">
+                                <select name="formQuestionType" class="form-control" required>
+                                    <option value="0">MCQ</option>
+                                    <option value="1" selected>Blank</option>
+                                    <option value="2">MSQ</option>
+                                    
+                                </select>  
+                            </c:when>
                             
-                    <p>Is this Blank Type Question?</p>
-                    <c:choose>
-                        <c:when test="${row.isBlankType==0}">
-                            <label><input type="radio" name="formIsBlankType" value="1" class="form-control-radio" required>Yes</label>
-                            <label><input type="radio" name="formIsBlankType" value="0" class="form-control-radio" checked>No</label>
-                            <br/><br/>
-                        </c:when>
-                        <c:otherwise>
-                            <input type="radio" name="formIsBlankType" value="1" class="form-control-radio" required checked>Yes
-                            <input type="radio" name="formIsBlankType" value="0" class="form-control-radio">No
-                            <br/><br/>
-                        </c:otherwise>
-                    </c:choose>
+                            <c:otherwise>
+                                <select name="formQuestionType" class="form-control" required>
+                                    <option value="0">MCQ</option>
+                                    <option value="1">Blank</option>
+                                    <option value="2" selected>MSQ</option>
+                                </select>  
+                            </c:otherwise>
+                        </c:choose>
+                        <br/>
                         
-
-                    <input type="text" name="formQuestionName" placeholder="Enter Question" class="form-control my-2" value="${row.questionName}" required>
-                    <input type="text" name="formOpt1" placeholder="Enter Option1" class="form-control my-2" value="${row.opt1}" required>
-                    <input type="text" name="formOpt2" placeholder="Enter Option2" class="form-control my-2" value="${row.opt2}" required>
-                    <input type="text" name="formOpt3" placeholder="Enter Option3" class="form-control my-2" value="${row.opt3}">
-                    <input type="text" name="formOpt4" placeholder="Enter Option4" class="form-control my-2" value="${row.opt4}">
-                    <input type="text" name="formAns" placeholder="Enter option number of answer" class="form-control my-2" value="${row.ans}" required>
-                        
-                    <input type="any" name="formQuestionMarks" placeholder="Enter marks" class="form-control my-2"  value="${row.questionMarks}" required>
-                    <input type="any" name="formNegativeMarks" placeholder="Enter Negative marks" class="form-control my-2"  value="${row.negativeMarks}" required>
-
+                    <label for="formQuestionName">Enter Question</label>
+                    <input type="text" name="formQuestionName" id="formQuestionName" placeholder="Enter Question" class="form-control my-2" value="${row.questionName}" required>
+                    <br/>
+                    <label for="formOpt1">Enter Option1</label>
+                    <input type="text" name="formOpt1" id="formOpt1" placeholder="Enter Option1" class="form-control my-2" value="${row.opt1}" required>
+                    <br/>
+                    <label for="formOpt2">Enter Option2</label>
+                    <input type="text" name="formOpt2" id="formOpt2" placeholder="Enter Option2" class="form-control my-2" value="${row.opt2}" required>
+                    <br/>
+                    <label for="formOpt3">Enter Option3</label>
+                    <input type="text" name="formOpt3" id="formOpt3" placeholder="Enter Option3" class="form-control my-2" value="${row.opt3}">
+                    <br/>
+                    <label for="formOpt4">Enter Option4</label>
+                    <input type="text" name="formOpt4" id="formOpt4" placeholder="Enter Option4" class="form-control my-2" value="${row.opt4}">
+                    <br/>
+                    <label for="formAns">Enter Answer</label>
+                    <input type="text" name="formAns" id="formAns" placeholder="Enter option number of answer" class="form-control my-2" value="${row.ans}" required>
+                    <br/>    
+                    <label for="formQuestionMarks">Enter marks</label>
+                    <input type="any" name="formQuestionMarks" id="formQuestionMarks" placeholder="Enter marks" class="form-control my-2"  value="${row.questionMarks}" required>
+                    <br/>
+                    <label for="formNegativeMarks">Enter negative marks</label>
+                    <input type="any" name="formNegativeMarks" id="formNegativeMarks" placeholder="Enter Negative marks" class="form-control my-2"  value="${row.negativeMarks}" required>
+                    <br/>
+                    
+                    <sql:query dataSource="${db}" var="mode">
+                            select mode from exam where examId=?
+                        <sql:param value="${sessionScope.eid}"/>
+                        </sql:query>
+                        <c:forEach var="row2" items="${mode.rows}">
+                            <c:if test="${row2.mode==4}">
+                                <br/>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <label>Enter Time Limit for this Question (MM:SS) : </label>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="formQuestionTimeLimitMinutes" placeholder="Enter Minutes" value="${row.questionTimeMinutes}" class="form-control my-2" style="width: 75px;" required>
+                                        </td>
+                                        <td>
+                                            :
+                                        </td>
+                                        <td>
+                                            <input type="number" name="formQuestionTimeLimitSeconds" placeholder="Enter Seconds" value="${row.questionTimeSeconds}" class="form-control my-2" style="width: 75px;" required>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </c:if>
+                        </c:forEach>
+                    
                 </c:forEach>
                 <div class="row">
                     <div class="col">
@@ -307,6 +349,7 @@
     <script src="assets\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>

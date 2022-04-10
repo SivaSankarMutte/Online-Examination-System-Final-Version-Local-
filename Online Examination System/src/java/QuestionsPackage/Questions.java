@@ -11,30 +11,145 @@
 
 package QuestionsPackage;
 
-public class Questions {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
+
+public class Questions
+{
+    
     int questionId;
     String questionName;
     String opt1;
     String opt2;
     String opt3;
     String opt4;
+    String questionNameImg;
+
+    public String getQuestionNameImg() {
+        return questionNameImg;
+    }
+
+    public void setQuestionNameImg(String questionNameImg) {
+        this.questionNameImg = questionNameImg;
+    }
+
+    public ArrayList<String> getOptions() {
+        return options;
+    }
+
+    public void setOptions(ArrayList<String> options) {
+        this.options = options;
+    }
+
+    public ArrayList<String> getOptionsImages() {
+        return optionsImages;
+    }
+
+    public void setOptionsImages(ArrayList<String> optionsImages) {
+        this.optionsImages = optionsImages;
+    }
+    String opt1Img;
+    String opt2Img;
+    String opt3Img;
+    String opt4Img;
+    
+    
+    
+    ArrayList<String> options = new ArrayList<>();
+    ArrayList<String> optionsImages = new ArrayList<>();
+    ArrayList<String> optionNumbers=new ArrayList<>();
+    //String options[]={opt1,opt2,opt3,opt4};
+    //String optionsImages[]={opt1Img,opt2Img,opt3Img,opt4Img};
+
+    public ArrayList<String> getOptionNumbers() {
+        return optionNumbers;
+    }
+
+    public void setOptionNumbers(ArrayList<String> optionNumbers) {
+        this.optionNumbers = optionNumbers;
+    }
+    
+    public void randomizeOptions()
+    {
+        long seed=System.nanoTime();
+        Collections.shuffle(options,new Random(seed));
+        Collections.shuffle(optionsImages,new Random(seed));
+        Collections.shuffle(optionNumbers,new Random(seed));
+    }
+
+    public String getOpt1Img() {
+        return opt1Img;
+    }
+
+    public void setOpt1Img(String opt1Img) {
+        this.opt1Img = opt1Img;
+    }
+
+    public String getOpt2Img() {
+        return opt2Img;
+    }
+
+    public void setOpt2Img(String opt2Img) {
+        this.opt2Img = opt2Img;
+    }
+
+    public String getOpt3Img() {
+        return opt3Img;
+    }
+
+    public void setOpt3Img(String opt3Img) {
+        this.opt3Img = opt3Img;
+    }
+
+    public String getOpt4Img() {
+        return opt4Img;
+    }
+
+    public void setOpt4Img(String opt4Img) {
+        this.opt4Img = opt4Img;
+    }
+     
+    
+    //String optionsArray[]={opt1,opt2,opt3,opt4};
+    
     String realAns;
     float questionMarks;
     float negativeMarks;
-
+    
     
     String providedAns;
     int questionIndex=0;
-    int haveMultipleAns;
-    int isBlankType;
+    int questionType;
 
-    public int getIsBlankType() {
-        return isBlankType;
+    public int getQuestionType() {
+        return questionType;
     }
 
-    public void setIsBlankType(int isBlankType) {
-        this.isBlankType = isBlankType;
+    public void setQuestionType(int questionType) {
+        this.questionType = questionType;
     }
+    
+    int minutesTimeLimit;
+    int secondsTimeLimit;
+
+    public int getMinutesTimeLimit() {
+        return minutesTimeLimit;
+    }
+
+    public void setMinutesTimeLimit(int minutesTimeLimit) {
+        this.minutesTimeLimit = minutesTimeLimit;
+    }
+
+    public int getSecondsTimeLimit() {
+        return secondsTimeLimit;
+    }
+
+    public void setSecondsTimeLimit(int secondsTimeLimit) {
+        this.secondsTimeLimit = secondsTimeLimit;
+    }
+
+   
     String checkboxOptionsGiven[]=new String[4];
 
     public void setCheckboxOptionsGiven(String[] checkboxOptionsGiven) {
@@ -49,17 +164,12 @@ public class Questions {
         this.questionIndex = questionIndex;
     }
 
-    public void setHaveMultipleAns(int haveMultipleAns) {
-        this.haveMultipleAns = haveMultipleAns;
-    }
+   
 
     public int getQuestionIndex() {
         return questionIndex;
     }
 
-    public int getHaveMultipleAns() {
-        return haveMultipleAns;
-    }
     
             
     public int getQuestionId() {
@@ -142,7 +252,5 @@ public class Questions {
     public void setProvidedAns(String providedAns)
     {
         this.providedAns=providedAns;
-    }
-
-    
+    }  
 }

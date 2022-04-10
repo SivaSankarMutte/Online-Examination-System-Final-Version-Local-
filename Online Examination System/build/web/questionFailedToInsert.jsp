@@ -24,5 +24,6 @@
         <h1>Question failed to INSERT!</h1>
         <a href="addQuestionForm.jsp" class="btn form-control btn-warning my-2">Try Again to add a Question</a>
         <a href="facultyHome.jsp" class="btn form-control btn-dark my-2">Back To Home</a>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>

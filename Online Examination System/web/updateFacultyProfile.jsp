@@ -187,7 +187,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col">
-                                            <div class="mb-3"><label class="form-label" for="psw"><strong>Password</strong></label><input class="form-control" type="text" id="psw" placeholder="Enter Password" name="formFacultyPassword" value="${row.password}"></div>
+                                            <c:set var="password" value="${row.password}"/>
+                                            <div class="mb-3"><label class="form-label" for="psw"><strong>Password</strong></label><input class="form-control" type="text" id="psw" placeholder="Enter Password" name="formFacultyPassword" value="<% out.print(cipher.AES.decrypt(pageContext.getAttribute("password").toString())); %>"></div>
                                         </div>
                                     </div>
                                 <div class="mb-3"><input class="btn btn-primary btn-sm" type="submit" value="Save Settings"></div>
@@ -210,6 +211,7 @@
     <script src="assets\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>

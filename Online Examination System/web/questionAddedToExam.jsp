@@ -175,6 +175,18 @@
                             {
                                 isValidOpts=0;
                             }
+                            
+                            
+                            
+
+//                            if(!((opts[i].equals("1") && (!request.getParameter("formOpt1").equals("") || !request.getParameter("formOpt1Img").equals("")) ) || (opts[i].equals("2") 
+//                                    && !request.getParameter("formOpt2").equals("")) || (opts[i].equals("3") && !request.getParameter("formOpt3").equals(""))
+//                                    || (opts[i].equals("4") && !request.getParameter("formOpt4").equals("")) ))
+//                            {
+//                                isValidOpts=0;
+//                            }
+//                            
+                            
                         }
                         if(isValidOpts==1){
                         %>
@@ -228,6 +240,6 @@
         
         
         
-        
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>

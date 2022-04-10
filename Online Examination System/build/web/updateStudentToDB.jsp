@@ -51,6 +51,7 @@ and open the template in the editor.
                 <c:redirect url="studentFailedToUpdate.jsp"/>
             </c:otherwise>
         </c:choose>
+            <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>
 

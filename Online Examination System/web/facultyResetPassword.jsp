@@ -1,6 +1,6 @@
 <%-- 
     Document   : facultyResetPassword
-    Created on : 10 Feb, 2022, 1:50:27 AM
+    Created on : 10 Feb, 2022, 1:50:27 PM
     Author     : SIVASANKAR
 --%>
 
@@ -49,5 +49,6 @@
         <script src="assets\bootstrap\js\bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
         <script src="assets\js\script.min.js"></script>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>

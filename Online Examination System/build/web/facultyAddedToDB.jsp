@@ -58,7 +58,7 @@
                 pstatement.setString(1,adminIdf);
                 pstatement.setString(2, facultyName);
                 pstatement.setString(3, facultyEmail);
-                pstatement.setString(4, facultyPassword);
+                pstatement.setString(4, cipher.AES.encrypt(facultyPassword));
                 pstatement.executeUpdate();
                 
                 String queryString2="select facultyId from faculty where adminId=? and email=?";
@@ -72,16 +72,22 @@
                     String sqlCreate = "CREATE TABLE IF NOT EXISTS " + "questions"+fid
                     + "  (questionId int auto_increment,"
                     + "   examId int not null,"
-                    + "   questionName varchar(120) not null,"
-                    + "   opt1 varchar(120) not null,"
-                    + "   opt2 varchar(120) not null,"
+                    + "   questionName varchar(120),"
+                    + "   questionNameImg varchar(120),"
+                    + "   opt1 varchar(120),"
+                    + "   opt1Img varchar(120),"
+                    + "   opt2 varchar(120),"
+                    + "   opt2Img varchar(120),"
                     + "   opt3 varchar(120),"
+                    + "   opt3Img varchar(120),"
                     + "   opt4 varchar(120),"
+                    + "   opt4Img varchar(120),"
                     + "   ans varchar(120) not null,"
                     + "   questionMarks float default 1,"
                     + "   negativeMarks float default 0,"
-                    + "   haveMultipleAns int default 0,"
-                    + "   isBlankType int default 0,"
+                    + "   questionType int default 0,"
+                    + "   questionTimeMinutes int default 1,"
+                    + "   questionTimeSeconds int default 0,"        
                     + "   primary key(questionId),"
                     + "   foreign key(examId) references exam(examId) on delete cascade on update cascade)";
 
@@ -116,7 +122,7 @@
             {       
                 //String to=facultyEmail;
                 String sub="Online Examination System - Password";
-                String msg="Welcome to Online Examination System -  Your Password is: "+facultyPassword;
+                String msg="Welcome to Online Examination System -  Your Password is: <h1>"+facultyPassword+"</h1>";
                 sendMailToFaculty.send(facultyEmail,sub,msg);
                 //response.sendRedirect("emailToFacultySentSuccessfully.jsp");
             }
@@ -136,6 +142,7 @@
             }
         %>
         <c:redirect url="emailToFacultySentSuccessfully.jsp"/>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>
 

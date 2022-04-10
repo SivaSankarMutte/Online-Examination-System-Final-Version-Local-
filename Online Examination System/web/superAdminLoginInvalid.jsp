@@ -15,9 +15,9 @@
     </head>
     <body>
         
-        <jsp:include page="base.jsp"/>
         <h1>Invalid Credentails</h1>
         <a href="superAdminLogin.jsp" class="btn btn-info form-control">Retry</a>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>
 

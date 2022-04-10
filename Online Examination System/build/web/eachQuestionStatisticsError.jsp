@@ -15,5 +15,6 @@
     <body>
         <h1>Each Question Statistics Error</h1>
         <a href="addQuestionForm.jsp">Upload Again..!</a>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>

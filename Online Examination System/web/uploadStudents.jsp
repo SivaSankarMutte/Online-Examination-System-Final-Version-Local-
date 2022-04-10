@@ -16,7 +16,6 @@
         response.sendRedirect("facultyLogin.jsp");
     }
     %>
-        <jsp:include page="base.jsp"/>
 <%
     String contentType = request.getContentType();
 //    out.println(contentType);
@@ -117,7 +116,7 @@
         }
         catch(Exception e)
         {
-            System.out.println(e);
+            out.println(e);
         }
         %><c:redirect url="errorStudentsUpload.jsp"/><%
     }

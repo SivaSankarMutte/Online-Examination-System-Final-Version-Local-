@@ -48,6 +48,10 @@
                 PreparedStatement pstatement1 = con.prepareStatement(queryString1);
                 pstatement1.setString(1,examId);
                 ResultSet rs1=pstatement1.executeQuery();
+                
+                session.setAttribute("regdNo", studentRegdno);
+                session.setAttribute("sEmail",studentEmail);
+                
                 while(rs1.next())
                 {
                     if(studentName==null)
@@ -60,8 +64,7 @@
                         pstatement2.setString(2, studentRegdno);
                         pstatement2.setString(3, studentEmail);
                         pstatement2.executeUpdate();
-                        session.setAttribute("regdNo", studentRegdno);
-                        session.setAttribute("sEmail",studentEmail);
+                        
                     }
                     else
                     {
@@ -73,14 +76,14 @@
                         pstatement2.setString(3, studentRegdno);
                         pstatement2.setString(4, studentEmail);
                         pstatement2.executeUpdate();
-                        session.setAttribute("regdNo", studentRegdno);
-                        session.setAttribute("sEmail",studentEmail);
                     }
                 }
             }
             catch(Exception e)
             {
-                response.sendRedirect("studentEmailAlreadyInserted.jsp");
+                %>
+                    <c:redirect url="sendExamLinkToNewStudent"/>
+                <%
             }
         %>
         <div class="alert alert-dismissible bg-success fade show" id="dismiss">
@@ -89,6 +92,7 @@
         </div>
         
         <c:redirect url="sendExamLinkToNewStudent"/>
+        <script type="text/javascript" src="assets\js\noBack.js"></script>
     </body>
 </html>
 

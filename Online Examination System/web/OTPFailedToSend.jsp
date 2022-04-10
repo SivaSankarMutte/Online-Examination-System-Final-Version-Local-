@@ -18,4 +18,9 @@
         
         <jsp:include page="facultyForgotPassword.jsp"/>
     </body>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </html>
+
+
+<!--
+http://127.0.0.1:8080/Online%20Examination%20System/calculateMarksForAStudent-->

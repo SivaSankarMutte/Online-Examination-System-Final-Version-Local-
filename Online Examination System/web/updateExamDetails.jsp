@@ -79,7 +79,7 @@
                     <li class="nav-item"><a class="nav-link" href="uploadQuestionsFile.jsp"><i class="icon ion-pie-graph"></i>Upload Questions CSV</a></li>
                     
                         <li class="nav-item">
-                            <form method="post" action="sendMailToStudent" class="nav-link">
+                            <form method="post" action="sendMailToStudentsYesOrNo.jsp" class="nav-link">
                                 <button type="submit" class="nav-link" style="all:unset;"><i class="far fa-user-circle"></i><span>Send Exam Link to Students</span></button>
                             </form>
                         </li>
@@ -107,11 +107,11 @@
                             
                             <c:otherwise>
                                 <sql:query dataSource="${db}" var="aqatresult">
-                                    select allQuestionsAtATime from exam where examId=?
+                                    select mode from exam where examId=?
                                     <sql:param value="${sessionScope.eid}"/>
                                 </sql:query>
                                 <c:forEach var="row2" items="${aqatresult.rows}">
-                                    <c:if test="${row2.allQuestionsAtATime==0}">
+                                    <c:if test="${row2.mode!=1}">
                                         <li class="nav-item">
                                             <form method="post" action="eachQuestionStatistics.jsp" class="nav-link">
                                                 <% 
@@ -263,66 +263,95 @@
                         <input type="datetime-local" class="form-control my-2" name="formStartTime" id="formStartTime" value="${row.startTime}" required>
                         <label for="formEndTime">Enter End Time:</label>
                         <input type="datetime-local" class="form-control my-2" name="formEndTime" id="formEndTime" value="${row.endTime}" required>
+                        <label for="formLoginTime">Enter Login window Time(in minutes):</label>
+                        <input type="number" name="formLoginTime" placeholder="Enter Login window time (in minutes)" id="formLoginTime" value="${row.loginTime}" class="form-control my-2" required>
+                        
+                        
                         <label for="formTotalMarks">Total Marks:</label>
                         <input type="number" name="formTotalMarks" id="formTotalMarks" class="form-control my-2" value="${row.totalMarks}" required>
                         
                         <p>Randomize Questions</p>
                         <c:choose>
                             <c:when test="${row.randomizeQuestions==1}">
-                                <input type="radio" name="formRandomizeQuestions" value="1" class="form-control-radio" checked required>Yes
-                                <input type="radio" name="formRandomizeQuestions" value="0" class="form-control-radio">No     
+                                <label><input type="radio" name="formRandomizeQuestions" value="1" class="form-control-radio" checked required>Yes</label>
+                                <label><input type="radio" name="formRandomizeQuestions" value="0" class="form-control-radio">No</label>
                             </c:when>
                             <c:otherwise>
-                                <input type="radio" name="formRandomizeQuestions" value="1" class="form-control-radio" required>Yes
-                                <input type="radio" name="formRandomizeQuestions" value="0" class="form-control-radio" checked>No
+                                <label><input type="radio" name="formRandomizeQuestions" value="1" class="form-control-radio" required>Yes</label>
+                                <label><input type="radio" name="formRandomizeQuestions" value="0" class="form-control-radio" checked>No</label>
                             </c:otherwise>
                         </c:choose>
                         <br/>
-                        <p>Allow Navigation between Questions</p>
+                        <p>Randomize Options</p>
                         <c:choose>
-                            <c:when test="${row.navigateBetweenQuestions==1}">
-                                <input type="radio" name="formNavigateBetweenQuestions" value="1" class="form-control-radio" checked required>Yes
-                                <input type="radio" name="formNavigateBetweenQuestions" value="0" class="form-control-radio">No     
+                            <c:when test="${row.randomizeOptions==1}">
+                                <label><input type="radio" name="formRandomizeOptions" value="1" class="form-control-radio" checked required>Yes</label>
+                                <label><input type="radio" name="formRandomizeOptions" value="0" class="form-control-radio">No</label>     
                             </c:when>
                             <c:otherwise>
-                                <input type="radio" name="formNavigateBetweenQuestions" value="1" class="form-control-radio" required>Yes
-                                <input type="radio" name="formNavigateBetweenQuestions" value="0" class="form-control-radio" checked>No
+                                <label><input type="radio" name="formRandomizeOptions" value="1" class="form-control-radio" required>Yes</label>
+                                <label><input type="radio" name="formRandomizeOptions" value="0" class="form-control-radio" checked>No</label>
                             </c:otherwise>
                         </c:choose>
                         <br/>
-                        <p>Allow Students to see All Questions at a time</p>
+                        <p>Choose Exam Mode:</p>
                         <c:choose>
-                            <c:when test="${row.allQuestionsAtATime==1}">
-                                <input type="radio" name="formAllQuestionsAtATime" value="1" class="form-control-radio" checked required>Yes
-                                <input type="radio" name="formAllQuestionsAtATime" value="0" class="form-control-radio">No     
+                            <c:when test="${row.mode==1}">
+                                <select name="formExamMode" class="form-control" required>
+                                    <option value="1" selected>All Questions At a Time</option>
+                                    <option value="2">Allow Navigation Between Questions</option>
+                                    <option value="3">One Question At a Time (No Time Limit for each Question)</option>
+                                    <option value="4">One Question At a Time (Time Limit for each Question)</option>
+                                </select>                            
+                            </c:when>
+                            <c:when test="${row.mode==2}">
+                                <select name="formExamMode" class="form-control" required>
+                                    <option value="1">All Questions At a Time</option>
+                                    <option value="2" selected>Allow Navigation Between Questions</option>
+                                    <option value="3">One Question At a Time (No Time Limit for each Question)</option>
+                                    <option value="4">One Question At a Time (Time Limit for each Question)</option>
+                                </select>  
+                            </c:when>
+                            <c:when test="${row.mode==3}">
+                                <select name="formExamMode" class="form-control" required>
+                                    <option value="1">All Questions At a Time</option>
+                                    <option value="2">Allow Navigation Between Questions</option>
+                                    <option value="3" selected>One Question At a Time (No Time Limit for each Question)</option>
+                                    <option value="4">One Question At a Time (Time Limit for each Question)</option>
+                                </select>  
                             </c:when>
                             <c:otherwise>
-                                <input type="radio" name="formAllQuestionsAtATime" value="1" class="form-control-radio" required>Yes
-                                <input type="radio" name="formAllQuestionsAtATime" value="0" class="form-control-radio" checked>No
+                                <select name="formExamMode" class="form-control" required>
+                                    <option value="1">All Questions At a Time</option>
+                                    <option value="2">Allow Navigation Between Questions</option>
+                                    <option value="3">One Question At a Time (No Time Limit for each Question)</option>
+                                    <option value="4" selected>One Question At a Time (Time Limit for each Question)</option>
+                                </select>  
                             </c:otherwise>
                         </c:choose>
                         <br/>
+                        
                         <p>Enable Feedback form for this Exam?</p>
                         <c:choose>
                             <c:when test="${row.enableFeedbackForm==1}">
-                                <input type="radio" name="formEnableFeedbackForm" value="1" class="form-control-radio" checked required>Yes
-                                <input type="radio" name="formEnableFeedbackForm" value="0" class="form-control-radio">No     
+                                <label><input type="radio" name="formEnableFeedbackForm" value="1" class="form-control-radio" checked required>Yes</label>
+                                <label><input type="radio" name="formEnableFeedbackForm" value="0" class="form-control-radio">No</label>     
                             </c:when>
                             <c:otherwise>
-                                <input type="radio" name="formEnableFeedbackForm" value="1" class="form-control-radio" required>Yes
-                                <input type="radio" name="formEnableFeedbackForm" value="0" class="form-control-radio" checked>No
+                                <label><input type="radio" name="formEnableFeedbackForm" value="1" class="form-control-radio" required>Yes</label>
+                                <label><input type="radio" name="formEnableFeedbackForm" value="0" class="form-control-radio" checked>No</label>
                             </c:otherwise>
                         </c:choose>
                         <br/>
                         <p>Enable Students to see their answers for this Exam?</p>
                         <c:choose>
                             <c:when test="${row.enableResultsToStudents==1}">
-                                <input type="radio" name="formEnableResults" value="1" class="form-control-radio" checked required>Yes
-                                <input type="radio" name="formEnableResults" value="0" class="form-control-radio">No     
+                                <label><input type="radio" name="formEnableResults" value="1" class="form-control-radio" checked required>Yes</label>
+                                <label><input type="radio" name="formEnableResults" value="0" class="form-control-radio">No</label>     
                             </c:when>
                             <c:otherwise>
-                                <input type="radio" name="formEnableResults" value="1" class="form-control-radio" required>Yes
-                                <input type="radio" name="formEnableResults" value="0" class="form-control-radio" checked>No
+                                <label><input type="radio" name="formEnableResults" value="1" class="form-control-radio" required>Yes</label>
+                                <label><input type="radio" name="formEnableResults" value="0" class="form-control-radio" checked>No</label>
                             </c:otherwise>
                         </c:choose>
                     
@@ -352,6 +381,7 @@
     <script src="assets\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>

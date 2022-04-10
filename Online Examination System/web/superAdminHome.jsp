@@ -160,7 +160,7 @@
                     </div>
                 </nav>
                 <div class="container-fluid">
-                    <h3 class="text-dark mb-4">Faculty</h3>
+                    <h3 class="text-dark mb-4">Admins</h3>
                     <div class="card shadow">
                         <div class="card-body">
                             <div class="row">
@@ -255,6 +255,7 @@
     <script src="assets\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>

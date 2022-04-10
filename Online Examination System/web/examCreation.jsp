@@ -187,28 +187,47 @@
                         <input type="datetime-local" class="form-control my-2" name="formStartTime" id="formStartTime" required>
                         <label for="formEndTime">Enter End Time:</label>
                         <input type="datetime-local" class="form-control my-2" name="formEndTime" id="formEndTime" required>
+                        
+                        <input type="number" name="formLoginTime" placeholder="Enter Login window time (in minutes)" class="form-control my-2" required>
+                        
                         <label for="formTotalMarks">Total Marks:</label>
                         <input type="number" name="formTotalMarks" id="formTotalMarks" class="form-control my-2" required>
                         
                         <p>Randomize Questions</p>
-                        <input type="radio" name="formRandomizeQuestions" value="1" class="form-control-radio" required>Yes
-                        <input type="radio" name="formRandomizeQuestions" value="0" class="form-control-radio">No
+                        <label><input type="radio" name="formRandomizeQuestions" value="1" class="form-control-radio" required>Yes</label>
+                        <label><input type="radio" name="formRandomizeQuestions" value="0" class="form-control-radio">No</label>
                         <br/><br/>
-                        <p>Allow Navigation between Questions</p>
-                        <input type="radio" name="formNavigateBetweenQuestions" value="1" class="form-control-radio" required>Yes
-                        <input type="radio" name="formNavigateBetweenQuestions" value="0" class="form-control-radio">No
+                        <p>Randomize Options</p>
+                        <label><input type="radio" name="formRandomizeOptions" value="1" class="form-control-radio" required>Yes</label>
+                        <label><input type="radio" name="formRandomizeOptions" value="0" class="form-control-radio">No</label>
+                        <br/><br/>
+                        
+                        <p>Choose Exam Mode</p>
+                            <select name="formExamMode" class="form-control" required>
+                                <option value="1">All Questions At a Time</option>
+                                <option value="2">Allow Navigation Between Questions</option>
+                                <option value="3">One Question At a Time (No Time Limit for each Question)</option>
+                                <option value="4">One Question At a Time (Time Limit for each Question)</option>
+                            </select>
+                        <br/>
+                        
+<!--                        <p>Allow Navigation between Questions</p>
+                        <label><input type="radio" name="formNavigateBetweenQuestions" value="1" class="form-control-radio" required>Yes</label>
+                        <label><input type="radio" name="formNavigateBetweenQuestions" value="0" class="form-control-radio">No</label>
                         <br/><br/>
                         <p>Allow Students to see All Questions at a time</p>
-                        <input type="radio" name="formAllQuestionsAtATime" value="1" class="form-control-radio" required>Yes
-                        <input type="radio" name="formAllQuestionsAtATime" value="0" class="form-control-radio">No
+                        <label><input type="radio" name="formAllQuestionsAtATime" value="1" class="form-control-radio" required>Yes</label>
+                        <label><input type="radio" name="formAllQuestionsAtATime" value="0" class="form-control-radio">No</label>
                         
+                        
+                        -->
                         <p>Enable Feedback form for this Exam?</p>
-                        <input type="radio" name="formEnableFeedback" value="1" class="form-control-radio" required>Yes
-                        <input type="radio" name="formEnableFeedback" value="0" class="form-control-radio" checked>No
+                        <label><input type="radio" name="formEnableFeedback" value="1" class="form-control-radio" required>Yes</label>
+                        <label><input type="radio" name="formEnableFeedback" value="0" class="form-control-radio" checked>No</label>
                         
                         <p>Enable Student to see their answers for this Exam?</p>
-                        <input type="radio" name="formEnableResults" value="1" class="form-control-radio" required>Yes
-                        <input type="radio" name="formEnableResults" value="0" class="form-control-radio" checked>No
+                        <label><input type="radio" name="formEnableResults" value="1" class="form-control-radio" required>Yes</label>
+                        <label><input type="radio" name="formEnableResults" value="0" class="form-control-radio" checked>No</label>
                         
                         
                         <div class="row">
@@ -236,6 +255,7 @@
     <script src="assets\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>

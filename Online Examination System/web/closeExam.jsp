@@ -21,4 +21,5 @@
             </div>
         </div>
     </body>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </html>

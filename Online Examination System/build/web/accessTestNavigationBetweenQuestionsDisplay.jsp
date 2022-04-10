@@ -90,6 +90,10 @@
                                     ${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}&nbsp;&nbsp;${sessionScope.regdNo}
                                 </div>
                                 <h4 class="card-title" style="user-select: none;"><% out.println(n2+1+"."+q.getQuestionName()); %></h4>
+                                <!-- Remove these 4 lines 
+                                here 39 denotes index starts with data/imagePath
+                                -->
+                                
                                 <h6 class="text-muted card-subtitle mb-2">Select from following options</h6>
                                 
                                 <% if(q.getProvidedAns()==null){ %>
@@ -115,15 +119,17 @@
                                 <h6 class="text-muted card-subtitle mb-2">Select from following options</h6>
                                 
                                 <% if(q.getProvidedAns()==null){ %>
+                                
+                                
                                 <div class="form-check"><input class="form-check-input" type="radio" name="radioName" value="1" id="formCheck-1"><label class="form-check-label" for="formCheck-1"><% out.println(q.getOpt1()); %> </label></div>
                                 <div class="form-check"><input class="form-check-input" type="radio" name="radioName" value="2" id="formCheck-2"><label class="form-check-label" for="formCheck-2"><% out.println(q.getOpt2()); %> </label></div>
                                 
                                     
-                                    <% if(!q.getOpt3().equals("")){ %>
+                                    <% if(q.getOpt3()!=null && !q.getOpt3().equals("")){ %>
                                         <div class="form-check"><input class="form-check-input" type="radio" name="radioName" value="3" id="formCheck-3"><label class="form-check-label" for="formCheck-3"><% out.println(q.getOpt3()); %> </label></div>
                                 
                                     <% } %>
-                                    <% if(!q.getOpt4().equals("")){ %>
+                                    <% if(q.getOpt4()!=null && !q.getOpt4().equals("") ){ %>
                                         <div class="form-check"><input class="form-check-input" type="radio" name="radioName" value="4" id="formCheck-4"><label class="form-check-label" for="formCheck-4"><% out.println(q.getOpt4()); %> </label></div>
                                 
                                     <% } %>
@@ -145,7 +151,7 @@
                                         <div class="form-check"><input class="form-check-input" type="radio" name="radioName" value="2" id="formCheck-2"><label class="form-check-label" for="formCheck-2"><% out.println(q.getOpt2()); %> </label></div>
                                 
                                     <% } %> 
-                                    <% if(!q.getOpt3().equals("")){ %>
+                                    <% if(q.getOpt3()!=null && !q.getOpt3().equals("")){ %>
                                         <% if(q.getProvidedAns().equals("3")){ %>
                                         <div class="form-check"><input class="form-check-input" type="radio" name="radioName" value="3" id="formCheck-3" checked><label class="form-check-label" for="formCheck-3"><% out.println(q.getOpt3()); %> </label></div>
                                 
@@ -155,7 +161,7 @@
                                         <% } %> 
                                     <% } %>
 
-                                    <% if(!q.getOpt4().equals("")){ %>
+                                    <% if(q.getOpt4()!=null && !q.getOpt4().equals("")){ %>
                                         <% if(q.getProvidedAns().equals("4")){ %>
                                         <div class="form-check"><input class="form-check-input" type="radio" name="radioName" value="4" id="formCheck-4" checked><label class="form-check-label" for="formCheck-4"><% out.println(q.getOpt4()); %> </label></div>
                                 
@@ -187,12 +193,12 @@
                                                 <div class="form-check"><input class="form-check-input" type="checkbox" name="checkboxname" value="2" id="formCheck-2"><label class="form-check-label" for="formCheck-2"><% out.println(q.getOpt2()); %> </label></div>
                                 
 
-                                            <% if(!q.getOpt3().equals("")) { %>
+                                            <% if(q.getOpt3()!=null && !q.getOpt3().equals("")) { %>
                                                 <div class="form-check"><input class="form-check-input" type="checkbox" name="checkboxname" value="3" id="formCheck-3"><label class="form-check-label" for="formCheck-3"><% out.println(q.getOpt3()); %> </label></div>
                                 
                                             <% } %>
 
-                                            <% if(!q.getOpt4().equals("")) { %>
+                                            <% if(q.getOpt4()!=null && !q.getOpt4().equals("")) { %>
                                                 <div class="form-check"><input class="form-check-input" type="checkbox" name="checkboxname" value="4" id="formCheck-4"><label class="form-check-label" for="formCheck-4"><% out.println(q.getOpt4()); %> </label></div>
                                 
                                             <% } %>
@@ -223,7 +229,7 @@
                                 
                                                     <%
                                                 }
-                                                if(!q.getOpt3().equals("")) {
+                                                if(q.getOpt3()!=null && !q.getOpt3().equals("")) {
                                                     if(Arrays.asList(q.getCheckboxOptionsGiven()).contains("3"))
                                                     { %>
                                                     <div class="form-check"><input class="form-check-input" type="checkbox" name="checkboxname" value="3" id="formCheck-3" checked><label class="form-check-label" for="formCheck-3"><% out.println(q.getOpt3()); %> </label></div>
@@ -237,7 +243,7 @@
                                                         <%
                                                     }
                                                 }
-                                                if(!q.getOpt4().equals("")) {
+                                                if(q.getOpt4()!=null && !q.getOpt4().equals("")) {
                                                     if(Arrays.asList(q.getCheckboxOptionsGiven()).contains("4"))
                                                     { %>
                                                     <div class="form-check"><input class="form-check-input" type="checkbox" name="checkboxname" value="4" id="formCheck-4" checked><label class="form-check-label" for="formCheck-4"><% out.println(q.getOpt4()); %> </label></div>
@@ -276,6 +282,7 @@
                                         <c:when test='${Integer.parseInt(sessionScope.n)+1==qno}'>
                                             <input type="submit" value="${qno}" name="questionNumber" class="btn btn-info" formaction="GoToAskingQuestion"> 
                                         </c:when>
+                                        
                                         <c:otherwise>
                                             <input type="submit" value="${qno}" name="questionNumber" class="btn btn-outline-dark" formaction="GoToAskingQuestion"> 
                                         </c:otherwise>
@@ -306,6 +313,7 @@
     <script src="assets\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>

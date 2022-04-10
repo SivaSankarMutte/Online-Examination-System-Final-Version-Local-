@@ -26,7 +26,7 @@
     <link rel="icon" type="text/css" href="images/test.png">
 </head>
 
-<body class="bg-gradient-primary" style="background: var(--bs-success);">
+<body class="bg-gradient-primary" style="background: var(--bs-success);" onload="preventBack()">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-9 col-lg-12 col-xl-10">
@@ -52,7 +52,7 @@
                                         <hr>
                                     </form>
                                     <div class="text-center"><a class="small" href="facultyForgotPassword.jsp">Forgot Password?</a></div>
-                                    <div class="text-center"><a class="small" href="register.html">Create an Account!</a></div>
+<!--                                    <div class="text-center"><a class="small" href="register.html">Create an Account!</a></div>-->
                                 </div>
                             </div>
                         </div>
@@ -64,6 +64,7 @@
     <script src="assets\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>

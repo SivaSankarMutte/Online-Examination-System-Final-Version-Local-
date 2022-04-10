@@ -3,12 +3,28 @@
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+    <servlet-mapping>
+        <servlet-name>UploadServlet</servlet-name>
+        <url-pattern>/UploadServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>300</session-timeout>
     </session-config>
     <servlet>
         <servlet-name>superAdminValidation</servlet-name>
         <servlet-class>superAdminValidation</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UploadServlet</servlet-name>
+        <servlet-class>UploadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>updateQuestionServlet</servlet-name>
+        <url-pattern>/updateQuestionServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>updateQuestionServlet</servlet-name>
+        <servlet-class>updateQuestionServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>superAdminValidation</servlet-name>
@@ -70,7 +86,6 @@
         <servlet-name>sendMailToStudent</servlet-name>
         <url-pattern>/sendMailToStudent</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>sendExamLinkToNewStudent</servlet-name>
         <servlet-class>sendExamLinkToNewStudent</servlet-class>
@@ -79,7 +94,6 @@
         <servlet-name>sendExamLinkToNewStudent</servlet-name>
         <url-pattern>/sendExamLinkToNewStudent</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>examLinkValidation</servlet-name>
         <servlet-class>examLinkValidation</servlet-class>
@@ -87,6 +101,14 @@
     <servlet-mapping>
         <servlet-name>examLinkValidation</servlet-name>
         <url-pattern>/examLinkValidation</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>examLinkValidation1</servlet-name>
+        <servlet-class>examLinkValidation1</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>examLinkValidation1</servlet-name>
+        <url-pattern>/examLinkValidation1</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>DBConnection</servlet-name>
@@ -120,7 +142,6 @@
         <servlet-name>calculateMarksForAStudent</servlet-name>
         <url-pattern>/calculateMarksForAStudent</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>goToPrevQuestion</servlet-name>
         <servlet-class>QuestionsPackage.goToPrevQuestion</servlet-class>
@@ -129,7 +150,6 @@
         <servlet-name>goToPrevQuestion</servlet-name>
         <url-pattern>/goToPrevQuestion</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>GoToAskingQuestion</servlet-name>
         <servlet-class>QuestionsPackage.GoToAskingQuestion</servlet-class>
@@ -138,7 +158,6 @@
         <servlet-name>GoToAskingQuestion</servlet-name>
         <url-pattern>/GoToAskingQuestion</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>allAnswersSubmission</servlet-name>
         <servlet-class>allAnswersSubmission</servlet-class>
@@ -147,7 +166,6 @@
         <servlet-name>allAnswersSubmission</servlet-name>
         <url-pattern>/allAnswersSubmission</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>examNavigationSubmitButtonPressed</servlet-name>
         <servlet-class>QuestionsPackage.examNavigationSubmitButtonPressed</servlet-class>
@@ -156,7 +174,6 @@
         <servlet-name>examNavigationSubmitButtonPressed</servlet-name>
         <url-pattern>/examNavigationSubmitButtonPressed</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>sendOTPToFacultyServlet</servlet-name>
         <servlet-class>sendOTPToFacultyServlet</servlet-class>
@@ -165,4 +182,37 @@
         <servlet-name>sendOTPToFacultyServlet</servlet-name>
         <url-pattern>/sendOTPToFacultyServlet</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>sendOTPToAdminServlet</servlet-name>
+        <servlet-class>sendOTPToAdminServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>sendOTPToAdminServlet</servlet-name>
+        <url-pattern>/sendOTPToAdminServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>sendOTPToSuperAdminServlet</servlet-name>
+        <servlet-class>sendOTPToSuperAdminServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>sendOTPToSuperAdminServlet</servlet-name>
+        <url-pattern>/sendOTPToSuperAdminServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>AES</servlet-name>
+        <servlet-class>AES</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AES</servlet-name>
+        <url-pattern>/AES</url-pattern>
+    </servlet-mapping>
+    
+    <listener>
+        <listener-class>SessionCounterListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>AttributeListener</listener-class>
+    </listener>
+    
 </web-app>

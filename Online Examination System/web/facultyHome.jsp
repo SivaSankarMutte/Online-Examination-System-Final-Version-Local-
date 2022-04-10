@@ -4,10 +4,11 @@
     Author     : SIVASANKAR
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.sql.*"%>
+<%@page import="java.sql.*,java.util.Date"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 
@@ -27,15 +28,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="icon" type="text/css" href="images/test.png">
+<!--    <script>
+        function myfun()
+        {
+            alert("hello");
+            console.log("closed javascript");
+        }
+    </script>-->
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="preventBack()">
     <% 
         if(session.getAttribute("fid")==null)
         {
             response.sendRedirect("facultyLogin.jsp");
         }
     %>
+<!--    <button onclick="myfun()">Click to Execute</button>-->
     <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true" user="siva" password="0000"/>
     <sql:query dataSource="${db}" var="result">
             select * from exam where facultyId=?
@@ -167,8 +176,32 @@
                     <h3 class="text-dark mb-1">Home</h3>
                 </div>
                 
+                                    
+                <%                
+                Class.forName("com.mysql.jdbc.Driver");
+            
+                Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/demo2?useSSL=false&allowPublicKeyRetrieval=true","siva","0000");
+                %>
+                
+                                    
+                                    
                 <div class="card">
                     <c:forEach var="row" items="${result.rows}" varStatus="loop">
+                        <c:set var="examId" value="${row.examId}"/>
+                            <%
+                            PreparedStatement psTime=con.prepareStatement("select startTime,endTime,activation from exam where examId=?");
+                            psTime.setString(1, pageContext.getAttribute("examId").toString());
+                            ResultSet rsTime=psTime.executeQuery();       
+
+                            if(rsTime.next())
+                            {
+                                Timestamp timestamp=rsTime.getTimestamp(1);
+                                Date startTime=new Date(timestamp.getTime());
+                                Timestamp timestamp2=rsTime.getTimestamp(2);
+                                Date endTime=new Date(timestamp2.getTime());
+                                Date now=new Date();
+                                int activation=rsTime.getInt(3);
+                    %>             
                         <c:choose>
                         <c:when test="${loop.count%3==1}">
                             <div class="row">
@@ -181,18 +214,31 @@
                                         <input type="hidden" name="eid" value="${row.examId}"/>
                                         <input type="hidden" name="listName" value="${row.listName}"/>
                                         <input type="hidden" name="totalMarks" value="${row.totalMarks}"/>
-                                        <button type="submit" style="all:unset;">
+                                        <button type="submit" style="all:unset; cursor: pointer;">
                                             <div class="card cards-shadown cards-hover" data-aos="flip-left" data-aos-duration="950">
-                                                <div class="card-header" style="background: var(--bs-success);"><span class="bounce animated infinite space"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-circle-fill pulse animated infinite" id="download-icon-1" style="color: var(--bs-red);">
+                                                <div class="card-header" style="background: var(--bs-success);">
+                                                    <% if(now.compareTo(startTime)>=0 && activation==1){ %>
+                                                    
+                                                    <span class="bounce animated infinite space"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-circle-fill pulse animated infinite" id="download-icon-1" style="color: var(--bs-red);">
                                                                 <circle cx="8" cy="8" r="8"></circle>
-                                                            </svg></a></span>
+                                                            </svg></a>
+                                                    </span>
+                                                   <% } else if(now.compareTo(endTime)>0){ %>
+                                                        <span class="space">
+                                                            <a href="#"><i class="fas fa-circle" id="download-icon-3" style="color: var(--bs-white);"></i></a>
+                                                        </span>
+                                                    <% } else{ %>
+                                                        <span class="space">
+                                                            <a href="#"><i class="fas fa-circle" id="download-icon-2" style="color: var(--bs-yellow);"></i></a>
+                                                        </span>
+                                                        <% } %>
                                                     <div class="cardheader-text">
                                                         <h4 id="heading-card-1">${row.examName}</h4>
                                                         <p id="cardheader-subtext-1">${row.listName}</p>
                                                     </div>
                                                 </div>
                                                 <div class="card-body">
-                                                    <p class="card-text sub-text-color">Start Time : <b>${row.startTime}</b></p>
+                                                    <p class="card-text sub-text-color">Start Time : <b>${fn:replace(row.startTime,"T"," ")}</b></p>
                                                     <p class="card-text sub-text-color">&nbsp;End Time  : <b>${row.endTime}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></p>
                                                     <p class="card-text cardbody-sub-text">Total Marks : ${row.totalMarks}</p>
                                                 </div>
@@ -209,9 +255,24 @@
                                         <input type="hidden" name="eid" value="${row.examId}"/>
                                         <input type="hidden" name="listName" value="${row.listName}"/>
                                         <input type="hidden" name="totalMarks" value="${row.totalMarks}"/>
-                                        <button type="submit" style="all:unset;">
+                                        <button type="submit" style="all:unset; cursor: pointer;">
                                             <div class="card cards-shadown cards-hover" data-aos="slide-right" data-aos-duration="950">
-                                                <div class="card-header" style="background: var(--bs-success);"><span class="space"><a href="#"><i class="fas fa-circle" id="download-icon-2" style="color: var(--bs-yellow);"></i></a></span>
+                                                <div class="card-header" style="background: var(--bs-success);">
+                                                    <% if(now.compareTo(startTime)>=0 && activation==1){ %>
+                                                    
+                                                    <span class="bounce animated infinite space"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-circle-fill pulse animated infinite" id="download-icon-1" style="color: var(--bs-red);">
+                                                                <circle cx="8" cy="8" r="8"></circle>
+                                                            </svg></a>
+                                                    </span>
+                                                   <% } else if(now.compareTo(endTime)>0){ %>
+                                                        <span class="space">
+                                                            <a href="#"><i class="fas fa-circle" id="download-icon-3" style="color: var(--bs-white);"></i></a>
+                                                        </span>
+                                                    <% } else{ %>
+                                                        <span class="space">
+                                                            <a href="#"><i class="fas fa-circle" id="download-icon-2" style="color: var(--bs-yellow);"></i></a>
+                                                        </span>
+                                                        <% } %>
                                                     <div class="cardheader-text">
                                                         <h4 id="heading-card-2">${row.examName}</h4>
                                                         <p id="cardheader-subtext-2">${row.listName}</p>
@@ -235,9 +296,24 @@
                                         <input type="hidden" name="eid" value="${row.examId}"/>
                                         <input type="hidden" name="listName" value="${row.listName}"/>
                                         <input type="hidden" name="totalMarks" value="${row.totalMarks}"/>
-                                        <button type="submit" style="all:unset;">
+                                        <button type="submit" style="all:unset; cursor: pointer;">
                                             <div class="card cards-shadown cards-hover" data-aos="flip-up" data-aos-duration="950">
-                                                <div class="card-header cards-header-hover" style="background: var(--bs-success);"><span class="space"><a href="#"><i class="fas fa-circle" id="download-icon-3" style="color: var(--bs-white);"></i></a></span>
+                                                <div class="card-header cards-header-hover" style="background: var(--bs-success);">
+                                                    <% if(now.compareTo(startTime)>=0 && activation==1){ %>
+                                                    
+                                                    <span class="bounce animated infinite space"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-circle-fill pulse animated infinite" id="download-icon-1" style="color: var(--bs-red);">
+                                                                <circle cx="8" cy="8" r="8"></circle>
+                                                            </svg></a>
+                                                    </span>
+                                                   <% } else if(now.compareTo(endTime)>0){ %>
+                                                        <span class="space">
+                                                            <a href="#"><i class="fas fa-circle" id="download-icon-3" style="color: var(--bs-white);"></i></a>
+                                                        </span>
+                                                    <% } else{ %>
+                                                        <span class="space">
+                                                            <a href="#"><i class="fas fa-circle" id="download-icon-2" style="color: var(--bs-yellow);"></i></a>
+                                                        </span>
+                                                        <% } %>
                                                     <div class="cardheader-text">
                                                         <h4 id="heading-card-3">${row.examName}</h4>
                                                         <p id="cardheader-subtext-3">${row.listName}</p>
@@ -266,11 +342,24 @@
                                         <input type="hidden" name="eid" value="${row.examId}"/>
                                         <input type="hidden" name="listName" value="${row.listName}"/>
                                         <input type="hidden" name="totalMarks" value="${row.totalMarks}"/>
-                                        <button type="submit" style="all:unset;">
+                                        <button type="submit" style="all:unset; cursor: pointer;">
                                             <div class="card cards-shadown cards-hover" data-aos="flip-left" data-aos-duration="950">
-                                                <div class="card-header" style="background: var(--bs-success);"><span class="bounce animated infinite space"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-circle-fill pulse animated infinite" id="download-icon-1" style="color: var(--bs-red);">
+                                                <div class="card-header" style="background: var(--bs-success);">
+                                                    <% if(now.compareTo(startTime)>=0 && activation==1){ %>
+                                                    
+                                                    <span class="bounce animated infinite space"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-circle-fill pulse animated infinite" id="download-icon-1" style="color: var(--bs-red);">
                                                                 <circle cx="8" cy="8" r="8"></circle>
-                                                            </svg></a></span>
+                                                            </svg></a>
+                                                    </span>
+                                                   <% } else if(now.compareTo(endTime)>0){ %>
+                                                        <span class="space">
+                                                            <a href="#"><i class="fas fa-circle" id="download-icon-3" style="color: var(--bs-white);"></i></a>
+                                                        </span>
+                                                    <% } else{ %>
+                                                        <span class="space">
+                                                            <a href="#"><i class="fas fa-circle" id="download-icon-2" style="color: var(--bs-yellow);"></i></a>
+                                                        </span>
+                                                        <% } %>
                                                     <div class="cardheader-text">
                                                         <h4 id="heading-card-1">${row.examName}</h4>
                                                         <p id="cardheader-subtext-1">${row.listName}</p>
@@ -294,9 +383,24 @@
                                         <input type="hidden" name="eid" value="${row.examId}"/>
                                         <input type="hidden" name="listName" value="${row.listName}"/>
                                         <input type="hidden" name="totalMarks" value="${row.totalMarks}"/>
-                                        <button type="submit" style="all:unset;">
+                                        <button type="submit" style="all:unset; cursor: pointer;">
                                             <div class="card cards-shadown cards-hover" data-aos="slide-right" data-aos-duration="950">
-                                                <div class="card-header" style="background: var(--bs-success);"><span class="space"><a href="#"><i class="fas fa-circle" id="download-icon-2" style="color: var(--bs-yellow);"></i></a></span>
+                                                <div class="card-header" style="background: var(--bs-success);">
+                                                    <% if(now.compareTo(startTime)>=0 && activation==1){ %>
+                                                    
+                                                    <span class="bounce animated infinite space"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-circle-fill pulse animated infinite" id="download-icon-1" style="color: var(--bs-red);">
+                                                                <circle cx="8" cy="8" r="8"></circle>
+                                                            </svg></a>
+                                                    </span>
+                                                   <% } else if(now.compareTo(endTime)>0){ %>
+                                                        <span class="space">
+                                                            <a href="#"><i class="fas fa-circle" id="download-icon-3" style="color: var(--bs-white);"></i></a>
+                                                        </span>
+                                                    <% } else{ %>
+                                                        <span class="space">
+                                                            <a href="#"><i class="fas fa-circle" id="download-icon-2" style="color: var(--bs-yellow);"></i></a>
+                                                        </span>
+                                                        <% } %>
                                                     <div class="cardheader-text">
                                                         <h4 id="heading-card-2">${row.examName}</h4>
                                                         <p id="cardheader-subtext-2">${row.listName}</p>
@@ -320,9 +424,24 @@
                                         <input type="hidden" name="eid" value="${row.examId}"/>
                                         <input type="hidden" name="listName" value="${row.listName}"/>
                                         <input type="hidden" name="totalMarks" value="${row.totalMarks}"/>
-                                        <button type="submit" style="all:unset;">
+                                        <button type="submit" style="all:unset; cursor: pointer;">
                                             <div class="card cards-shadown cards-hover" data-aos="flip-up" data-aos-duration="950">
-                                                <div class="card-header cards-header-hover" style="background: var(--bs-success);"><span class="space"><a href="#"><i class="fas fa-circle" id="download-icon-3" style="color: var(--bs-white);"></i></a></span>
+                                                <div class="card-header cards-header-hover" style="background: var(--bs-success);">
+                                                    <% if(now.compareTo(startTime)>=0 && activation==1){ %>
+                                                    
+                                                    <span class="bounce animated infinite space"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-circle-fill pulse animated infinite" id="download-icon-1" style="color: var(--bs-red);">
+                                                                <circle cx="8" cy="8" r="8"></circle>
+                                                            </svg></a>
+                                                    </span>
+                                                   <% } else if(now.compareTo(endTime)>0){ %>
+                                                        <span class="space">
+                                                            <a href="#"><i class="fas fa-circle" id="download-icon-3" style="color: var(--bs-white);"></i></a>
+                                                        </span>
+                                                    <% } else{ %>
+                                                        <span class="space">
+                                                            <a href="#"><i class="fas fa-circle" id="download-icon-2" style="color: var(--bs-yellow);"></i></a>
+                                                        </span>
+                                                        <% } %>
                                                     <div class="cardheader-text">
                                                         <h4 id="heading-card-3">${row.examName}</h4>
                                                         <p id="cardheader-subtext-3">${row.listName}</p>
@@ -345,9 +464,10 @@
                         </c:otherwise>
                         
                         </c:choose>
-                        
+                        <% } %>
                     </c:forEach>
                 </div>
+                
             </div>
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">
@@ -359,6 +479,7 @@
     <script src="assets\bootstrap\js\bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="assets\js\script.min.js"></script>
+    <script type="text/javascript" src="assets\js\noBack.js"></script>
 </body>
 
 </html>
